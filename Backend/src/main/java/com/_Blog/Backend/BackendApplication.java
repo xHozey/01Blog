@@ -1,5 +1,4 @@
-package com.lkwan.Backend;
-
+package com._Blog.Backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

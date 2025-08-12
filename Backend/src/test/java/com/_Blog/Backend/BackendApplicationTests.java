@@ -1,4 +1,4 @@
-package com.lkwan.Backend;
+package com._Blog.Backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
