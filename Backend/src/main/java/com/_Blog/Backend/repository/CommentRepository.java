@@ -4,7 +4,7 @@ import org.springframework.stereotype.Repository;
 import com._Blog.Backend.model.Comment;
 
 @Repository
-public interface CommentRepo {
+public interface CommentRepository {
 
     int insertComment(Comment comment);
 }
