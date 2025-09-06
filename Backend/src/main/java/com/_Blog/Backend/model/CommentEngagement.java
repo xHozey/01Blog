@@ -18,4 +18,46 @@ public class CommentEngagement {
     private Long userId;
     private Long commentId;
     private Boolean likeType;
+
+    public CommentEngagement() {
+    }
+
+    public CommentEngagement(Long id, Long userId, Long commentId, Boolean likeType) {
+        this.id = id;
+        this.userId = userId;
+        this.commentId = commentId;
+        this.likeType = likeType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public void setCommentId(Long commentId) {
+        this.commentId = commentId;
+    }
+
+    public Boolean getLikeType() {
+        return likeType;
+    }
+
+    public void setLikeType(Boolean likeType) {
+        this.likeType = likeType;
+    }
 }
