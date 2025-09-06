@@ -13,32 +13,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com._Blog.Backend.model.Post;
-import com._Blog.Backend.services.PostService;
+import com._Blog.Backend.model.Comment;
+import com._Blog.Backend.services.CommentService;
 
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/posts")
-public class PostController {
-
+@RequestMapping("api/v1/comments")
+public class CommentController {
+    
     @Autowired
-    private PostService postService;
+    private CommentService commentService;
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
-        Post savedPost = this.postService.addPost(post);
+    public ResponseEntity<Comment> createComment(@Valid @RequestBody Comment comment) {
+        Comment savedPost = this.commentService.addComment(comment);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
 
     @GetMapping
-    public List<Post> getPosts(@RequestParam(defaultValue = "0") Long page) {
-        return postService.getPosts(page);
+    public List<Comment> getComments(@RequestParam(defaultValue = "0") Long page) {
+        return commentService.getComments(page);
     }
-
-    @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return postService.getPostById(id);
-    }
-
 }

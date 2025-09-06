@@ -8,15 +8,17 @@ import org.springframework.stereotype.Service;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.Post;
 import com._Blog.Backend.repository.PostRepository;
+
 @Service
 public class PostService {
+
     private final PostRepository postRepository;
 
     @Autowired
     public PostService(PostRepository postRepository) {
         this.postRepository = postRepository;
     }
-    
+
     public Post addPost(Post post) {
         return this.postRepository.save(post);
     }

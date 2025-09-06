@@ -9,6 +9,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "comment")
@@ -17,12 +20,16 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank
+    @Size(max=3000)
     private String content;
     private String imagePath;
     private String videoPath;
     @CreationTimestamp
     private Timestamp date;
+    @NotNull
     private Long postId;
+    @NotNull
     private Long userId;
 
     public Comment() {
