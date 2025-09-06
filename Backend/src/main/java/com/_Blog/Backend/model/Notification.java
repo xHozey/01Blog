@@ -1,3 +1,5 @@
+package com._Blog.Backend.model;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -7,8 +9,9 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "notification")
 public class Notification {
+
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String type;
     private String description;
