@@ -4,26 +4,39 @@ import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @NotBlank
+    @Size(max = 30, min = 3)
+    @Column(unique=true)
     private String username;
+    @NotBlank
+    @Email
+    @Column(unique=true)
     private String email;
+    @NotBlank
+    @Size(max = 64, min = 8)
+    @Column(unique=true)
     private String password;
-    private String role;
+    private String role = "USER";
     private String iconPath;
     private String token;
-    private Boolean isBanned;
+    private Boolean isBanned = false;
     @CreationTimestamp
     private Timestamp creation;
 
