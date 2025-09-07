@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
@@ -22,5 +23,11 @@ public class UserController {
     public ResponseEntity<String> register(@Valid @RequestBody User user) {
         this.userService.register(user);
         return ResponseEntity.ok("user registred");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody User user) {
+        String token = userService.login(user);
+        return ResponseEntity.ok(token);
     }
 }

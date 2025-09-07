@@ -27,6 +27,7 @@ public class User {
     private String username;
     @NotBlank
     @Email
+    @Size(max=255)
     @Column(unique=true)
     private String email;
     @NotBlank
