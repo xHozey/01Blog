@@ -1,8 +1,13 @@
 package com._Blog.Backend.model;
 
 import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +21,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -63,7 +68,8 @@ public class User {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    @Override
     public String getUsername() {
         return username;
     }
@@ -80,6 +86,7 @@ public class User {
         this.email = email;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }
@@ -126,5 +133,31 @@ public class User {
 
     public void setCreation(Timestamp creation) {
         this.creation = creation;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Map your role field to a GrantedAuthority
+        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // adjust if you want expiry logic
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !Boolean.TRUE.equals(this.isBanned); // banned users are "locked"
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // adjust if you want password expiry
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !Boolean.TRUE.equals(this.isBanned);
     }
 }
