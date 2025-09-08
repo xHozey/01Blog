@@ -2,18 +2,22 @@ package com._Blog.Backend.model;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -35,11 +39,11 @@ public class User implements UserDetails {
     @Size(max=255)
     @Column(unique=true)
     private String email;
-    @NotBlank
     @Size(max = 64, min = 8)
     @Column(unique=true)
     private String password;
-    private String role = "USER";
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserRole> roles = new HashSet<>();
     private String iconPath;
     private String token;
     private Boolean isBanned = false;
@@ -54,7 +58,6 @@ public class User implements UserDetails {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.iconPath = iconPath;
         this.token = token;
         this.isBanned = isBanned;
@@ -95,12 +98,12 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
+    public Set<UserRole> getRoles() {
+        return roles;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRoles(Set<UserRole> roles) {
+        this.roles = roles;
     }
 
     public String getIconPath() {
@@ -137,23 +140,24 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Map your role field to a GrantedAuthority
-        return List.of(new SimpleGrantedAuthority("ROLE_" + this.role));
+        return roles.stream()
+                    .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getRole().name()))
+                    .toList();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; // adjust if you want expiry logic
+        return true; 
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !Boolean.TRUE.equals(this.isBanned); // banned users are "locked"
+        return !Boolean.TRUE.equals(this.isBanned); 
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; // adjust if you want password expiry
+        return true; 
     }
 
     @Override

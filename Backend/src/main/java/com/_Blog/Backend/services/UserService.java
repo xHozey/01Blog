@@ -10,6 +10,7 @@ import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
 import com._Blog.Backend.exception.BadRequestException;
+import com._Blog.Backend.utils.Role;
 
 @Service
 public class UserService {
@@ -17,11 +18,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final JwtUtil jwtUtil;
+    private final UserRoleService userRoleService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder, JwtUtil jwtUtil) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder, JwtUtil jwtUtil, UserRoleService userRoleService) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.jwtUtil = jwtUtil;
+        this.userRoleService = userRoleService;
     }
 
     public User register(User user) {
@@ -32,7 +35,9 @@ public class UserService {
             throw new ConflictException("username already taken");
         }
         user.setPassword(this.encoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        userRoleService.addRole(Role.USER, savedUser);
+        return savedUser;
     }
 
     public String login(User user) {

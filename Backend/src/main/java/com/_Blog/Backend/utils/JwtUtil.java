@@ -2,6 +2,7 @@ package com._Blog.Backend.utils;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.stereotype.Component;
 
@@ -13,12 +14,16 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
     private final Key secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-    private final long expirationMs = 86400000; // 1 day
+    private final long expirationMs = 86400000;
 
     public String generateToken(com._Blog.Backend.model.User user) {
+        List<String> roles = user.getRoles()
+                         .stream()
+                         .map(r -> r.getRole().name()) 
+                         .toList();
         return Jwts.builder()
                 .setSubject(user.getUsername())
-                .claim("role", user.getRole())
+                .claim("roles", roles)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(secretKey)
