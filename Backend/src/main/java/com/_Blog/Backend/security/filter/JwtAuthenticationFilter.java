@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com._Blog.Backend.repository.UserRepository;
+import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.utils.JwtUtil;
 
 import jakarta.servlet.FilterChain;
@@ -23,11 +23,9 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserRepository userRepository) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
-        this.userRepository = userRepository;
     }
 
     @Override
@@ -35,29 +33,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain)
             throws ServletException, IOException {
-        final String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String authenticationToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (header == null || header.trim().isEmpty() || !header.startsWith("Bearer ")) {
+        if (authenticationToken == null || authenticationToken.trim().isEmpty() || !authenticationToken.startsWith("Bearer ")) {
             chain.doFilter(request, response);
             return;
         }
 
-        final String token = header.split(" ")[1].trim();
+        final String token = authenticationToken.split(" ")[1].trim();
         
-        UserDetails userDetails = this.userRepository
-                .findByUsername(jwtUtil.extractUsername(token))
-                .orElse(null);
-
-        if (!jwtUtil.validateToken(token, userDetails.getUsername())) {
+        if (jwtUtil.isTokenExpired(token)) {
             chain.doFilter(request, response);
             return;
         }
 
+        String username = jwtUtil.extractUsername(token);
+        List<SimpleGrantedAuthority> authorities = jwtUtil.extractRoles(token);
+        Long userId = jwtUtil.extractId(token);
+        JwtUser user = new JwtUser(userId, username);
         UsernamePasswordAuthenticationToken authentication
                 = new UsernamePasswordAuthenticationToken(
-                        userDetails,
+                        user,
                         null,
-                        userDetails == null ? List.of() : userDetails.getAuthorities()
+                        authorities
                 );
 
         authentication.setDetails(

@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -28,7 +27,6 @@ public class Post {
     private String content;
     private String videoPath;
     private String imagePath;
-    @NotNull
     private Long userId;
     private Boolean isHide = false;
     @CreationTimestamp
