@@ -29,7 +29,6 @@ public class Comment {
     private Timestamp date;
     @NotNull
     private Long postId;
-    @NotNull
     private Long userId;
 
     public Comment() {
