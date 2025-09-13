@@ -5,9 +5,12 @@ import java.sql.Timestamp;
 import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -21,27 +24,33 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @NotBlank
-    @Size(max=3000)
+    @Size(max = 3000)
     private String content;
     private String imagePath;
     private String videoPath;
     @CreationTimestamp
     private Timestamp date;
     @NotNull
-    private Long postId;
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+
+    @JoinColumn(name = "post_id")
+    private Post post;
+    @ManyToOne(fetch = FetchType.LAZY)
+
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Comment() {
     }
 
-    public Comment(Long id, String content, String imagePath, String videoPath, Timestamp date, Long postId, Long userId) {
+    public Comment(Long id, String content, String imagePath, String videoPath, Timestamp date, Post post, User user) {
         this.id = id;
         this.content = content;
         this.imagePath = imagePath;
         this.videoPath = videoPath;
         this.date = date;
-        this.postId = postId;
-        this.userId = userId;
+        this.post = post;
+        this.user = user;
     }
 
     public Long getId() {
@@ -84,19 +93,19 @@ public class Comment {
         this.date = date;
     }
 
-    public Long getPostId() {
-        return postId;
+    public Post getPost() {
+        return post;
     }
 
-    public void setPostId(Long postId) {
-        this.postId = postId;
+    public void setPost(Post post) {
+        this.post = post;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 }
