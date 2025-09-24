@@ -2,6 +2,8 @@ package com._Blog.Backend.services;
 
 import java.util.List;
 
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,13 +21,17 @@ import com._Blog.Backend.repository.PostRepository;
 public class PostService {
 
     private final PostRepository postRepository;
-
+    private final UserRepository userRepository;
     @Autowired
-    public PostService(PostRepository postRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     public Post addPost(Post post) {
+        JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        post.setUser(user);
         return this.postRepository.save(post);
     }
 
@@ -38,10 +44,11 @@ public class PostService {
     }
 
     public Post updatePost(Post post) {
-        JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user =  userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
         if (post.getId() == null) throw new BadRequestException("Post id is null");
         Post oldPost = postRepository.findById(post.getId()).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-        if (!user.getId().equals(oldPost.getUserId())) throw new UnauthorizedException("You are not allowed to update this post");
+        if (!user.getId().equals(oldPost.getUser().getId())) throw new UnauthorizedException("You are not allowed to update this post");
 
         oldPost.setTitle(post.getTitle());   
         oldPost.setContent(post.getContent());
@@ -60,7 +67,7 @@ public class PostService {
         boolean isAdmin = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ROLE_ADMIN"));
-        if (!post.getUserId().equals(currentUserId) && !isAdmin) {
+        if (!post.getUser().getId().equals(currentUserId) && !isAdmin) {
             throw new UnauthorizedException("You are not allowed to delete this post");
         }
 

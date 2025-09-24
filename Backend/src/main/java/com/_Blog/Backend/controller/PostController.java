@@ -31,8 +31,6 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
-        JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        post.setUserId(user.getId());
         Post savedPost = this.postService.addPost(post);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }

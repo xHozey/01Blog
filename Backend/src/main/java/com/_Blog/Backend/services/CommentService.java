@@ -2,6 +2,8 @@ package com._Blog.Backend.services;
 
 import java.util.List;
 
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,15 +20,17 @@ import com._Blog.Backend.repository.CommentRepository;
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
-
+    private final UserRepository userRepository;
     @Autowired
-    public CommentService(CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
         this.commentRepository = commentRepository;
+        this.userRepository = userRepository;
     }
 
     public Comment addComment(Comment comment) {
-        JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        comment.setUserId(user.getId());
+        JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(JwtUser.getId()).orElseThrow(()  -> new ResourceNotFoundException("User not found"));
+        comment.setUser(user);
         return this.commentRepository.save(comment);
     }
 
@@ -38,7 +42,7 @@ public class CommentService {
         JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (comment.getId() == null) throw new BadRequestException("Comment id is null");
         Comment oldComment = commentRepository.findById(comment.getId()).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
-        if (!user.getId().equals(oldComment.getUserId())) throw new UnauthorizedException("You are not allowed to update this comment");
+        if (!user.getId().equals(oldComment.getUser().getId())) throw new UnauthorizedException("You are not allowed to update this comment");
 
         oldComment.setContent(comment.getContent());
         oldComment.setImagePath(comment.getImagePath());
@@ -56,7 +60,7 @@ public class CommentService {
         boolean isAdmin = auth.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .anyMatch(role -> role.equals("ROLE_ADMIN"));
-        if (!comment.getUserId().equals(currentUserId) && !isAdmin) {
+        if (!comment.getUser().getId().equals(currentUserId) && !isAdmin) {
             throw new UnauthorizedException("You are not allowed to delete this comment");
         }
 
