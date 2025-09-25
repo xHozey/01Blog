@@ -10,4 +10,6 @@ import java.util.Optional;
 @Repository
 public interface FollowRepository extends CrudRepository<Follow,Integer> {
     Optional<Follow> findByFollowedIdAndFollowerId(Long followedId, Long followerId);
+    Long countByFollowedId(Long followedId);
+    Long countByFollowerId(Long followerId);
 }

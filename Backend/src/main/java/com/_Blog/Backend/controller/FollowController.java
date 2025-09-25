@@ -30,5 +30,14 @@ public class FollowController {
     }
 
     @GetMapping("/followers")
-    public ResponseEntity<List<Follow>> getFollowers() {}
+    public ResponseEntity<Long> getFollowers() {
+        Long total = followService.getFollowersTotal();
+        return ResponseEntity.ok(total);
+    }
+
+    @GetMapping("/followed")
+    public ResponseEntity<Long> getFollowed() {
+        Long total = followService.getFollowedTotal();
+        return ResponseEntity.ok(total);
+    }
 }

@@ -37,6 +37,17 @@ public class FollowService {
     public void removeFollow(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (followedId.equals(jwtUser.getId())) throw new ConflictException("you can't unfollow yourself");
-        followRepository.findByFollowedIdAndFollowerId(jwtUser.getId(), followedId);
+        Follow follow = followRepository.findByFollowedIdAndFollowerId(jwtUser.getId(), followedId).orElseThrow(() -> new ResourceNotFoundException("followed user not found"));
+        followRepository.delete(follow);
+    }
+
+    public Long getFollowersTotal() {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return followRepository.countByFollowedId(jwtUser.getId());
+    }
+
+    public Long getFollowedTotal() {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return followRepository.countByFollowerId(jwtUser.getId());
     }
 }
