@@ -26,16 +26,14 @@ public class CommentEngagement {
 
     @JoinColumn(name = "comment_id")
     private Comment comment;
-    private Boolean likeType;
 
     public CommentEngagement() {
     }
 
-    public CommentEngagement(Long id, User user, Comment comment, Boolean likeType) {
+    public CommentEngagement(Long id, User user, Comment comment) {
         this.id = id;
         this.user = user;
         this.comment = comment;
-        this.likeType = likeType;
     }
 
     public Long getId() {
@@ -62,11 +60,4 @@ public class CommentEngagement {
         this.comment = comment;
     }
 
-    public Boolean getLikeType() {
-        return likeType;
-    }
-
-    public void setLikeType(Boolean likeType) {
-        this.likeType = likeType;
-    }
 }

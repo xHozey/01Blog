@@ -24,16 +24,14 @@ public class PostEngagement {
 
     @JoinColumn(name = "user_id")
     private User user;
-    private Boolean likeType;
 
     public PostEngagement() {
     }
 
-    public PostEngagement(Long id, Post post, User user, Boolean likeType) {
+    public PostEngagement(Long id, Post post, User user) {
         this.id = id;
         this.post = post;
         this.user = user;
-        this.likeType = likeType;
     }
 
     public Long getId() {
@@ -60,11 +58,4 @@ public class PostEngagement {
         this.user = user;
     }
 
-    public Boolean getLikeType() {
-        return likeType;
-    }
-
-    public void setLikeType(Boolean likeType) {
-        this.likeType = likeType;
-    }
 }
