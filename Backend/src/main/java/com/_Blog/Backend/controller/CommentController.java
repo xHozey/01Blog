@@ -24,9 +24,12 @@ import jakarta.validation.Valid;
 @RequestMapping("api/v1/comments")
 public class CommentController {
     
-    @Autowired
-    private CommentService commentService;
+    private final CommentService commentService;
 
+    @Autowired
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
+    }
     @PostMapping
     public ResponseEntity<Comment> createComment(@Valid @RequestBody Comment comment) {
         Comment savedPost = this.commentService.addComment(comment);

@@ -45,7 +45,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles = new HashSet<>();
     private String iconPath;
-    private String token;
     private Boolean isBanned = false;
     @CreationTimestamp
     private Timestamp creation;
@@ -53,13 +52,12 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, String role, String iconPath, String token, Boolean isBanned, Timestamp creation) {
+    public User(Long id, String username, String email, String password, String role, String iconPath, Boolean isBanned, Timestamp creation) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.iconPath = iconPath;
-        this.token = token;
         this.isBanned = isBanned;
         this.creation = creation;
     }
@@ -112,14 +110,6 @@ public class User implements UserDetails {
 
     public void setIconPath(String iconPath) {
         this.iconPath = iconPath;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
     }
 
     public Boolean getIsBanned() {

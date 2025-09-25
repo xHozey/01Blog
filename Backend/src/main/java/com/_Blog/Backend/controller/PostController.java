@@ -26,8 +26,12 @@ import jakarta.validation.Valid;
 @RequestMapping("api/v1/posts")
 public class PostController {
 
+    private final PostService postService;
+
     @Autowired
-    private PostService postService;
+    public PostController(PostService postService) {
+        this.postService = postService;
+    }
 
     @PostMapping
     public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {

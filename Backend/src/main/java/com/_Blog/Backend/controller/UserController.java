@@ -13,12 +13,15 @@ import com._Blog.Backend.services.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody User user) {
         this.userService.register(user);
