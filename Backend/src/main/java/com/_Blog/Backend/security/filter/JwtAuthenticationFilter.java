@@ -3,6 +3,7 @@ package com._Blog.Backend.security.filter;
 import java.io.IOException;
 import java.util.List;
 
+import com._Blog.Backend.utils.CookiesUtil;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,15 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain)
             throws ServletException, IOException {
-        final String authenticationToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+        final String token = CookiesUtil.AuthToken(request);
 
-        if (authenticationToken == null || authenticationToken.trim().isEmpty() || !authenticationToken.startsWith("Bearer ")) {
+        if (token == null) {
             chain.doFilter(request, response);
             return;
         }
 
-        final String token = authenticationToken.split(" ")[1].trim();
-        
         if (jwtUtil.isTokenExpired(token)) {
             chain.doFilter(request, response);
             return;
@@ -51,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<SimpleGrantedAuthority> authorities = jwtUtil.extractRoles(token);
         Long userId = jwtUtil.extractId(token);
         JwtUser user = new JwtUser(userId, username);
+
         UsernamePasswordAuthenticationToken authentication
                 = new UsernamePasswordAuthenticationToken(
                         user,
