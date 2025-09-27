@@ -28,14 +28,15 @@ export class LoginComponent {
         }
       });
     }
-    const payload: loginRequest = {
+    const payload: userRequest = {
+      email: this.loginForm.value.username,
       username: this.loginForm.value.username,
       password: this.loginForm.value.password,
     };
 
     this.auth.login(payload).subscribe({
       next: (res) => {
-        this.route.navigate(["/"]);
+        this.route.navigate(['/']);
       },
       error: (err) => {
         console.log(err);

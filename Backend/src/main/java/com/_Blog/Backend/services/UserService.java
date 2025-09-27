@@ -1,7 +1,7 @@
 package com._Blog.Backend.services;
 
-import com._Blog.Backend.dto.LoginRequest;
-import com._Blog.Backend.dto.RegisterRequest;
+import com._Blog.Backend.dto.UserRequest;
+import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.model.Session;
 import com._Blog.Backend.repository.SessionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,7 +13,6 @@ import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
-import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.utils.Role;
 
 @Service
@@ -33,7 +32,7 @@ public class UserService {
         this.sessionRepository = sessionRepository;
     }
 
-    public void register(RegisterRequest user) {
+    public void register(UserRequest user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ConflictException("email already taken");
         }
@@ -48,7 +47,7 @@ public class UserService {
         userRoleService.addRole(Role.USER, savedUser);
     }
 
-    public String[] login(LoginRequest user) {
+    public String[] login(UserRequest user) {
         User existingUser = userRepository.findByEmail(user.getUsername())
                 .orElseGet(() -> userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));
@@ -66,6 +65,11 @@ public class UserService {
         sessionRepository.save(session);
 
         return new String[]{authToken, refreshToken};
+    }
+
+    public UserResponse GetUser(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return new UserResponse(user.getUsername(), user.getIconPath(), user.getCreation());
     }
 
 }

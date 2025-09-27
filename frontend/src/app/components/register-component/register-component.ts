@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })
+
 export class RegisterComponent {
   registerForm: FormGroup;
 
@@ -38,7 +39,7 @@ export class RegisterComponent {
       return;
     }
 
-    const payload: registerRequest = {
+    const payload: userRequest = {
       username: this.registerForm.value.username,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
