@@ -6,6 +6,7 @@ import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.SessionRepository;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,22 +24,40 @@ public class RefreshService {
     }
 
     public String[] refreshToken(String refreshToken) {
-        if (jwtUtil.isTokenExpired(refreshToken)) {
+        try {
+            if (jwtUtil.isTokenExpired(refreshToken)) {
+                throw new UnauthorizedException("refresh token expired");
+            }
+
+            User user = userRepository.findById(jwtUtil.extractId(refreshToken))
+                    .orElseThrow(() -> new UnauthorizedException("user not found"));
+
+            Session session = sessionRepository.findByToken(refreshToken)
+                    .orElseThrow(() -> new UnauthorizedException("session not found"));
+
+            if (session.getRevoked()) {
+                throw new UnauthorizedException("session already revoked");
+            }
+
+            session.setRevoked(true);
+            sessionRepository.save(session);
+
+            Session newSession = new Session();
+            newSession.setUser(user);
+
+            String newRefreshToken = jwtUtil.generateRefreshToken(user);
+            String newAuthToken = jwtUtil.generateAuthToken(user);
+
+            newSession.setToken(newRefreshToken);
+            sessionRepository.save(newSession);
+
+            return new String[]{newAuthToken, newRefreshToken};
+
+        } catch (ExpiredJwtException e) {
             throw new UnauthorizedException("refresh token expired");
+        } catch (Exception e) {
+            throw new UnauthorizedException("invalid refresh token");
         }
-        User user = userRepository.findById(jwtUtil.extractId(refreshToken)).orElseThrow(() -> new UnauthorizedException("user not found"));
-        Session session = sessionRepository.findByToken(refreshToken).orElseThrow(() -> new UnauthorizedException("session not found"));
-        if (session.getRevoked()) {
-            throw new UnauthorizedException("session already revoked");
-        }
-        session.setRevoked(true);
-        sessionRepository.save(session);
-        Session newSession = new Session();
-        newSession.setUser(user);
-        String newRefreshToken = jwtUtil.generateRefreshToken(user);
-        String newAuthToken = jwtUtil.generateAuthToken(user);
-        newSession.setToken(newRefreshToken);
-        sessionRepository.save(newSession);
-        return new String[]{newAuthToken, newRefreshToken};
     }
+
 }

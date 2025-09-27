@@ -25,8 +25,10 @@ public class RefreshController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("refresh token is null");
         }
         String[] tokens = refreshService.refreshToken(refreshToken);
+
         CookiesUtil.SetRefreshToken(response, tokens[1]);
         CookiesUtil.SetAuthToken(response, tokens[0]);
+
         return  ResponseEntity.ok("Refreshed successfully");
     }
 }
