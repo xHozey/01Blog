@@ -22,7 +22,7 @@ public class RefreshService {
         this.userRepository = userRepository;
     }
 
-    public void refreshToken(String refreshToken) {
+    public String refreshToken(String refreshToken) {
         if (jwtUtil.isTokenExpired(refreshToken)) {
             throw new UnauthorizedException("refresh token expired");
         }
@@ -35,7 +35,9 @@ public class RefreshService {
         sessionRepository.save(session);
         Session newSession = new Session();
         newSession.setUser(user);
-        newSession.setToken(jwtUtil.generateRefreshToken(user));
+        String newRefreshToken = jwtUtil.generateRefreshToken(user);
+        newSession.setToken(newRefreshToken);
         sessionRepository.save(newSession);
+        return newRefreshToken;
     }
 }

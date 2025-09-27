@@ -2,13 +2,11 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.services.RefreshService;
 import com._Blog.Backend.utils.CookiesUtil;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/refresh")
@@ -20,13 +18,13 @@ public class RefreshController {
         this.refreshService = refreshService;
     }
 
-    @PostMapping
-    public ResponseEntity<String> RefreshToken(@CookieValue(name = "refresh_token", required = false) String refreshToken) {
+    @GetMapping
+    public ResponseEntity<String> RefreshToken(HttpServletResponse response, @CookieValue(name = "refresh_token", required = false) String refreshToken) {
         if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("refresh token is null");
         }
-
-
-
+        String token = refreshService.refreshToken(refreshToken);
+        CookiesUtil.SetRefreshToken(response, token);
+        return  ResponseEntity.ok("Refreshed successfully");
     }
 }

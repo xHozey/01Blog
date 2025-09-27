@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { Auth } from '../../service/auth';
+import { AuthService } from '../../service/auth-service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { Router, RouterLink } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: Auth, private route: Router) {
+  constructor(private fb: FormBuilder, private auth: AuthService, private route: Router) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]],

@@ -2,6 +2,7 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.dto.LoginRequest;
 import com._Blog.Backend.dto.RegisterRequest;
+import com._Blog.Backend.utils.CookiesUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,13 +36,10 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest user, HttpServletResponse response) {
-        String token = userService.login(user);
-        Cookie cookie = new Cookie("auth_token", token);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60);
-        response.addCookie(cookie);
+        String[] tokens = userService.login(user);
+
+        CookiesUtil.SetAuthToken(response, tokens[0]);
+        CookiesUtil.SetRefreshToken(response, tokens[1]);
 
         return ResponseEntity.ok("Logged in successfully, cookie set!");
     }

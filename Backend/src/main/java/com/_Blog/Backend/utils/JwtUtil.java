@@ -26,7 +26,7 @@ public class JwtUtil {
                 .stream()
                 .map(r -> "ROLE_"+r.getRole().name())
                 .toList();
-        long expirationMs = 86400000;
+        long expirationMs = 5 * 60 * 1000;
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("roles", roles)
@@ -38,7 +38,7 @@ public class JwtUtil {
     }
 
     public String generateRefreshToken(com._Blog.Backend.model.User user) {
-        long expirationMs = 86400000;
+        long expirationMs = 24 * 60 * 60 * 1000;
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .setIssuedAt(new Date())

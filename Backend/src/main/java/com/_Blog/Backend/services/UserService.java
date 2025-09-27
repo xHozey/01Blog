@@ -48,7 +48,7 @@ public class UserService {
         userRoleService.addRole(Role.USER, savedUser);
     }
 
-    public String login(LoginRequest user) {
+    public String[] login(LoginRequest user) {
         User existingUser = userRepository.findByEmail(user.getUsername())
                 .orElseGet(() -> userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));
@@ -57,14 +57,15 @@ public class UserService {
             throw new UnauthorizedException("Invalid credentials");
         }
 
-        String token = jwtUtil.generateAuthToken(existingUser);
+        String authToken = jwtUtil.generateAuthToken(existingUser);
 
         Session session = new Session();
-        session.setToken(jwtUtil.generateRefreshToken(existingUser));
+        String refreshToken = jwtUtil.generateRefreshToken(existingUser);
+        session.setToken(refreshToken);
         session.setUser(existingUser);
         sessionRepository.save(session);
 
-        return token;
+        return new String[]{authToken, refreshToken};
     }
 
 }
