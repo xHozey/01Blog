@@ -16,23 +16,33 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtil {
 
     private final Key secretKey;
-    private final long expirationMs = 86400000;
 
     public JwtUtil(@Value("${jwt.secret}") String secret) {
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public String generateToken(com._Blog.Backend.model.User user) {
+    public String generateAuthToken(com._Blog.Backend.model.User user) {
         List<String> roles = user.getRoles()
                 .stream()
                 .map(r -> "ROLE_"+r.getRole().name())
                 .toList();
+        long expirationMs = 86400000;
         return Jwts.builder()
-                .setSubject(user.getId() + "")
+                .setSubject(user.getId().toString())
                 .claim("roles", roles)
                 .claim("username", user.getUsername())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
+                .signWith(secretKey)
+                .compact();
+    }
+
+    public String generateRefreshToken(com._Blog.Backend.model.User user) {
+        long expirationMs = 86400000;
+        return Jwts.builder()
+                .setSubject(user.getId().toString())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() +expirationMs))
                 .signWith(secretKey)
                 .compact();
     }

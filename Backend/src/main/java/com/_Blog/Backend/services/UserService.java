@@ -2,6 +2,8 @@ package com._Blog.Backend.services;
 
 import com._Blog.Backend.dto.LoginRequest;
 import com._Blog.Backend.dto.RegisterRequest;
+import com._Blog.Backend.model.Session;
+import com._Blog.Backend.repository.SessionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,15 +23,17 @@ public class UserService {
     private final PasswordEncoder encoder;
     private final JwtUtil jwtUtil;
     private final UserRoleService userRoleService;
+    private final SessionRepository sessionRepository;
 
-    public UserService(UserRepository userRepository, PasswordEncoder encoder, JwtUtil jwtUtil, UserRoleService userRoleService) {
+    public UserService(UserRepository userRepository, PasswordEncoder encoder, JwtUtil jwtUtil, UserRoleService userRoleService, SessionRepository sessionRepository) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.jwtUtil = jwtUtil;
         this.userRoleService = userRoleService;
+        this.sessionRepository = sessionRepository;
     }
 
-    public User register(RegisterRequest user) {
+    public void register(RegisterRequest user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ConflictException("email already taken");
         }
@@ -42,7 +46,6 @@ public class UserService {
         userEntity.setPassword(this.encoder.encode(user.getPassword()));
         User savedUser = userRepository.save(userEntity);
         userRoleService.addRole(Role.USER, savedUser);
-        return savedUser;
     }
 
     public String login(LoginRequest user) {
@@ -54,9 +57,13 @@ public class UserService {
             throw new UnauthorizedException("Invalid credentials");
         }
 
-        String token = jwtUtil.generateToken(existingUser);
+        String token = jwtUtil.generateAuthToken(existingUser);
 
-        userRepository.save(existingUser);
+        Session session = new Session();
+        session.setToken(jwtUtil.generateRefreshToken(existingUser));
+        session.setUser(existingUser);
+        sessionRepository.save(session);
+
         return token;
     }
 

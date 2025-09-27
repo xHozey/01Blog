@@ -23,7 +23,7 @@ import com._Blog.Backend.services.PostService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("api/v1/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
