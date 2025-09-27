@@ -1,5 +1,7 @@
 package com._Blog.Backend.services;
 
+import com._Blog.Backend.dto.LoginRequest;
+import com._Blog.Backend.dto.RegisterRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,34 +29,24 @@ public class UserService {
         this.userRoleService = userRoleService;
     }
 
-    public User register(User user) {
+    public User register(RegisterRequest user) {
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ConflictException("email already taken");
         }
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new ConflictException("username already taken");
         }
-        user.setPassword(this.encoder.encode(user.getPassword()));
-        User savedUser = userRepository.save(user);
+        User userEntity = new User();
+        userEntity.setEmail(user.getEmail());
+        userEntity.setUsername(user.getUsername());
+        userEntity.setPassword(this.encoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(userEntity);
         userRoleService.addRole(Role.USER, savedUser);
         return savedUser;
     }
 
-    public String login(User user) {
-        if ((user.getEmail() == null || user.getEmail().isBlank())
-                && (user.getUsername() == null || user.getUsername().isBlank())) {
-            throw new BadRequestException("Email or username must be provided");
-        }
-
-        if (user.getUsername() != null && user.getUsername().length() > 64) {
-            throw new BadRequestException("Username too long");
-        }
-
-        if (user.getEmail() != null && user.getEmail().length() > 255) {
-            throw new BadRequestException("Email too long");
-        }
-
-        User existingUser = userRepository.findByEmail(user.getEmail())
+    public String login(LoginRequest user) {
+        User existingUser = userRepository.findByEmail(user.getUsername())
                 .orElseGet(() -> userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found")));
 
@@ -63,7 +55,7 @@ public class UserService {
         }
 
         String token = jwtUtil.generateToken(existingUser);
-        existingUser.setToken(token);
+
         userRepository.save(existingUser);
         return token;
     }

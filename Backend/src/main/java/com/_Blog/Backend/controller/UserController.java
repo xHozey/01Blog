@@ -1,5 +1,9 @@
 package com._Blog.Backend.controller;
 
+import com._Blog.Backend.dto.LoginRequest;
+import com._Blog.Backend.dto.RegisterRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,15 +26,23 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody User user) {
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest user) {
         this.userService.register(user);
-        return ResponseEntity.ok("user registred");
+        return ResponseEntity.ok("user registered");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest user, HttpServletResponse response) {
         String token = userService.login(user);
-        return ResponseEntity.ok(token);
+        Cookie cookie = new Cookie("auth_token", token);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(24 * 60 * 60);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("Logged in successfully, cookie set!");
     }
 }
