@@ -20,11 +20,13 @@ public class RefreshController {
 
     @GetMapping
     public ResponseEntity<String> RefreshToken(HttpServletResponse response, @CookieValue(name = "refresh_token", required = false) String refreshToken) {
+        System.out.println(refreshToken + "     hello");
         if (refreshToken == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("refresh token is null");
         }
-        String token = refreshService.refreshToken(refreshToken);
-        CookiesUtil.SetRefreshToken(response, token);
+        String[] tokens = refreshService.refreshToken(refreshToken);
+        CookiesUtil.SetRefreshToken(response, tokens[1]);
+        CookiesUtil.SetAuthToken(response, tokens[0]);
         return  ResponseEntity.ok("Refreshed successfully");
     }
 }

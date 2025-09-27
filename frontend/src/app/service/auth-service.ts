@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,9 @@ export class AuthService {
     });
   }
 
-  getCurrentUser(): Observable<userResponse> {
-    return this.http.get<userResponse>(`${this.apiUrl}/users/me`, { withCredentials: true });
+  getCurrentUser(): Observable<userResponse | null> {
+    return this.http
+      .get<userResponse>(`${this.apiUrl}/users/me`, { withCredentials: true })
+      .pipe(catchError(() => of(null))); 
   }
 }

@@ -6,7 +6,7 @@ import { unauthenticatedGuard } from './guards/unauthenticated-guard';
 import { authenticatedGuard } from './guards/authenticated-guard';
 
 export const routes: Routes = [
-  { path: 'register', component: RegisterComponent, canActivate: [unauthenticatedGuard] },
-  { path: 'login', component: LoginComponent, canActivate: [unauthenticatedGuard] },
+  { path: 'register', component: RegisterComponent },
+  { path: 'login', component: LoginComponent },
   { path: '', component: HomeComponent, canActivate: [authenticatedGuard] },
 ];

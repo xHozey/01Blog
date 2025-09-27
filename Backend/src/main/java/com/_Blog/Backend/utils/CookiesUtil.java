@@ -3,6 +3,8 @@ package com._Blog.Backend.utils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 
 public class CookiesUtil {
     public static String AuthToken(HttpServletRequest request) {
@@ -18,21 +20,27 @@ public class CookiesUtil {
     }
 
     public static void SetAuthToken(HttpServletResponse response, String authToken) {
-        Cookie cookie = new Cookie("auth_token", authToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(5 * 60);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("auth_token", authToken)
+            .httpOnly(true)
+            .secure(false)        // true in production
+            .path("/")
+            .sameSite("Lax")     // critical for cross-origin
+            .maxAge(5 * 60)       // 5 minutes
+            .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
+
     public static void SetRefreshToken(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refresh_token", refreshToken);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);
-        cookie.setPath("/");
-        cookie.setMaxAge(24 * 60 * 60);
-        response.addCookie(cookie);
+        ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
+                .httpOnly(true)
+                .secure(false)       // true in production
+                .path("/")
+                .sameSite("Lax")    // critical for cross-origin requests
+                .maxAge(24 * 60 * 60) // 1 day
+                .build();
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
+
 
 }

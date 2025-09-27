@@ -26,7 +26,7 @@ public class JwtUtil {
                 .stream()
                 .map(r -> "ROLE_"+r.getRole().name())
                 .toList();
-        long expirationMs = 5 * 60 * 1000;
+        long expirationMs = 30 * 1000;
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("roles", roles)
