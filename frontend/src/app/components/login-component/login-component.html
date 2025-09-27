@@ -1,1 +1,27 @@
-<p>login-component works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <div class="d-flex justify-content-center align-items-center vh-100">
+      <div class="card shadow-lg p-4" style="width: 28rem;">
+          <h3 class="text-center mb-4">Register</h3>
+
+          <!-- Username -->
+          <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingUsername" formControlName="username" placeholder="Username">
+              <label for="floatingUsername">Username or Email</label>
+          </div>
+
+          <!-- Password -->
+          <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password">
+              <label for="floatingPassword">Password</label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+
+          <!-- Link -->
+          <p class="text-center mt-3 mb-0">
+              Already registered? <a routerLink="/register">Register</a>
+          </p>
+      </div>
+  </div>
+</form>

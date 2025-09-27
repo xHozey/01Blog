@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { Auth } from '../../service/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [RouterLink],
+  imports: [RouterLink, ReactiveFormsModule],
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',
 })
 export class RegisterComponent {
   registerForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private auth: Auth) {
+  constructor(private fb: FormBuilder, private auth: Auth, private router: Router) {
     this.registerForm = this.fb.group({
-      fullName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       email: ['', [Validators.required, Validators.email, Validators.maxLength(200)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]],
       confirmPassword: ['', [Validators.required]],
@@ -27,19 +28,30 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.invalid) {
-      console.log('Form is invalid');
+      Object.keys(this.registerForm.controls).forEach((key) => {
+        const controlErrors = this.registerForm.get(key)?.errors;
+        if (controlErrors) {
+          console.log(`Validation errors in '${key}':`, controlErrors);
+        }
+      });
+
       return;
     }
-    
+
     const payload: registerRequest = {
-      Username: this.registerForm.value.Username,
-      Email: this.registerForm.value.Email,
-      Password: this.registerForm.value.Password,
+      username: this.registerForm.value.username,
+      email: this.registerForm.value.email,
+      password: this.registerForm.value.password,
     };
 
     this.auth.register(payload).subscribe({
-      next: (res) => {console.log(res)},
-      error: (err) => {console.log(err)},
+      next: (res) => {
+        console.log(res);
+        this.router.navigate(["/login"])
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }
