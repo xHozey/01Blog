@@ -30,9 +30,15 @@ export class AuthService {
     });
   }
 
+  logout(): Observable<void> {
+    return this.http.get<void>(`${this.apiUrl}/logout`, {
+      withCredentials: true,
+    });
+  }
+
   getCurrentUser(): Observable<userResponse | null> {
     return this.http
       .get<userResponse>(`${this.apiUrl}/users/me`, { withCredentials: true })
-      .pipe(catchError(() => of(null))); 
+      .pipe(catchError(() => of(null)));
   }
 }
