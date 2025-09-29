@@ -11,15 +11,14 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  // Skip refresh request
-  if (req.url.includes('/refresh')) {
+  if (req.url.includes('/refresh') || req.url.includes('/login') || req.url.includes('/register')) {
     return next(req);
   }
 
   const clonedReq = req.clone({ withCredentials: true });
   return next(clonedReq).pipe(
     catchError((error) => {
-      if (error.status === 403 || error.status === 401) {
+      if (error.status === 401) {
         if (!isRefreshing) {
           isRefreshing = true;
           refreshSubject.next(false);
@@ -33,11 +32,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             catchError((refreshError) => {
               isRefreshing = false;
               router.navigate(['/login']);
-              return throwError(() => refreshError);
+              console.log(error);
+              return throwError(() => {
+                refreshError;
+              });
             })
           );
         } else {
-          // Wait for the ongoing refresh to complete
           return refreshSubject.pipe(
             filter((refreshed) => refreshed === true),
             switchMap(() => next(req.clone({ withCredentials: true })))

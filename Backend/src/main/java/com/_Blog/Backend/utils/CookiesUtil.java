@@ -22,10 +22,10 @@ public class CookiesUtil {
     public static void SetAuthToken(HttpServletResponse response, String authToken) {
         ResponseCookie cookie = ResponseCookie.from("auth_token", authToken)
             .httpOnly(true)
-            .secure(false)        // true in production
+            .secure(true)        // true in production
             .path("/")
-            .sameSite("Lax")     // critical for cross-origin
-            .maxAge(5 * 60)       // 5 minutes
+            .sameSite("None")     // critical for cross-origin
+            .maxAge( 15)       // 5 minutes
             .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
@@ -34,9 +34,9 @@ public class CookiesUtil {
     public static void SetRefreshToken(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
-                .secure(false)       // true in production
+                .secure(true)       // true in production
                 .path("/")
-                .sameSite("Lax")    // critical for cross-origin requests
+                .sameSite("None")    // critical for cross-origin requests
                 .maxAge(24 * 60 * 60) // 1 day
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

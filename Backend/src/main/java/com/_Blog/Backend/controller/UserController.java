@@ -46,10 +46,11 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser(@CookieValue(name = "auth_token", required = false) String token) {
-        System.out.println(token + " fff");
+
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+
         return ResponseEntity.ok(userService.GetUser(token));
     }
 

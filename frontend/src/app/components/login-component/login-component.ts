@@ -36,6 +36,7 @@ export class LoginComponent {
 
     this.auth.login(payload).subscribe({
       next: (res) => {
+        console.log(res)
         this.route.navigate(['/']);
       },
       error: (err) => {

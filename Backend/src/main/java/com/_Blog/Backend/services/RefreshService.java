@@ -26,16 +26,24 @@ public class RefreshService {
     public String[] refreshToken(String refreshToken) {
         try {
             if (jwtUtil.isTokenExpired(refreshToken)) {
+                System.out.println("token expired or invalid: "+refreshToken);
                 throw new UnauthorizedException("refresh token expired");
             }
 
             User user = userRepository.findById(jwtUtil.extractId(refreshToken))
-                    .orElseThrow(() -> new UnauthorizedException("user not found"));
+                    .orElseThrow(() -> {
+                        System.out.println("user not found");
+                        return new UnauthorizedException("user not found");
+                    });
 
             Session session = sessionRepository.findByToken(refreshToken)
-                    .orElseThrow(() -> new UnauthorizedException("session not found"));
+                    .orElseThrow(() -> {
+                        System.out.println("session not found");
+                        return new UnauthorizedException("session not found");
+                    });
 
             if (session.getRevoked()) {
+                System.out.println("its already revoked");
                 throw new UnauthorizedException("session already revoked");
             }
 
@@ -54,8 +62,10 @@ public class RefreshService {
             return new String[]{newAuthToken, newRefreshToken};
 
         } catch (ExpiredJwtException e) {
+            System.out.println("1 token expired or invalid: "+refreshToken);
             throw new UnauthorizedException("refresh token expired");
         } catch (Exception e) {
+            System.out.println("error: "+e.getMessage());
             throw new UnauthorizedException("invalid refresh token");
         }
     }

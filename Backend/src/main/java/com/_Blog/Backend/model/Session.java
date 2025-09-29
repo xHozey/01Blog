@@ -8,7 +8,7 @@ public class Session {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
-    private Boolean revoked;
+    private Boolean revoked = false;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;

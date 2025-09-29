@@ -9,11 +9,7 @@ export const unauthenticatedGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   return auth.getCurrentUser().pipe(
-    tap(user => {
-      if (user) router.navigate(['/']);
-    }),
-    map(user => !user),
+    map((user) => (user ? true : router.createUrlTree(['/login']))),
     catchError(() => of(true))
   );
 };
-

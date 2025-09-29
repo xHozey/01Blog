@@ -2,9 +2,11 @@ package com._Blog.Backend.security.filter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import com._Blog.Backend.utils.CookiesUtil;
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +26,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private static final Set<String> PUBLIC_ENDPOINTS = Set.of(
+            "/api/v1/users/register",
+            "/api/v1/users/login",
+            "/api/v1/refresh",
+            "/api/v1/users/me"
+    );
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -34,22 +42,30 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getRequestURI();
+
+        if (PUBLIC_ENDPOINTS.contains(path)) {
+            chain.doFilter(request, response);
+            return;
+        }
+
         final String token = CookiesUtil.AuthToken(request);
 
         if (token == null) {
-            chain.doFilter(request, response);
-            return;
+            System.out.println(path);
+            throw new AuthenticationServiceException("No auth_token provided");
         }
 
-        if (jwtUtil.isTokenExpired(token)) {
-            chain.doFilter(request, response);
-            return;
-        }
+        try {
+            if (jwtUtil.isTokenExpired(token)) {
+                throw new AuthenticationServiceException("Token is expired");
+            }
 
-        String username = jwtUtil.extractUsername(token);
-        List<SimpleGrantedAuthority> authorities = jwtUtil.extractRoles(token);
-        Long userId = jwtUtil.extractId(token);
-        JwtUser user = new JwtUser(userId, username);
+            String username = jwtUtil.extractUsername(token);
+            List<SimpleGrantedAuthority> authorities = jwtUtil.extractRoles(token);
+            Long userId = jwtUtil.extractId(token);
+            JwtUser user = new JwtUser(userId, username);
 
         UsernamePasswordAuthenticationToken authentication
                 = new UsernamePasswordAuthenticationToken(
@@ -63,6 +79,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch(Exception e) {
+            throw new AuthenticationServiceException("Invalid token: " + e.getMessage());
+        }
         chain.doFilter(request, response);
     }
 }
