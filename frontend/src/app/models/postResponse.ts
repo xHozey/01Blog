@@ -5,4 +5,7 @@ interface postResponse {
   videoPath: string;
   imagePath: string;
   date: string;
+  likes: number;
+  liked: string;
+
 }

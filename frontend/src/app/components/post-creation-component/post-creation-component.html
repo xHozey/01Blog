@@ -1,15 +1,78 @@
-<div class="create-post-container">
-    @if (!expandForm) {
-    <input type="text" class="minimal-input" placeholder="What's on your mind?" (focus)="expandForm = true" readonly />
-    }
-    
-    @if (expandForm) {
-    <div class="expanded-form">
-        <textarea class="post-textarea" rows="4" placeholder="Write something..." autofocus></textarea>
+<div class="bg-white rounded-xl shadow-md border border-[#007EA7]/20 p-6 mb-6">
+  
+  <!-- Minimal Input -->
+  <div *ngIf="!expandForm"
+       (click)="expandForm = true"
+       class="w-full p-4 text-left text-[#6c757d] bg-[#F8F9FA] hover:bg-[#007EA7]/5 rounded-lg border border-[#007EA7]/20 cursor-pointer transition-colors">
+    What's on your mind?
+  </div>
 
-        <input type="file" class="file-input" accept="image/*,video/*" />
+  <!-- Expanded Form -->
+  <div *ngIf="expandForm" class="space-y-4">
 
-        <button class="btn submit-btn">Post</button>
+    <!-- Title Input -->
+    <input type="text"
+           placeholder="Post title (optional)"
+           [(ngModel)]="title"
+           class="w-full p-3 border border-[#007EA7]/20 rounded-lg focus:ring-2 focus:ring-[#007EA7] focus:border-transparent outline-none transition-colors" />
+
+    <!-- Content Textarea -->
+    <textarea rows="4"
+              placeholder="Write something..."
+              [(ngModel)]="content"
+              autofocus
+              class="w-full p-3 border border-[#007EA7]/20 rounded-lg focus:ring-2 focus:ring-[#007EA7] focus:border-transparent outline-none resize-none transition-colors"></textarea>
+
+    <!-- File Preview -->
+    <div *ngIf="previewUrl" class="relative">
+      <img *ngIf="selectedFile?.type.startsWith('image/')"
+           [src]="previewUrl"
+           alt="Preview"
+           class="w-full h-48 object-cover rounded-lg border border-[#007EA7]/20" />
+      <video *ngIf="selectedFile?.type.startsWith('video/')"
+             [src]="previewUrl"
+             controls
+             class="w-full h-48 rounded-lg border border-[#007EA7]/20"></video>
+
+      <button (click)="removeFile()"
+              class="absolute top-2 right-2 p-1 bg-[#FF6B6B] text-white rounded-full hover:bg-[#FF6B6B]/80 transition-colors">
+        ✕
+      </button>
     </div>
-    }
+
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-between">
+
+      <!-- File Upload Buttons -->
+      <div class="flex items-center space-x-2">
+        <button type="button"
+                (click)="fileInputRef.click()"
+                class="flex items-center space-x-2 px-3 py-2 text-[#007EA7] hover:bg-[#007EA7]/10 rounded-lg transition-colors">
+          📷 <span>Photo</span>
+        </button>
+        <button type="button"
+                (click)="fileInputRef.click()"
+                class="flex items-center space-x-2 px-3 py-2 text-[#007EA7] hover:bg-[#007EA7]/10 rounded-lg transition-colors">
+          🎥 <span>Video</span>
+        </button>
+        <input #fileInputRef type="file" accept="image/*,video/*" (change)="onFileSelect($event)" hidden />
+      </div>
+
+      <!-- Cancel & Submit -->
+      <div class="flex items-center space-x-2">
+        <button type="button"
+                (click)="handleCancel()"
+                class="px-4 py-2 text-[#6c757d] hover:text-[#003459] transition-colors">
+          Cancel
+        </button>
+        <button type="button"
+                [disabled]="!content.trim()"
+                (click)="handleSubmit()"
+                class="flex items-center space-x-2 px-4 py-2 bg-[#007EA7] text-white rounded-lg hover:bg-[#003459] disabled:bg-[#6c757d] disabled:cursor-not-allowed transition-colors">
+          ✈ <span>Post</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
 </div>

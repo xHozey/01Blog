@@ -3,5 +3,4 @@ interface postRequest {
   content: string;
   videoPath: string;
   imagePath: string;
-  date: string;
 }

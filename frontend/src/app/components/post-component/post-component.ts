@@ -10,6 +10,10 @@ import { Component, Input } from '@angular/core';
 export class PostComponent {
   @Input() post!: postResponse;
   showComments = false;
+  liked = this.post.liked;
+  toggleLike() {
+    // complete
+  }
 
   toggleComments() {
     this.showComments = !this.showComments;
