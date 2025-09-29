@@ -6,8 +6,8 @@ import { Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-login-component',
   imports: [ReactiveFormsModule, RouterLink],
-  templateUrl: './login-component.html',
-  styleUrl: './login-component.css',
+  templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -35,12 +35,9 @@ export class LoginComponent {
     };
 
     this.auth.login(payload).subscribe({
-      next: (res) => {
-        console.log(res)
-        this.route.navigate(['/']);
-      },
+      next: (res) => {},
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }

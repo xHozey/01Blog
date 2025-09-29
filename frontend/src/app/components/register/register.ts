@@ -7,10 +7,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-register',
   imports: [RouterLink, ReactiveFormsModule],
-  templateUrl: './register-component.html',
-  styleUrl: './register-component.css',
+  templateUrl: './register.html',
+  styleUrl: './register.css',
 })
-
 export class RegisterComponent {
   registerForm: FormGroup;
 
@@ -46,12 +45,9 @@ export class RegisterComponent {
     };
 
     this.auth.register(payload).subscribe({
-      next: (res) => {
-        console.log(res);
-        this.router.navigate(["/login"])
-      },
+      next: (res) => {},
       error: (err) => {
-        console.log(err);
+        console.error(err);
       },
     });
   }

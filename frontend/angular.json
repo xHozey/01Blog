@@ -25,14 +25,8 @@
               }
             ],
             "styles": [
-              "/home/hsalihee/01Blog/frontend/node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
