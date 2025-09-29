@@ -1,1 +1,20 @@
-<p>post-component works!</p>
+<div class="post-container">
+  <h3 class="post-title">{{ post.title }}</h3>
+  <p class="post-date">{{ post.date | date:'medium' }}</p>
+  <p class="post-content">{{ post.content }}</p>
+
+  <div class="post-media" *ngIf="post.imagePath || post.videoPath">
+    <img *ngIf="post.imagePath" [src]="post.imagePath" alt="Post Image" />
+    <video *ngIf="post.videoPath" controls>
+      <source [src]="post.videoPath" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <button class="btn comment-btn" (click)="toggleComments()">
+    {{ showComments ? 'Hide Comments' : 'Show Comments' }}
+  </button>
+
+  <div class="comments-section" *ngIf="showComments">
+    <p>No comments yet.</p>
+  </div>
+</div>

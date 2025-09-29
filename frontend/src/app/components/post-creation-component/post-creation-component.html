@@ -1,22 +1,15 @@
 <div class="create-post-container">
-  <input *ngIf="!expandForm"
-    type="text"
-    class="minimal-input"
-    placeholder="What's on your mind?"
-    (focus)="expandForm = true"
-    readonly
-  />
+    @if (!expandForm) {
+    <input type="text" class="minimal-input" placeholder="What's on your mind?" (focus)="expandForm = true" readonly />
+    }
+    
+    @if (expandForm) {
+    <div class="expanded-form">
+        <textarea class="post-textarea" rows="4" placeholder="Write something..." autofocus></textarea>
 
-  <div class="expanded-form" *ngIf="expandForm">
-    <textarea
-      class="post-textarea"
-      rows="4"
-      placeholder="Write something..."
-      autofocus
-    ></textarea>
+        <input type="file" class="file-input" accept="image/*,video/*" />
 
-    <input type="file" class="file-input" accept="image/*,video/*" />
-
-    <button class="btn submit-btn">Post</button>
-  </div>
+        <button class="btn submit-btn">Post</button>
+    </div>
+    }
 </div>

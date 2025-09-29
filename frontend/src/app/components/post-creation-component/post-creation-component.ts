@@ -1,8 +1,7 @@
 import { Component, ElementRef, HostListener } from '@angular/core';
-import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-post-creation-component',
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './post-creation-component.html',
   styleUrl: './post-creation-component.css',
 })
