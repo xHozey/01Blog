@@ -1,0 +1,63 @@
+/* Navbar container */
+.custom-navbar {
+  background-color: #003459; /* Navy */
+  padding: 1rem 2rem;
+}
+
+/* Navbar brand */
+.custom-navbar .navbar-brand {
+  color: #00A8E8; /* Aqua */
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.custom-navbar .navbar-brand:hover {
+  color: #FF6B6B; /* Accent coral */
+}
+
+/* Navbar links */
+.custom-navbar .nav-link {
+  color: #F8F9FA; /* Off-white */
+  font-weight: 500;
+  transition: color 0.3s;
+  text-decoration: none;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #FF6B6B; /* Accent coral */
+}
+
+/* Toggler icon */
+.custom-navbar .navbar-toggler {
+  border-color: #007EA7; /* Teal */
+}
+
+.custom-navbar .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,174,167,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+
+/* Sign Up button */
+.custom-btn {
+  background-color: #007EA7; /* Teal */
+  color: #F8F9FA; /* Off-white */
+  font-weight: bold;
+  border-radius: 4px;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.custom-btn:hover {
+  background-color: #00A8E8; /* Aqua */
+  transform: scale(1.05);
+}
+
+/* Responsive spacing */
+@media (max-width: 768px) {
+  .custom-navbar .nav-item {
+    margin-bottom: 0.5rem;
+  }
+}
