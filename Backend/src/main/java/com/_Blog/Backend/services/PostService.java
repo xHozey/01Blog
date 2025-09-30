@@ -1,8 +1,13 @@
 package com._Blog.Backend.services;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
-import com._Blog.Backend.model.User;
+import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.model.*;
+import com._Blog.Backend.repository.FollowRepository;
+import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -13,8 +18,6 @@ import org.springframework.stereotype.Service;
 import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
-import com._Blog.Backend.model.JwtUser;
-import com._Blog.Backend.model.Post;
 import com._Blog.Backend.repository.PostRepository;
 
 @Service
@@ -22,10 +25,15 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
+    private final PostEngagementRepository postEngagementRepository;
+
     @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.followRepository = followRepository;
+        this.postEngagementRepository = postEngagementRepository;
     }
 
     public Post addPost(Post post) {
@@ -35,9 +43,38 @@ public class PostService {
         return this.postRepository.save(post);
     }
 
-    public List<Post> getPosts(Long offset) {
-        return postRepository.findPostsByOffsetLimit(offset * 10);
+    public List<PostResponse> getPosts(Long offset) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<Long> followedUserIds = followRepository.findByFollowerId(jwtUser.getId())
+                .stream()
+                .map(follow -> follow.getFollowed().getId())
+                .toList();
+
+        List<Post> postsByFollowedUsers = postRepository.findPostsByUserIds(followedUserIds, offset * 10);
+
+        List<PostResponse> resultPosts = new ArrayList<>();
+        int remaining = 10;
+
+        remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
+
+        if (remaining > 0) {
+            List<Post> postsFromOthers = postRepository.findRandomPostsExcludingUsers(followedUserIds);
+            getRemaining(jwtUser, postsFromOthers, resultPosts, remaining);
+        }
+
+        return resultPosts;
     }
+
+    private int getRemaining(JwtUser jwtUser, List<Post> postsByFollowedUsers, List<PostResponse> resultPosts, int remaining) {
+        for (Post post : postsByFollowedUsers) {
+            if (remaining == 0) break;
+            resultPosts.add(new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
+            remaining--;
+        }
+        return remaining;
+    }
+
 
     public Post getPostById(Long id) {
         return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));

@@ -25,7 +25,7 @@ public class CookiesUtil {
             .secure(true)        // true in production
             .path("/")
             .sameSite("None")     // critical for cross-origin
-            .maxAge( 15)       // 5 minutes
+            .maxAge( 2*60*60)       // 5 minutes
             .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }

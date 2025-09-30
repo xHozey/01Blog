@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface PostEngagementRepository extends JpaRepository<PostEngagement, Long> {
     Optional<PostEngagement> findByPostIdAndUserId(Long postId, Long userId);
+    boolean existsByPostIdAndUserId(Long postId, Long userId);
+    Long countByPostId(Long postId);
 }

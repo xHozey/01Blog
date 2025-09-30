@@ -2,6 +2,7 @@ package com._Blog.Backend.controller;
 
 import java.util.List;
 
+import com._Blog.Backend.dto.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,8 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getPosts(@RequestParam(defaultValue = "0") Long page) {
-        return postService.getPosts(page);
+    public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Long page) {
+        return ResponseEntity.ok(postService.getPosts(page));
     }
 
     @GetMapping("/{id}")

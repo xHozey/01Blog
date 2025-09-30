@@ -36,12 +36,12 @@ public class Post {
     private User user;
     private Boolean isHide = false;
     @CreationTimestamp
-    private Timestamp date;
+    private Timestamp createTime;
 
     public Post() {
     }
 
-    public Post(Long id, String title, String content, String videoPath, String imagePath, User user, Boolean isHide, Timestamp date) {
+    public Post(Long id, String title, String content, String videoPath, String imagePath, User user, Boolean isHide, Timestamp createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -49,7 +49,7 @@ public class Post {
         this.imagePath = imagePath;
         this.user = user;
         this.isHide = isHide;
-        this.date = date;
+        this.createTime = createTime;
     }
 
     public Long getId() {
@@ -108,11 +108,11 @@ public class Post {
         this.isHide = isHide;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }
