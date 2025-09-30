@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
 import com._Blog.Backend.model.*;
 import com._Blog.Backend.repository.FollowRepository;
@@ -36,11 +37,17 @@ public class PostService {
         this.postEngagementRepository = postEngagementRepository;
     }
 
-    public Post addPost(Post post) {
+    public PostResponse addPost(PostRequest post) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        post.setUser(user);
-        return this.postRepository.save(post);
+        Post newPost = new Post();
+        newPost.setUser(user);
+        newPost.setTitle(post.getTitle());
+        newPost.setContent(post.getContent());
+        newPost.setVideoPath(post.getVideoPath());
+        newPost.setImagePath(post.getImagePath());
+        Post savedPost = this.postRepository.save(newPost);
+        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(), savedPost.getVideoPath(), savedPost.getImagePath(),savedPost.getCreateTime(), 0L, false );
     }
 
     public List<PostResponse> getPosts(Long offset) {
@@ -76,8 +83,10 @@ public class PostService {
     }
 
 
-    public Post getPostById(Long id) {
-        return postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
+    public PostResponse getPostById(Long id) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
+        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
     }
 
     public Post updatePost(Post post) {

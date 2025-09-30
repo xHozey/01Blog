@@ -1,7 +1,14 @@
 package com._Blog.Backend.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class PostRequest {
+    @NotBlank
+    @Size(max = 300)
     private String title;
+    @NotBlank
+    @Size(max = 3000)
     private String content;
     private String videoPath;
     private String imagePath;

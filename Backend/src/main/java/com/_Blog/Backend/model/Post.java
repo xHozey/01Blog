@@ -22,16 +22,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank
-    @Size(max = 300)
     private String title;
-    @NotBlank
-    @Size(max = 3000)
     private String content;
     private String videoPath;
     private String imagePath;
     @ManyToOne(fetch = FetchType.LAZY)
-
     @JoinColumn(name = "user_id")
     private User user;
     private Boolean isHide = false;

@@ -2,6 +2,7 @@ package com._Blog.Backend.controller;
 
 import java.util.List;
 
+import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,8 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<Post> createPost(@Valid @RequestBody Post post) {
-        Post savedPost = this.postService.addPost(post);
+    public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostRequest post) {
+        PostResponse savedPost = this.postService.addPost(post);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
 
@@ -46,8 +47,8 @@ public class PostController {
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id) {
-        return postService.getPostById(id);
+    public ResponseEntity<PostResponse> getPostById(@PathVariable Long id) {
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 
     @DeleteMapping("/{id}")
