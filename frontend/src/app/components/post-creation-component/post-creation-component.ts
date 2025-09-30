@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Image, LucideAngularModule, SendHorizontal, Video } from 'lucide-angular';
 @Component({
   selector: 'app-post-creation-component',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule, LucideAngularModule],
   templateUrl: './post-creation-component.html',
   styleUrl: './post-creation-component.css',
 })
 export class PostCreationComponent {
+  readonly ImageIcon = Image
+  readonly VideoIcon = Video
+  readonly SendIcon = SendHorizontal
   expandForm = false;
   title = '';
   content = '';

@@ -1,78 +1,69 @@
-<div class="bg-white rounded-xl shadow-md border border-[#007EA7]/20 p-6 mb-6">
-  
+<div class="card shadow-sm border border-info-subtle rounded-3 mb-4">
+
   <!-- Minimal Input -->
-  <div *ngIf="!expandForm"
-       (click)="expandForm = true"
-       class="w-full p-4 text-left text-[#6c757d] bg-[#F8F9FA] hover:bg-[#007EA7]/5 rounded-lg border border-[#007EA7]/20 cursor-pointer transition-colors">
+  @if (!expandForm) {
+  <div (click)="expandForm = true"
+    class="form-control bg-light text-muted border-info-subtle rounded-3 cursor-pointer py-3 px-3">
     What's on your mind?
   </div>
+  }
 
   <!-- Expanded Form -->
-  <div *ngIf="expandForm" class="space-y-4">
+  @if (expandForm) {
+  <div class="card-body">
 
     <!-- Title Input -->
-    <input type="text"
-           placeholder="Post title (optional)"
-           [(ngModel)]="title"
-           class="w-full p-3 border border-[#007EA7]/20 rounded-lg focus:ring-2 focus:ring-[#007EA7] focus:border-transparent outline-none transition-colors" />
+    <input type="text" class="form-control mb-3" placeholder="Post title (optional)" [(ngModel)]="title" />
 
     <!-- Content Textarea -->
-    <textarea rows="4"
-              placeholder="Write something..."
-              [(ngModel)]="content"
-              autofocus
-              class="w-full p-3 border border-[#007EA7]/20 rounded-lg focus:ring-2 focus:ring-[#007EA7] focus:border-transparent outline-none resize-none transition-colors"></textarea>
+    <textarea rows="4" class="form-control mb-3" placeholder="Write something..." [(ngModel)]="content" autofocus>
+      </textarea>
 
     <!-- File Preview -->
-    <div *ngIf="previewUrl" class="relative">
-      <img *ngIf="selectedFile?.type.startsWith('image/')"
-           [src]="previewUrl"
-           alt="Preview"
-           class="w-full h-48 object-cover rounded-lg border border-[#007EA7]/20" />
-      <video *ngIf="selectedFile?.type.startsWith('video/')"
-             [src]="previewUrl"
-             controls
-             class="w-full h-48 rounded-lg border border-[#007EA7]/20"></video>
+    @if (previewUrl) {
+    <div class="position-relative mb-3">
+      @if (selectedFile?.type?.startsWith('image/')) {
+      <img [src]="previewUrl" alt="Preview" class="img-fluid rounded border border-info-subtle" />
+      }
+      @if (selectedFile?.type?.startsWith('video/')) {
+      <video [src]="previewUrl" controls class="w-100 rounded border border-info-subtle"></video>
+      }
 
-      <button (click)="removeFile()"
-              class="absolute top-2 right-2 p-1 bg-[#FF6B6B] text-white rounded-full hover:bg-[#FF6B6B]/80 transition-colors">
+      <button (click)="removeFile()" type="button"
+        class="btn btn-sm btn-danger rounded-circle position-absolute top-0 end-0 m-2">
         ✕
       </button>
     </div>
+    }
 
     <!-- Action Buttons -->
-    <div class="flex items-center justify-between">
+    <div class="d-flex justify-content-between align-items-center">
 
       <!-- File Upload Buttons -->
-      <div class="flex items-center space-x-2">
-        <button type="button"
-                (click)="fileInputRef.click()"
-                class="flex items-center space-x-2 px-3 py-2 text-[#007EA7] hover:bg-[#007EA7]/10 rounded-lg transition-colors">
-          📷 <span>Photo</span>
+      <div class="btn-group">
+        <button type="button" class="btn btn-outline-info btn-sm" (click)="fileInputRef.click()">
+          <lucide-icon [img]="ImageIcon"></lucide-icon>
         </button>
-        <button type="button"
-                (click)="fileInputRef.click()"
-                class="flex items-center space-x-2 px-3 py-2 text-[#007EA7] hover:bg-[#007EA7]/10 rounded-lg transition-colors">
-          🎥 <span>Video</span>
+        <button type="button" class="btn btn-outline-info btn-sm" (click)="fileInputRef.click()">
+          <lucide-icon [img]="VideoIcon"></lucide-icon>
+
         </button>
         <input #fileInputRef type="file" accept="image/*,video/*" (change)="onFileSelect($event)" hidden />
       </div>
 
       <!-- Cancel & Submit -->
-      <div class="flex items-center space-x-2">
-        <button type="button"
-                (click)="handleCancel()"
-                class="px-4 py-2 text-[#6c757d] hover:text-[#003459] transition-colors">
+      <div class="btn-group">
+        <button type="button" class="btn btn-light btn-sm" (click)="handleCancel()">
           Cancel
         </button>
-        <button type="button"
-                [disabled]="!content.trim()"
-                (click)="handleSubmit()"
-                class="flex items-center space-x-2 px-4 py-2 bg-[#007EA7] text-white rounded-lg hover:bg-[#003459] disabled:bg-[#6c757d] disabled:cursor-not-allowed transition-colors">
-          ✈ <span>Post</span>
+        <button type="button" class="btn btn-info btn-sm text-white" [disabled]="!content.trim()"
+          (click)="handleSubmit()">
+          <lucide-icon [img]="SendIcon"></lucide-icon>
+
         </button>
       </div>
 
     </div>
   </div>
+  }
 </div>

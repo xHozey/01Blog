@@ -1,66 +1,78 @@
-<div class="bg-white rounded-xl shadow-md border border-[#007EA7]/20 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+<div class="card shadow-sm mb-4 border border-teal" style="border-color: #007EA7;">
   <!-- Post Header -->
-  <div class="p-6 pb-4">
-    <h3 class="text-[#003459] mb-2">{{ post.title }}</h3>
-    <p class="text-[#007EA7] text-sm mb-4">{{ post.date | date:'medium' }}</p>
-    <p class="text-[#003459] leading-relaxed">{{ post.content }}</p>
+  <div class="card-body pb-2">
+    <h5 class="card-title text-primary-emphasis mb-2" style="color: #003459;">
+      {{ post.title }}
+    </h5>
+    <h6 class="card-subtitle mb-3 text-muted" style="color: #007EA7;">
+      {{ post.date | date: 'medium' }}
+    </h6>
+    <p class="card-text" style="color: #003459;">
+      {{ post.content }}
+    </p>
   </div>
 
   <!-- Media Section -->
-  <div class="px-6 pb-4" *ngIf="post.imagePath || post.videoPath">
-    <img *ngIf="post.imagePath"
-         [src]="post.imagePath"
-         alt="Post Image"
-         class="w-full h-64 object-cover rounded-lg border border-[#007EA7]/20" />
-    <video *ngIf="post.videoPath" controls class="w-full h-64 rounded-lg border border-[#007EA7]/20">
+  @if (post.imagePath || post.videoPath) {
+  <div class="px-3 pb-3">
+    @if (post.imagePath) {
+    <img [src]="post.imagePath" alt="Post Image" class="img-fluid rounded mb-2 border"
+      style="max-height: 250px; object-fit: cover; border-color: #007EA7;" />
+    }
+    @if (post.videoPath) {
+    <video controls class="w-100 rounded border" style="max-height: 250px; border-color: #007EA7;">
       <source [src]="post.videoPath" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
+    }
   </div>
+  }
 
   <!-- Action Buttons -->
-  <div class="px-6 pb-4">
-    <div class="flex items-center space-x-4">
+  <div class="card-body pt-0">
+    <div class="d-flex gap-2">
       <!-- Like Button -->
-      <button (click)="toggleLike()"
-              class="flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors"
-              [ngClass]="liked
-                ? 'bg-[#FF6B6B] text-white'
-                : 'bg-[#F8F9FA] text-[#003459] hover:bg-[#007EA7] hover:text-white'">
-        <i class="fa fa-heart" [ngClass]="liked ? 'text-white' : ''"></i>
-        <span>{{ post.likes + (liked ? 1 : 0) }}</span>
+      <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1"
+        [ngClass]="liked ? 'btn-danger text-white' : 'btn-light text-dark'">
+        <lucide-icon [img]="HeartIcon"></lucide-icon>
+        <span>{{ post.likes }}</span>
       </button>
 
       <!-- Comments Button -->
-      <button (click)="toggleComments()"
-              class="flex items-center space-x-2 px-3 py-2 rounded-lg bg-[#F8F9FA] text-[#003459] hover:bg-[#00A8E8] hover:text-white transition-colors">
+      <button (click)="toggleComments()" class="btn btn-sm btn-light d-flex align-items-center gap-1"
+        style="color: #003459;" [ngClass]="{'btn-info text-white': showComments}">
         <i class="fa fa-comment"></i>
         <span>{{ showComments ? 'Hide Comments' : 'Show Comments' }}</span>
       </button>
 
-      <!-- Share Button -->
-      <button class="flex items-center space-x-2 px-3 py-2 rounded-lg bg-[#F8F9FA] text-[#003459] hover:bg-[#007EA7] hover:text-white transition-colors">
+      <!-- Share Button
+      <button class="btn btn-sm btn-light d-flex align-items-center gap-1"
+              style="color: #003459;"
+              (click)="sharePost()">
         <i class="fa fa-share"></i>
         <span>Share</span>
-      </button>
+      </button> -->
     </div>
   </div>
 
   <!-- Comments Section -->
-  <div *ngIf="showComments" class="border-t border-[#007EA7]/20 bg-[#F8F9FA]/50 px-6 py-4">
-    <!-- <div *ngIf="post.comments.length > 0; else noComments">
-      <div class="space-y-3" *ngFor="let comment of post.comments">
-        <div class="bg-white p-3 rounded-lg border border-[#007EA7]/10">
-          <div class="flex justify-between items-start mb-2">
-            <span class="text-[#007EA7] text-sm">{{ comment.author }}</span>
-            <span class="text-[#6c757d] text-xs">{{ comment.date | date:'short' }}</span>
-          </div>
-          <p class="text-[#003459] text-sm">{{ comment.content }}</p>
+  <!-- @if (showComments) {
+    <div class="card-footer bg-light border-top" style="border-color: #007EA7;">
+      @if (post.comments?.length > 0) {
+        <div class="list-group list-group-flush">
+          @for (comment of post.comments; track comment.id) {
+            <div class="list-group-item">
+              <div class="d-flex justify-content-between small mb-1">
+                <span class="fw-bold" style="color: #007EA7;">{{ comment.author }}</span>
+                <span class="text-muted">{{ comment.date | date:'short' }}</span>
+              </div>
+              <p class="mb-0" style="color: #003459;">{{ comment.content }}</p>
+            </div>
+          }
         </div>
-      </div>
-    </div> -->
-    <ng-template #noComments>
-      <p class="text-[#6c757d] text-center py-4">No comments yet. Be the first to comment!</p>
-    </ng-template>
-  </div>
+      } @else {
+        <p class="text-muted text-center my-3">No comments yet. Be the first to comment!</p>
+      }
+    </div>
+  } -->
 </div>

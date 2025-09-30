@@ -6,6 +6,5 @@ interface postResponse {
   imagePath: string;
   date: string;
   likes: number;
-  liked: string;
-
+  liked: boolean;
 }

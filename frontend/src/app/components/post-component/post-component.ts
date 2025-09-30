@@ -1,18 +1,33 @@
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-
+import { Heart, LucideAngularModule } from "lucide-angular"; // <-- import this
 @Component({
   selector: 'app-post-component',
-  imports: [CommonModule],
+  standalone: true,
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './post-component.html',
-  styleUrl: './post-component.css',
+  styleUrls: ['./post-component.css'],
 })
-export class PostComponent {
+export class PostComponent implements OnInit {
   @Input() post!: postResponse;
+  readonly HeartIcon = Heart
   showComments = false;
-  liked = this.post.liked;
+  liked = false; // initialize safely
+
+  ngOnInit() {
+    if (this.post) {
+      this.liked = !!this.post.liked; // set after @Input is ready
+    }
+  }
+
   toggleLike() {
-    // complete
+    this.liked = !this.liked;
+    // Optionally, update post.likes
+    if (this.liked) {
+      this.post.likes++;
+    } else {
+      this.post.likes--;
+    }
   }
 
   toggleComments() {
