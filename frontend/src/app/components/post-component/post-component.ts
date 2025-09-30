@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Heart, LucideAngularModule } from "lucide-angular"; // <-- import this
+import { Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
+import { EngagementService } from '../../service/engagement-service';
 @Component({
   selector: 'app-post-component',
   standalone: true,
@@ -10,10 +11,10 @@ import { Heart, LucideAngularModule } from "lucide-angular"; // <-- import this
 })
 export class PostComponent implements OnInit {
   @Input() post!: postResponse;
-  readonly HeartIcon = Heart
+  readonly HeartIcon = Heart;
   showComments = false;
   liked = false; // initialize safely
-
+  constructor(private engagementService: EngagementService) {}
   ngOnInit() {
     if (this.post) {
       this.liked = !!this.post.isLiked; // set after @Input is ready

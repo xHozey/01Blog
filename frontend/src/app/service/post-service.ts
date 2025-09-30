@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 export class PostService {
   private apiUrl = 'http://localhost:8080/api/v1/posts';
   constructor(private http: HttpClient) {}
+  
   getPosts(page: number): Observable<postResponse[]> {
     return this.http.get<postResponse[]>(`${this.apiUrl}?page=${page}`, {
       withCredentials: true,

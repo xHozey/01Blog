@@ -60,8 +60,8 @@ public class PostService {
         List<Post> postsByFollowedUsers = postRepository.findPostsByUserIds(followedUserIds, offset * 10);
 
         List<PostResponse> resultPosts = new ArrayList<>();
+        int remaining = 10;
         if (!followedUserIds.isEmpty()) {
-            int remaining = 10;
 
             remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
             System.out.println(remaining);
@@ -72,7 +72,8 @@ public class PostService {
                 System.out.println(postsFromOthers);
             }
         } else {
-                            
+            List<Post> posts = this.postRepository.findNewestPosts(offset * 10);
+            getRemaining(jwtUser, posts, resultPosts, remaining);
         }
         return resultPosts;
     }

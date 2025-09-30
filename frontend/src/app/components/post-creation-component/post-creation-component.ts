@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Image, LucideAngularModule, SendHorizontal, Video } from 'lucide-angular';
 import { PostService } from '../../service/post-service';
@@ -10,6 +10,7 @@ import { PostService } from '../../service/post-service';
   styleUrl: './post-creation-component.css',
 })
 export class PostCreationComponent {
+  @Output() postCreated = new EventEmitter<postResponse>();
   readonly ImageIcon = Image;
   readonly VideoIcon = Video;
   readonly SendIcon = SendHorizontal;
@@ -58,7 +59,7 @@ export class PostCreationComponent {
     console.log('Submitting post:', payload);
     this.postService.addPost(payload).subscribe({
       next: (data) => {
-        console.log(data);
+        this.postCreated.emit(data)
       },
       error: (err) => {
         console.error(err);
