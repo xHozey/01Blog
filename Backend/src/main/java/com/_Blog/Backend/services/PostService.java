@@ -60,15 +60,20 @@ public class PostService {
         List<Post> postsByFollowedUsers = postRepository.findPostsByUserIds(followedUserIds, offset * 10);
 
         List<PostResponse> resultPosts = new ArrayList<>();
-        int remaining = 10;
+        if (!followedUserIds.isEmpty()) {
+            int remaining = 10;
 
-        remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
+            remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
+            System.out.println(remaining);
 
-        if (remaining > 0) {
-            List<Post> postsFromOthers = postRepository.findRandomPostsExcludingUsers(followedUserIds);
-            getRemaining(jwtUser, postsFromOthers, resultPosts, remaining);
+            if (remaining > 0) {
+                List<Post> postsFromOthers = postRepository.findRandomPostsExcludingUsers(followedUserIds);
+                getRemaining(jwtUser, postsFromOthers, resultPosts, remaining);
+                System.out.println(postsFromOthers);
+            }
+        } else {
+                            
         }
-
         return resultPosts;
     }
 

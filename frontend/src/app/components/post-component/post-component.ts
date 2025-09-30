@@ -16,7 +16,7 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     if (this.post) {
-      this.liked = !!this.post.liked; // set after @Input is ready
+      this.liked = !!this.post.isLiked; // set after @Input is ready
     }
   }
 

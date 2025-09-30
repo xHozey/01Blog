@@ -23,4 +23,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             nativeQuery = true)
     List<Post> findRandomPostsExcludingUsers(@Param("userIds") List<Long> userIds);
 
+    @Query(value = "SELECT * FROM post WHERE is_hide = false ORDER BY create_time DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
+    List<Post> findNewestPosts(@Param("offset") Long offset);
 }

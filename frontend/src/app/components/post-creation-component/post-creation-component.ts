@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Image, LucideAngularModule, SendHorizontal, Video } from 'lucide-angular';
+import { PostService } from '../../service/post-service';
 @Component({
   selector: 'app-post-creation-component',
   imports: [CommonModule, FormsModule, LucideAngularModule],
@@ -9,15 +10,16 @@ import { Image, LucideAngularModule, SendHorizontal, Video } from 'lucide-angula
   styleUrl: './post-creation-component.css',
 })
 export class PostCreationComponent {
-  readonly ImageIcon = Image
-  readonly VideoIcon = Video
-  readonly SendIcon = SendHorizontal
+  readonly ImageIcon = Image;
+  readonly VideoIcon = Video;
+  readonly SendIcon = SendHorizontal;
   expandForm = false;
   title = '';
   content = '';
   previewUrl: string | null = null;
   selectedFile: File | null = null;
 
+  constructor(private postService: PostService) {}
   // ----------------------
   // File selection
   // ----------------------
@@ -46,17 +48,22 @@ export class PostCreationComponent {
   handleSubmit() {
     if (!this.content.trim()) return;
 
-    const newPost: postRequest = {
+    const payload: postRequest = {
       title: this.title,
       content: this.content,
       imagePath: this.selectedFile?.type.startsWith('image/') ? this.previewUrl || '' : '',
       videoPath: this.selectedFile?.type.startsWith('video/') ? this.previewUrl || '' : '',
     };
 
-    console.log('Submitting post:', newPost);
-    // TODO: send to API or add to local posts array
-
-    // Reset form
+    console.log('Submitting post:', payload);
+    this.postService.addPost(payload).subscribe({
+      next: (data) => {
+        console.log(data);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
     this.handleCancel();
   }
 
