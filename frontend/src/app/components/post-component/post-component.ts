@@ -13,22 +13,32 @@ export class PostComponent implements OnInit {
   @Input() post!: postResponse;
   readonly HeartIcon = Heart;
   showComments = false;
-  liked = false; // initialize safely
+  liked = false;
+
   constructor(private engagementService: EngagementService) {}
+
   ngOnInit() {
     if (this.post) {
-      this.liked = !!this.post.isLiked; // set after @Input is ready
+      console.log(this.post)
+      this.liked = this.post.isLiked;
     }
   }
 
   toggleLike() {
-    this.liked = !this.liked;
-    // Optionally, update post.likes
-    if (this.liked) {
-      this.post.likes++;
-    } else {
-      this.post.likes--;
-    }
+    this.engagementService.likePost(this.post.id).subscribe({
+      next: (res) => {
+        this.liked = !this.liked;
+        if (this.liked) {
+          this.post.likes++;
+        } else {
+          this.post.likes--;
+        }
+        console.log(res);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   toggleComments() {

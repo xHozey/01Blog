@@ -91,11 +91,11 @@ public class PostResponse {
         this.likes = likes;
     }
 
-    public Boolean getLiked() {
+    public Boolean getIsLiked() {
         return isLiked;
     }
 
-    public void setLiked(Boolean liked) {
+    public void setIsLiked(Boolean liked) {
         isLiked = liked;
     }
 }
