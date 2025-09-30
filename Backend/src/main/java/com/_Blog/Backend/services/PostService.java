@@ -1,7 +1,6 @@
 package com._Blog.Backend.services;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import com._Blog.Backend.dto.PostRequest;
@@ -86,7 +85,7 @@ public class PostService {
     public PostResponse getPostById(Long id) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
-        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
+        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
     }
 
     public Post updatePost(Post post) {
