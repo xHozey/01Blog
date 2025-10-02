@@ -75,7 +75,6 @@ public class PostController {
         } catch (NumberFormatException e) {
             throw new BadRequestException("Invalid post ID");
         }
-        System.out.println(file);
         String fileUrl = file != null ? cloudinaryService.uploadFile(file, "posts/") : null;
         PostRequest postRequest = new PostRequest(title, content, fileUrl);
 

@@ -52,7 +52,6 @@ export class PostSectionComponent implements OnInit {
   }
 
   saveReport() {
-    
     if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
     const payload: reportRequest = {
       postId: this.selectedReportPostId,
@@ -60,7 +59,15 @@ export class PostSectionComponent implements OnInit {
     };
 
     console.log(payload);
-    this.resetReportForm();
+    this.postService.reportPost(payload).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.resetReportForm();
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   resetReportForm() {

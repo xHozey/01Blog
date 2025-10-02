@@ -6,25 +6,14 @@ import jakarta.validation.constraints.Size;
 
 public class ReportRequest {
     @NotNull
-    private Long reporterId;
-    @NotNull
     private Long postId;
     @NotBlank
     @Size(min = 1, max = 250)
     private String description;
 
-    public ReportRequest(Long reporterId, Long postId, String description) {
-        this.reporterId = reporterId;
+    public ReportRequest(Long postId, String description) {
         this.postId = postId;
         this.description = description;
-    }
-
-    public Long getReporterId() {
-        return reporterId;
-    }
-
-    public void setReporterId(Long reporterId) {
-        this.reporterId = reporterId;
     }
 
     public Long getPostId() {

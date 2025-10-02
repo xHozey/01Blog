@@ -32,4 +32,11 @@ export class PostService {
   updatePost(formData: FormData): Observable<postResponse> {
     return this.http.put<postResponse>(`${this.apiUrl}`, formData, { withCredentials: true });
   }
+
+  reportPost(payload: reportRequest): Observable<string> {
+    return this.http.post(`${this.apiUrl}/report`, payload, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }
