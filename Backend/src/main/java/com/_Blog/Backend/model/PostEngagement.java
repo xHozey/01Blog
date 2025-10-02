@@ -25,7 +25,7 @@ public class PostEngagement {
             name = "user_id",
             foreignKey = @ForeignKey(
                     name = "fk_post_engagement_user",
-                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE"
+                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
             )
     )
     private User user;
