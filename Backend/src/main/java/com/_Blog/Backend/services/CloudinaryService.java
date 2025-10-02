@@ -16,12 +16,8 @@ public class CloudinaryService {
         this.cloudinary = cloudinary;
     }
 
-    public String uploadFile(MultipartFile file, String folder) throws IOException {
-        System.out.println("Original filename: " + file.getOriginalFilename());
-        System.out.println("Content type: " + file.getContentType());
-        System.out.println("Size: " + file.getSize());
+    public String uploadFile(MultipartFile file, String folder) {
         try {
-
         Map<?, ?> uploadResult = cloudinary.uploader().upload(
                 file.getBytes(),
                 ObjectUtils.asMap(

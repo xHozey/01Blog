@@ -1,0 +1,43 @@
+package com._Blog.Backend.controller;
+
+import com._Blog.Backend.dto.LoginRequest;
+import com._Blog.Backend.dto.RegisterRequest;
+import com._Blog.Backend.services.AuthService;
+import com._Blog.Backend.services.UserService;
+import com._Blog.Backend.utils.CookiesUtil;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/v1/auth")
+public class AuthController {
+    private final AuthService authService;
+
+    @Autowired
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest user) {
+        this.authService.register(user);
+        return ResponseEntity.ok("user registered");
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest user, HttpServletResponse response) {
+
+        String[] tokens = authService.login(user);
+
+        CookiesUtil.SetAuthToken(response, tokens[0]);
+        CookiesUtil.SetRefreshToken(response, tokens[1]);
+
+        return ResponseEntity.ok("Logged in successfully, cookie set!");
+    }
+}

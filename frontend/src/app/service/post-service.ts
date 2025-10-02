@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { API_URL, API_VERSION } from '../../config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  private apiUrl = 'http://localhost:8080/api/v1/posts';
+  private apiUrl = `${API_URL}${API_VERSION}/posts`;
   constructor(private http: HttpClient) {}
 
   getPosts(page: number): Observable<postResponse[]> {
