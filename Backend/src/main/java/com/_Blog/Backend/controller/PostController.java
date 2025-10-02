@@ -5,6 +5,7 @@ import java.util.List;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.services.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,4 +82,11 @@ public class PostController {
         PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
+
+    @PostMapping("/report")
+    public ResponseEntity<String> reportPost(@Valid @RequestBody ReportRequest reportRequest) {
+        this.postService.reportPost(reportRequest);
+        return ResponseEntity.status(HttpStatus.OK).body("Post reported successfully");
+    }
+
 }

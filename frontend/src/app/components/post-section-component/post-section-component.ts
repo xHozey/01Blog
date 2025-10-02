@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post-component/post-component';
 import { PostService } from '../../service/post-service';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../service/user-service';
 
 @Component({
   selector: 'app-post-section',
@@ -13,18 +14,21 @@ import { FormsModule } from '@angular/forms';
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
 
+  //Post update form
   selectedPostId?: number;
   showUpdateModal = false;
-
   updateForm = { title: '', content: '' };
-
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   dragOver = false;
 
+  //Post report form
+  selectedReportPostId?: number;
+  showReportModal = false;
+  reportDescription: string = '';
+
   constructor(private postService: PostService) {}
 
-  // Open modal for updating a post
   onUpdatePost(postId: number) {
     this.selectedPostId = postId;
     const post = this.posts.find((p) => p.id === postId);
@@ -32,6 +36,37 @@ export class PostSectionComponent implements OnInit {
     this.updateForm.title = post.title;
     this.updateForm.content = post.content;
     this.showUpdateModal = true;
+  }
+
+  onDeletePost(postId: number) {
+    this.postService.deletePost(postId).subscribe({
+      next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
+      error: (err) => console.error(err),
+    });
+  }
+
+  onReportPost(postId: number) {
+    this.showReportModal = true;
+    this.selectedReportPostId = postId;
+    this.reportDescription = '';
+  }
+
+  saveReport() {
+    
+    if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
+    const payload: reportRequest = {
+      postId: this.selectedReportPostId,
+      description: this.reportDescription,
+    };
+
+    console.log(payload);
+    this.resetReportForm();
+  }
+
+  resetReportForm() {
+    this.showReportModal = false;
+    this.selectedReportPostId = undefined;
+    this.reportDescription = '';
   }
 
   onFileSelect(event: Event) {
@@ -87,7 +122,7 @@ export class PostSectionComponent implements OnInit {
     formData.append('content', this.updateForm.content);
 
     if (this.selectedFile) {
-      formData.append('file', this.selectedFile); // backend expects 'filePath'
+      formData.append('file', this.selectedFile);
     }
 
     this.postService.updatePost(formData).subscribe({
@@ -105,13 +140,6 @@ export class PostSectionComponent implements OnInit {
     this.selectedPostId = undefined;
     this.updateForm = { title: '', content: '' };
     this.removeFile(fileInput);
-  }
-
-  onDeletePost(postId: number) {
-    this.postService.deletePost(postId).subscribe({
-      next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
-      error: (err) => console.error(err),
-    });
   }
 
   ngOnInit() {

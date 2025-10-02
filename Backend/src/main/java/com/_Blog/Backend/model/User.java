@@ -66,7 +66,7 @@ public class User implements UserDetails {
     private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Report> reports = new HashSet<>();
+    private Set<ReportPost> reportPosts = new HashSet<>();
 
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Notification> receivedNotifications = new HashSet<>();

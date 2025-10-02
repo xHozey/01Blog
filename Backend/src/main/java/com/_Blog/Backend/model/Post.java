@@ -36,7 +36,7 @@ public class Post {
     private Set<Comment> comments = new HashSet<>();
 
     @OneToMany(mappedBy = "reportedPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Report> reports = new HashSet<>();
+    private Set<ReportPost> reportPosts = new HashSet<>();
 
     public Post() {}
 

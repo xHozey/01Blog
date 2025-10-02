@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "report")
-public class Report {
+public class ReportPost {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,9 +34,9 @@ public class Report {
     @CreationTimestamp
     private Timestamp date;
 
-    public Report() {}
+    public ReportPost() {}
 
-    public Report(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
+    public ReportPost(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
         this.id = id;
         this.reporter = reporter;
         this.reportedPost = reportedPost;

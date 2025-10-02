@@ -5,10 +5,9 @@ import java.util.List;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.model.*;
-import com._Blog.Backend.repository.FollowRepository;
-import com._Blog.Backend.repository.PostEngagementRepository;
-import com._Blog.Backend.repository.UserRepository;
+import com._Blog.Backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
-import com._Blog.Backend.repository.PostRepository;
 
 @Service
 public class PostService {
@@ -26,13 +24,14 @@ public class PostService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final PostEngagementRepository postEngagementRepository;
-
+    private final ReportPostRepository reportPostRepository;
     @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
         this.postEngagementRepository = postEngagementRepository;
+        this.reportPostRepository = reportPostRepository;
     }
 
     public PostResponse addPost(PostRequest post) {
@@ -121,5 +120,16 @@ public class PostService {
         }
 
         postRepository.delete(post);
+    }
+
+    public void reportPost(ReportRequest reportRequest) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Post post = this.postRepository.findById(reportRequest.getPostId()).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", reportRequest.getPostId())));
+        ReportPost reportPost = new ReportPost();
+        reportPost.setReported(post);
+        User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", jwtUser.getId())));
+        reportPost.setReporter(user);
+        reportPost.setDescription(reportRequest.getDescription());
+        this.reportPostRepository.save(reportPost);
     }
 }
