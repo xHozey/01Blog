@@ -49,22 +49,29 @@ export class PostCreationComponent {
   handleSubmit() {
     if (!this.content.trim()) return;
 
-    const payload: postRequest = {
-      title: this.title,
-      content: this.content,
-      imagePath: this.selectedFile?.type.startsWith('image/') ? this.previewUrl || '' : '',
-      videoPath: this.selectedFile?.type.startsWith('video/') ? this.previewUrl || '' : '',
-    };
+    const formData = new FormData();
+    formData.append('title', this.title);
+    formData.append('content', this.content);
 
-    console.log('Submitting post:', payload);
-    this.postService.addPost(payload).subscribe({
+    if (this.selectedFile) {
+      if (this.selectedFile.type.startsWith('image/')) {
+        formData.append('image', this.selectedFile);
+      } else if (this.selectedFile.type.startsWith('video/')) {
+        formData.append('video', this.selectedFile);
+      }
+    }
+
+    console.log('Submitting post with FormData', formData);
+
+    this.postService.addPost(formData).subscribe({
       next: (data) => {
-        this.postCreated.emit(data)
+        this.postCreated.emit(data);
       },
       error: (err) => {
         console.error(err);
       },
     });
+
     this.handleCancel();
   }
 
