@@ -1,6 +1,4 @@
-<app-post-creation-component (postCreated)="addPost($event)" />
 <div class="container my-5">
-
   <!-- Section Header -->
   <div class="text-center mb-4">
     <h2 class="text-info mb-2">Posts</h2>
@@ -11,7 +9,8 @@
   <div class="d-flex flex-column gap-4">
     @if (posts.length > 0) {
     @for (post of posts; track post.id) {
-    <app-post-component [post]="post"></app-post-component>
+    <app-post-component [post]="post" (delete)="onDeletePost($event)" (hide)="onHidePost($event)"
+      (report)="onReportPost($event)" (update)="onUpdatePost($event)"></app-post-component>
     }
     } @else {
     <!-- Empty State -->
@@ -27,5 +26,28 @@
     </div>
     }
   </div>
+  @if (showUpdateModal) {
+  <div class="modal d-block" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Post</h5>
+          <button type="button" class="btn-close" (click)="showUpdateModal = false"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" [(ngModel)]="updateForm.title" class="form-control mb-2" placeholder="Title" />
+          <textarea [(ngModel)]="updateForm.content" class="form-control mb-2" placeholder="Content"></textarea>
+          <input type="file" (change)="onFileChange($event, 'image')" class="form-control mb-2" accept="image/*" />
+          <input type="file" (change)="onFileChange($event, 'video')" class="form-control mb-2" accept="video/*" />
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="showUpdateModal = false">Cancel</button>
+          <button class="btn btn-primary" (click)="saveUpdate()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+
 
 </div>

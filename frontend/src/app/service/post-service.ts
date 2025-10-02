@@ -21,4 +21,15 @@ export class PostService {
       withCredentials: true,
     });
   }
+
+  deletePost(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
+
+  updatePost(formData: FormData): Observable<postResponse> {
+    return this.http.put<postResponse>(`${this.apiUrl}`, formData, { withCredentials: true });
+  }
 }

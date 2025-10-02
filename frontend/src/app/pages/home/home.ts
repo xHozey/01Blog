@@ -14,7 +14,7 @@ export class Home implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.fetchCurrentUser;
+    this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));
   }
 }

@@ -1,11 +1,22 @@
 import { Component } from '@angular/core';
+import { Router, NavigationEnd, RouterLink } from '@angular/router';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar-component',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './navbar-component.html',
-  styleUrl: './navbar-component.css'
+  styleUrls: ['./navbar-component.css'], 
 })
 export class NavbarComponent {
+  isCreatePostPage = false; 
 
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.isCreatePostPage = event.urlAfterRedirects.includes('/create-post');
+      });
+  }
 }

@@ -1,13 +1,19 @@
 <nav class="navbar navbar-expand-lg custom-navbar">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">01Blog</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        
+        @if (!isCreatePostPage) {
+        <li class="nav-item">
+          <a class="nav-link btn px-3" [routerLink]="['/create-post']" routerLinkActive="active">
+            <i class="fa fa-plus me-1"></i>Create Post
+          </a>
+        </li>
+        }
       </ul>
     </div>
   </div>

@@ -24,8 +24,8 @@ public class Report {
     @JoinColumn(name = "reporter_id")
     private User reporter;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reported_id")
-    private User reported;
+    @JoinColumn(name = "post_id")
+    private Post reportedPost;
     private String description;
     @CreationTimestamp
     private Timestamp date;
@@ -33,10 +33,10 @@ public class Report {
     public Report() {
     }
 
-    public Report(Long id, User reporter, User reported, String description, Timestamp date) {
+    public Report(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
         this.id = id;
         this.reporter = reporter;
-        this.reported = reported;
+        this.reportedPost = reportedPost;
         this.description = description;
         this.date = date;
     }
@@ -57,12 +57,12 @@ public class Report {
         this.reporter = reporter;
     }
 
-    public User getReported() {
-        return reported;
+    public Post getReported() {
+        return reportedPost;
     }
 
-    public void setReported(User reported) {
-        this.reported = reported;
+    public void setReported(Post reportedPost) {
+        this.reportedPost = reportedPost;
     }
 
     public String getDescription() {

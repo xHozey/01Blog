@@ -1,15 +1,74 @@
-<div class="card shadow-sm mb-4 border border-teal" style="border-color: #007EA7;">
+<div class="card shadow-sm mb-4 border border-teal" style="border-color: #007EA7; position: relative;">
   <!-- Post Header -->
   <div class="card-body pb-2">
-    <div class="d-flex align-items-center mb-2">
-      <!-- Author Name -->
-      <span class="fw-bold me-2" style="color: #007EA7;">
-        {{ post.author }}
-      </span>
-      <!-- Timestamp -->
-      <small class="text-muted">
-        {{ post.createTime | date: 'medium' }}
-      </small>
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <!-- Author and Timestamp -->
+      <div class="d-flex align-items-center flex-grow-1">
+        <!-- Author Name -->
+        <span class="fw-bold me-2" style="color: #007EA7;">
+          {{ post.author }}
+        </span>
+        <!-- Timestamp -->
+        <small class="text-muted">
+          {{ post.createTime | date: 'medium' }}
+        </small>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <div class="dropdown">
+        <button class="btn btn-sm p-1 text-muted rounded" type="button" id="postOptionsBtn" data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style="border: none; background: none; transition: background-color 0.2s ease; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+          <i class="fa fa-ellipsis-v" style="font-size: 16px; color: #5b6570;"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="postOptionsBtn"
+          style="border: 1px solid #e1e8ed; border-radius: 4px; padding: 4px 0; min-width: 160px; font-size: 14px; z-index: 1050; background-color: #fff;">
+
+          @if (user?.id === post.authorId) {
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="update.emit(post.id)"
+              style="color: #1a1a1b; border-radius: 0;">
+              <i class="fa fa-edit me-2" style="color: #818384;"></i>Update
+            </button>
+          </li>
+          <li>
+            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
+          </li>
+          }
+          @if (user?.id === post.authorId || user?.roles?.includes("ADMIN")) {
+          <li>
+            <button class="dropdown-item px-3 py-2 text-danger" (click)="delete.emit(post.id)"
+              style="color: #ea0027; border-radius: 0;">
+              <i class="fa fa-trash me-2" style="color: #ea0027;"></i>Delete
+            </button>
+          </li>
+          }
+
+          @if (user?.roles?.includes('ADMIN')) {
+          @if (!(user?.id === post.authorId)) {
+          <li>
+            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
+          </li>
+          }
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="hide.emit(post.id)" style="color: #1a1a1b; border-radius: 0;">
+              <i class="fa fa-eye-slash me-2" style="color: #818384;"></i>Hide
+            </button>
+          </li>
+          }
+
+          <li>
+            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
+          </li>
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="report.emit(post.id)"
+              style="color: #1a1a1b; border-radius: 0;">
+              <i class="fa fa-flag me-2" style="color: #818384;"></i>Report
+            </button>
+          </li>
+
+        </ul>
+      </div>
     </div>
 
     <!-- Post Title -->
@@ -22,8 +81,6 @@
       {{ post.content }}
     </p>
   </div>
-
-
 
   <!-- Media Section -->
   @if (post.imagePath || post.videoPath) {
@@ -42,34 +99,28 @@
   }
 
   <!-- Action Buttons -->
-  <div class="card-body pt-0">
+  <div class="card-body pt-0 px-3 pb-3">
     <div class="d-flex gap-2">
       <!-- Like Button -->
-      <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1"
-        [ngClass]="liked ? 'btn-danger text-white' : 'btn-light text-dark'">
-        <lucide-icon [img]="HeartIcon"></lucide-icon>
-        <span>{{ post.likes }}</span>
+      <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1 px-3 py-1 border rounded-pill"
+        [ngClass]="liked ? 'btn-danger text-white' : 'btn-outline-secondary text-dark'">
+        <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
+        <span class="small">{{ post.likes }}</span>
       </button>
 
       <!-- Comments Button -->
-      <button (click)="toggleComments()" class="btn btn-sm btn-light d-flex align-items-center gap-1"
-        style="color: #003459;" [ngClass]="{'btn-info text-white': showComments}">
-        <i class="fa fa-comment"></i>
-        <span>{{ showComments ? 'Hide Comments' : 'Show Comments' }}</span>
+      <button (click)="toggleComments()"
+        class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 px-3 py-1 rounded-pill"
+        style="color: #003459; border-color: #e1e8ed;" [ngClass]="{'btn-info text-white': showComments}">
+        <i class="fa fa-comment" style="font-size: 14px;"></i>
+        <span class="small">{{ showComments ? 'Hide Comments' : 'Show Comments' }}</span>
       </button>
-
-      <!-- Share Button
-      <button class="btn btn-sm btn-light d-flex align-items-center gap-1"
-              style="color: #003459;"
-              (click)="sharePost()">
-        <i class="fa fa-share"></i>
-        <span>Share</span>
-      </button> -->
     </div>
   </div>
 
-  <!-- Comments Section -->
-  <!-- @if (showComments) {
+  <!-- Comments Section (uncomment if needed) -->
+  <!--
+  @if (showComments) {
     <div class="card-footer bg-light border-top" style="border-color: #007EA7;">
       @if (post.comments?.length > 0) {
         <div class="list-group list-group-flush">
@@ -87,5 +138,6 @@
         <p class="text-muted text-center my-3">No comments yet. Be the first to comment!</p>
       }
     </div>
-  } -->
+  }
+  -->
 </div>

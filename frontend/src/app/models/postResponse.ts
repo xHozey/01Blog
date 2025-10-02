@@ -3,6 +3,7 @@ interface postResponse {
   title: string;
   content: string;
   author: string;
+  authorId: number;
   videoPath: string;
   imagePath: string;
   createTime: string;

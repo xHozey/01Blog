@@ -4,6 +4,7 @@ import com._Blog.Backend.dto.LoginRequest;
 import com._Blog.Backend.dto.RegisterRequest;
 import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.model.Session;
+import com._Blog.Backend.model.UserRole;
 import com._Blog.Backend.repository.SessionRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class UserService {
     public UserResponse GetUser(String token) {
         Long userId = jwtUtil.extractId(token);
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        return new UserResponse(user.getUsername(), user.getIconPath(), user.getCreation());
+        return new UserResponse(user.getId(),user.getUsername(), user.getIconPath(), user.getCreation(), user.getRoles().stream().map(role -> role.getRole().name()).toArray(String[]::new));
     }
 
 }

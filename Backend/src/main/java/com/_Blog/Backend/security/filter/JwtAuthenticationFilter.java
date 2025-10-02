@@ -27,8 +27,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private static final Set<String> PUBLIC_ENDPOINTS = Set.of(
-            "/api/v1/users/register",
-            "/api/v1/users/login",
+            "/api/v1/auth/register",
+            "/api/v1/auth/login",
             "/api/v1/refresh",
             "/api/v1/users/me"
     );

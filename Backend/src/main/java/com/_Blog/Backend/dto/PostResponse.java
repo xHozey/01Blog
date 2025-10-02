@@ -7,17 +7,18 @@ public class PostResponse {
     private String title;
     private String content;
     private String author;
+    private Long authorId;
     private String videoPath;
     private String imagePath;
     private Timestamp createTime;
     private Long likes;
     private Boolean isLiked;
-
-    public PostResponse(Long id, String title, String content, String author, String videoPath, String imagePath, Timestamp createTime, Long likes, Boolean isLiked) {
+    public PostResponse(Long id, String title, String content, String author, Long authorId, String videoPath, String imagePath, Timestamp createTime, Long likes, Boolean isLiked) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
+        this.authorId = authorId;
         this.videoPath = videoPath;
         this.imagePath = imagePath;
         this.createTime = createTime;
@@ -97,5 +98,13 @@ public class PostResponse {
 
     public void setIsLiked(Boolean liked) {
         isLiked = liked;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }

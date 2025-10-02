@@ -1,0 +1,63 @@
+/* create-post.component.css - Refined for consistency with blog UI */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.form-control:focus {
+  border-color: #007EA7 !important;
+  box-shadow: 0 0 0 0.25rem rgba(0, 126, 167, 0.25) !important;
+}
+
+.form-control::placeholder {
+  color: #6c757d !important;
+  opacity: 0.6;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 126, 167, 0.2);
+}
+
+.border-dashed:hover {
+  border-color: #00A8E8 !important;
+  background-color: rgba(0, 168, 232, 0.05) !important;
+}
+
+/* Ensure full height without bottom blank space */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+app-create-post { /* Or your selector */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Custom navbar styling for consistency */
+.custom-navbar {
+  background-color: #F8F9FA !important;
+  border-bottom: 1px solid #007EA7 !important;
+}
+
+.navbar-brand {
+  color: #003459 !important;
+  font-weight: 700 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  h1.h4 {
+    font-size: 1.25rem;
+  }
+  
+  .form-control[style*="font-size: 2rem"] {
+    font-size: 1.5rem !important;
+  }
+}

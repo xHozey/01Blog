@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
 import { EngagementService } from '../../service/engagement-service';
+import { UserService } from '../../service/user-service';
+import { PostService } from '../../service/post-service';
 @Component({
   selector: 'app-post-component',
   standalone: true,
@@ -10,18 +12,27 @@ import { EngagementService } from '../../service/engagement-service';
   styleUrls: ['./post-component.css'],
 })
 export class PostComponent implements OnInit {
+  constructor(private engagementService: EngagementService, private userService: UserService) {}
+
   @Input() post!: postResponse;
+
+  @Output() delete = new EventEmitter<number>();
+  @Output() update = new EventEmitter<number>();
+  @Output() hide = new EventEmitter<number>();
+  @Output() report = new EventEmitter<number>();
+
   readonly HeartIcon = Heart;
   showComments = false;
   liked = false;
+  user: userResponse | null = null;
 
-  constructor(private engagementService: EngagementService) {}
+
 
   ngOnInit() {
     if (this.post) {
-      console.log(this.post)
       this.liked = this.post.isLiked;
     }
+    this.userService.user$.subscribe((user) => (this.user = user));
   }
 
   toggleLike() {

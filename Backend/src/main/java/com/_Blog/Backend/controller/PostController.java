@@ -5,6 +5,7 @@ import java.util.List;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.services.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,9 +68,23 @@ public class PostController {
     }
 
     @PutMapping
-    public ResponseEntity<Post> updatePost(@Valid @RequestBody Post post) {
-        Post savedPost = postService.updatePost(post);
+    public ResponseEntity<PostResponse> updatePost(@RequestPart("id") String idStr,
+                                           @RequestPart("title") String title,
+                                           @RequestPart("content") String content,
+                                           @RequestPart(value = "image", required = false) MultipartFile image,
+                                           @RequestPart(value = "video", required = false) MultipartFile video) {
+        long id;
+        try {
+            id = Long.parseLong(idStr);
+        } catch (NumberFormatException e) {
+            throw new BadRequestException("Invalid post ID");
+        }
+
+        String imageUrl = image != null ? cloudinaryService.uploadFile(image, "posts/images") : null;
+        String videoUrl = video != null ? cloudinaryService.uploadFile(video, "posts/videos") : null;
+        PostRequest postRequest = new PostRequest(title, content,  videoUrl, imageUrl);
+
+        PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
-
 }
