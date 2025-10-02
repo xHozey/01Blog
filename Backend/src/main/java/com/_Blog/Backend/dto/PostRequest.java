@@ -10,14 +10,12 @@ public class PostRequest {
     @NotBlank
     @Size(max = 3000)
     private String content;
-    private String videoPath;
-    private String imagePath;
+    private String filePath;
 
-    public PostRequest(String title, String content, String videoPath, String imagePath) {
+    public PostRequest(String title, String content, String filePath) {
         this.title = title;
         this.content = content;
-        this.videoPath = videoPath;
-        this.imagePath = imagePath;
+        this.filePath = filePath;
     }
 
     public PostRequest() {}
@@ -38,19 +36,12 @@ public class PostRequest {
         this.content = content;
     }
 
-    public String getVideoPath() {
-        return videoPath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
 }

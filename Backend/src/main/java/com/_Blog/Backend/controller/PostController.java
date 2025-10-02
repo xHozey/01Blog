@@ -37,15 +37,11 @@ public class PostController {
     public ResponseEntity<PostResponse> createPost(
             @RequestPart("title") String title,
             @RequestPart("content") String content,
-            @RequestPart(value = "image", required = false) MultipartFile image,
-            @RequestPart(value = "video", required = false) MultipartFile video
+            @RequestPart(value = "file", required = false) MultipartFile file
     ) throws IOException {
-        String imageUrl = image != null ? cloudinaryService.uploadFile(image, "posts/images") : null;
-        String videoUrl = video != null ? cloudinaryService.uploadFile(video, "posts/videos") : null;
-        System.out.println("imageUrl: " + imageUrl);
-        PostRequest postRequest = new PostRequest(title, content, videoUrl, imageUrl);
+        String fileUrl = file != null ? cloudinaryService.uploadFile(file, "posts/") : null;
+        PostRequest postRequest = new PostRequest(title, content, fileUrl);
         PostResponse response = postService.addPost(postRequest);
-
         return ResponseEntity.ok(response);
     }
 
@@ -71,18 +67,16 @@ public class PostController {
     public ResponseEntity<PostResponse> updatePost(@RequestPart("id") String idStr,
                                            @RequestPart("title") String title,
                                            @RequestPart("content") String content,
-                                           @RequestPart(value = "image", required = false) MultipartFile image,
-                                           @RequestPart(value = "video", required = false) MultipartFile video) {
+                                           @RequestPart(value = "file", required = false) MultipartFile file) {
         long id;
         try {
             id = Long.parseLong(idStr);
         } catch (NumberFormatException e) {
             throw new BadRequestException("Invalid post ID");
         }
-
-        String imageUrl = image != null ? cloudinaryService.uploadFile(image, "posts/images") : null;
-        String videoUrl = video != null ? cloudinaryService.uploadFile(video, "posts/videos") : null;
-        PostRequest postRequest = new PostRequest(title, content,  videoUrl, imageUrl);
+        System.out.println(file);
+        String fileUrl = file != null ? cloudinaryService.uploadFile(file, "posts/") : null;
+        PostRequest postRequest = new PostRequest(title, content, fileUrl);
 
         PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);

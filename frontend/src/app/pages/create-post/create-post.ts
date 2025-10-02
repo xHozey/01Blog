@@ -10,12 +10,8 @@ import {
   X,
   LucideAngularModule,
 } from 'lucide-angular';
-import { PostService } from '../../service/post-service'; // Adjust path as needed
+import { PostService } from '../../service/post-service';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
-
-interface postResponse {
-  // Define as needed
-}
 
 @Component({
   selector: 'app-create-post',
@@ -41,11 +37,10 @@ export class CreatePost {
 
   constructor(private postService: PostService, private router: Router) {}
 
+  // --- File handling ---
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      this.handleFile(input.files[0]);
-    }
+    if (input.files?.length) this.setFile(input.files[0]);
   }
 
   onDragOver(event: DragEvent) {
@@ -60,67 +55,56 @@ export class CreatePost {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.dragOver = false;
-    const files = event.dataTransfer?.files;
-    if (files?.length) {
-      this.handleFile(files[0]);
-    }
+    const file = event.dataTransfer?.files?.[0];
+    if (file) this.setFile(file);
   }
 
-  private handleFile(file: File) {
-    if (file.type.startsWith('image/') || file.type.startsWith('video/')) {
-      this.selectedFile = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
+  private setFile(file: File) {
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
+    this.selectedFile = file;
+
+    const reader = new FileReader();
+    reader.onload = () => (this.previewUrl = reader.result as string);
+    reader.readAsDataURL(file);
   }
 
-  get isFileImage(): boolean {
-    return !!this.selectedFile?.type?.startsWith('image/');
+  get isImage() {
+    return this.selectedFile?.type.startsWith('image/');
   }
 
-  get isFileVideo(): boolean {
-    return !!this.selectedFile?.type?.startsWith('video/');
+  get isVideo() {
+    return this.selectedFile?.type.startsWith('video/');
   }
 
   removeFile() {
     this.selectedFile = null;
     this.previewUrl = null;
-    this.fileInputRef.nativeElement.value = '';
+    if (this.fileInputRef?.nativeElement) {
+      this.fileInputRef.nativeElement.value = '';
+    }
   }
 
+  // --- Submit ---
   handleSubmit() {
     if (!this.content.trim()) return;
 
     const formData = new FormData();
     formData.append('title', this.title);
     formData.append('content', this.content);
-    if (this.selectedFile) {
-      formData.append(
-        this.selectedFile.type.startsWith('image/') ? 'image' : 'video',
-        this.selectedFile
-      );
-    }
-    
+    if (this.selectedFile) formData.append('file', this.selectedFile);
+
     this.postService.addPost(formData).subscribe({
-      next: (data: postResponse) => {
+      next: () => {
         this.resetForm();
         this.router.navigate(['/']);
       },
-      error: (err) => {
-        console.error(err);
-      },
+      error: (err) => console.error(err),
     });
   }
 
   handleCancel() {
     if (this.title || this.content || this.selectedFile) {
-      if (confirm('Discard changes?')) {
-        this.resetForm();
-        this.router.navigate(['/']);
-      }
+      if (confirm('Discard changes?')) this.resetFormAndExit();
     } else {
       this.router.navigate(['/']);
     }
@@ -131,6 +115,13 @@ export class CreatePost {
     this.content = '';
     this.selectedFile = null;
     this.previewUrl = null;
-    this.fileInputRef.nativeElement.value = '';
+    if (this.fileInputRef?.nativeElement) {
+      this.fileInputRef.nativeElement.value = '';
+    }
+  }
+
+  private resetFormAndExit() {
+    this.resetForm();
+    this.router.navigate(['/']);
   }
 }

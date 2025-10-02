@@ -4,8 +4,7 @@ interface postResponse {
   content: string;
   author: string;
   authorId: number;
-  videoPath: string;
-  imagePath: string;
+  filePath: string;
   createTime: string;
   likes: number;
   isLiked: boolean;

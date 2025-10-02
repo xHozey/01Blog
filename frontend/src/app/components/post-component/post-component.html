@@ -4,11 +4,9 @@
     <div class="d-flex align-items-center justify-content-between mb-2">
       <!-- Author and Timestamp -->
       <div class="d-flex align-items-center flex-grow-1">
-        <!-- Author Name -->
         <span class="fw-bold me-2" style="color: #007EA7;">
           {{ post.author }}
         </span>
-        <!-- Timestamp -->
         <small class="text-muted">
           {{ post.createTime | date: 'medium' }}
         </small>
@@ -17,56 +15,41 @@
       <!-- Dropdown Menu -->
       <div class="dropdown">
         <button class="btn btn-sm p-1 text-muted rounded" type="button" id="postOptionsBtn" data-bs-toggle="dropdown"
-          aria-expanded="false"
-          style="border: none; background: none; transition: background-color 0.2s ease; min-width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">
+          aria-expanded="false" style="border: none; background: none; min-width: 32px; height: 32px;">
           <i class="fa fa-ellipsis-v" style="font-size: 16px; color: #5b6570;"></i>
         </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="postOptionsBtn"
-          style="border: 1px solid #e1e8ed; border-radius: 4px; padding: 4px 0; min-width: 160px; font-size: 14px; z-index: 1050; background-color: #fff;">
-
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="postOptionsBtn">
           @if (user?.id === post.authorId) {
           <li>
-            <button class="dropdown-item px-3 py-2" (click)="update.emit(post.id)"
-              style="color: #1a1a1b; border-radius: 0;">
-              <i class="fa fa-edit me-2" style="color: #818384;"></i>Update
+            <button class="dropdown-item px-3 py-2" (click)="update.emit(post.id)">
+              <i class="fa fa-edit me-2"></i>Update
             </button>
           </li>
-          <li>
-            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
-          </li>
+          <li><hr class="dropdown-divider my-0"></li>
           }
           @if (user?.id === post.authorId || user?.roles?.includes("ADMIN")) {
           <li>
-            <button class="dropdown-item px-3 py-2 text-danger" (click)="delete.emit(post.id)"
-              style="color: #ea0027; border-radius: 0;">
-              <i class="fa fa-trash me-2" style="color: #ea0027;"></i>Delete
+            <button class="dropdown-item px-3 py-2 text-danger" (click)="delete.emit(post.id)">
+              <i class="fa fa-trash me-2"></i>Delete
             </button>
           </li>
           }
-
           @if (user?.roles?.includes('ADMIN')) {
           @if (!(user?.id === post.authorId)) {
-          <li>
-            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
-          </li>
+          <li><hr class="dropdown-divider my-0"></li>
           }
           <li>
-            <button class="dropdown-item px-3 py-2" (click)="hide.emit(post.id)" style="color: #1a1a1b; border-radius: 0;">
-              <i class="fa fa-eye-slash me-2" style="color: #818384;"></i>Hide
+            <button class="dropdown-item px-3 py-2" (click)="hide.emit(post.id)">
+              <i class="fa fa-eye-slash me-2"></i>Hide
             </button>
           </li>
           }
-
+          <li><hr class="dropdown-divider my-0"></li>
           <li>
-            <hr class="dropdown-divider my-0" style="border-color: #e1e8ed; margin: 0;">
-          </li>
-          <li>
-            <button class="dropdown-item px-3 py-2" (click)="report.emit(post.id)"
-              style="color: #1a1a1b; border-radius: 0;">
-              <i class="fa fa-flag me-2" style="color: #818384;"></i>Report
+            <button class="dropdown-item px-3 py-2" (click)="report.emit(post.id)">
+              <i class="fa fa-flag me-2"></i>Report
             </button>
           </li>
-
         </ul>
       </div>
     </div>
@@ -83,15 +66,15 @@
   </div>
 
   <!-- Media Section -->
-  @if (post.imagePath || post.videoPath) {
+  @if (post.filePath) {
   <div class="px-3 pb-3">
-    @if (post.imagePath) {
-    <img [src]="post.imagePath" alt="Post Image" class="img-fluid rounded mb-2 border"
+    @if (post.filePath.toLowerCase().endsWith('.jpg') || post.filePath.toLowerCase().endsWith('.jpeg') || post.filePath.toLowerCase().endsWith('.png') || post.filePath.toLowerCase().endsWith('.gif') || post.filePath.toLowerCase().endsWith('.webp')) {
+    <img [src]="post.filePath" alt="Post Image" class="img-fluid rounded mb-2 border"
       style="max-height: 250px; object-fit: cover; border-color: #007EA7;" />
     }
-    @if (post.videoPath) {
+    @if (post.filePath.toLowerCase().endsWith('.mp4') || post.filePath.toLowerCase().endsWith('.webm') || post.filePath.toLowerCase().endsWith('.ogg')) {
     <video controls class="w-100 rounded border" style="max-height: 250px; border-color: #007EA7;">
-      <source [src]="post.videoPath" type="video/mp4" />
+      <source [src]="post.filePath" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
     }
@@ -101,43 +84,18 @@
   <!-- Action Buttons -->
   <div class="card-body pt-0 px-3 pb-3">
     <div class="d-flex gap-2">
-      <!-- Like Button -->
       <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1 px-3 py-1 border rounded-pill"
         [ngClass]="liked ? 'btn-danger text-white' : 'btn-outline-secondary text-dark'">
         <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
         <span class="small">{{ post.likes }}</span>
       </button>
 
-      <!-- Comments Button -->
       <button (click)="toggleComments()"
         class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 px-3 py-1 rounded-pill"
-        style="color: #003459; border-color: #e1e8ed;" [ngClass]="{'btn-info text-white': showComments}">
+        [ngClass]="{'btn-info text-white': showComments}">
         <i class="fa fa-comment" style="font-size: 14px;"></i>
         <span class="small">{{ showComments ? 'Hide Comments' : 'Show Comments' }}</span>
       </button>
     </div>
   </div>
-
-  <!-- Comments Section (uncomment if needed) -->
-  <!--
-  @if (showComments) {
-    <div class="card-footer bg-light border-top" style="border-color: #007EA7;">
-      @if (post.comments?.length > 0) {
-        <div class="list-group list-group-flush">
-          @for (comment of post.comments; track comment.id) {
-            <div class="list-group-item">
-              <div class="d-flex justify-content-between small mb-1">
-                <span class="fw-bold" style="color: #007EA7;">{{ comment.author }}</span>
-                <span class="text-muted">{{ comment.date | date:'short' }}</span>
-              </div>
-              <p class="mb-0" style="color: #003459;">{{ comment.content }}</p>
-            </div>
-          }
-        </div>
-      } @else {
-        <p class="text-muted text-center my-3">No comments yet. Be the first to comment!</p>
-      }
-    </div>
-  }
-  -->
 </div>

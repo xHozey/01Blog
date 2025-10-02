@@ -7,9 +7,6 @@ import java.util.Set;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
-
 @Entity
 @Table(name = "post")
 public class Post {
@@ -20,8 +17,7 @@ public class Post {
 
     private String title;
     private String content;
-    private String videoPath;
-    private String imagePath;
+    private String filePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -44,12 +40,11 @@ public class Post {
 
     public Post() {}
 
-    public Post(Long id, String title, String content, String videoPath, String imagePath, User user, Boolean isHide, Timestamp createTime) {
+    public Post(Long id, String title, String content, String filePath, User user, Boolean isHide, Timestamp createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.videoPath = videoPath;
-        this.imagePath = imagePath;
+        this.filePath = filePath;
         this.user = user;
         this.isHide = isHide;
         this.createTime = createTime;
@@ -79,20 +74,12 @@ public class Post {
         this.content = content;
     }
 
-    public String getVideoPath() {
-        return videoPath;
+    public String getFilePath() {
+        return filePath;
     }
 
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 
     public User getUser() {

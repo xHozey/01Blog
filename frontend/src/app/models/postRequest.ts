@@ -1,6 +1,5 @@
 interface postRequest {
   title: string;
   content: string;
-  videoPath: string;
-  imagePath: string;
+  filePath: string;
 }

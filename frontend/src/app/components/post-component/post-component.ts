@@ -26,7 +26,17 @@ export class PostComponent implements OnInit {
   liked = false;
   user: userResponse | null = null;
 
+  getFileType(filePath: string): 'image' | 'video' | 'unknown' {
+    const ext = filePath.split('.').pop()?.toLowerCase();
+    if (!ext) return 'unknown';
 
+    const imageExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    const videoExts = ['mp4', 'webm', 'ogg'];
+
+    if (imageExts.includes(ext)) return 'image';
+    if (videoExts.includes(ext)) return 'video';
+    return 'unknown';
+  }
 
   ngOnInit() {
     if (this.post) {

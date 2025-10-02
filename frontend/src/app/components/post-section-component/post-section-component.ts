@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post-component/post-component';
 import { PostService } from '../../service/post-service';
@@ -13,84 +13,111 @@ import { FormsModule } from '@angular/forms';
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
 
-  constructor(private postService: PostService) {}
-
   selectedPostId?: number;
   showUpdateModal = false;
-  updateForm: { title: string; content: string; image?: File; video?: File } = {
-    title: '',
-    content: '',
-  };
 
+  updateForm = { title: '', content: '' };
+
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
+  dragOver = false;
+
+  constructor(private postService: PostService) {}
+
+  // Open modal for updating a post
   onUpdatePost(postId: number) {
     this.selectedPostId = postId;
     const post = this.posts.find((p) => p.id === postId);
     if (!post) return;
-
-    // prefill form
     this.updateForm.title = post.title;
     this.updateForm.content = post.content;
-
     this.showUpdateModal = true;
   }
 
-  onFileChange(event: Event, type: 'image' | 'video') {
+  onFileSelect(event: Event) {
+    console.log('File selected', event);
     const input = event.target as HTMLInputElement;
-    if (input.files?.length) {
-      this.updateForm[type] = input.files[0];
-    }
+    if (input.files?.length) this.handleFile(input.files[0]);
   }
 
-  saveUpdate() {
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.dragOver = true;
+  }
+
+  onDragLeave() {
+    this.dragOver = false;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.dragOver = false;
+    const files = event.dataTransfer?.files;
+    if (files?.length) this.handleFile(files[0]);
+  }
+
+  private handleFile(file: File) {
+    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
+    this.selectedFile = file;
+    const reader = new FileReader();
+    reader.onload = () => (this.previewUrl = reader.result as string);
+    reader.readAsDataURL(file);
+  }
+
+  get isFileImage(): boolean {
+    return !!this.selectedFile?.type.startsWith('image/');
+  }
+
+  get isFileVideo(): boolean {
+    return !!this.selectedFile?.type.startsWith('video/');
+  }
+
+  removeFile(fileInput: HTMLInputElement) {
+    this.selectedFile = null;
+    this.previewUrl = null;
+    fileInput.value = '';
+  }
+
+  saveUpdate(fileInput: HTMLInputElement) {
     if (!this.selectedPostId) return;
 
     const formData = new FormData();
     formData.append('id', this.selectedPostId.toString());
     formData.append('title', this.updateForm.title);
     formData.append('content', this.updateForm.content);
-    if (this.updateForm.image) formData.append('image', this.updateForm.image);
-    if (this.updateForm.video) formData.append('video', this.updateForm.video);
+
+    if (this.selectedFile) {
+      formData.append('file', this.selectedFile); // backend expects 'filePath'
+    }
 
     this.postService.updatePost(formData).subscribe({
       next: (updatedPost) => {
         const index = this.posts.findIndex((p) => p.id === updatedPost.id);
         if (index > -1) this.posts[index] = updatedPost;
-        this.showUpdateModal = false;
-        this.selectedPostId = undefined;
-        this.updateForm = { title: '', content: '' };
+        this.resetUpdateForm(fileInput);
       },
       error: (err) => console.error(err),
     });
   }
 
-  onHidePost(postId: number) {
-    throw new Error('Method not implemented.');
+  resetUpdateForm(fileInput: HTMLInputElement) {
+    this.showUpdateModal = false;
+    this.selectedPostId = undefined;
+    this.updateForm = { title: '', content: '' };
+    this.removeFile(fileInput);
   }
-  onReportPost(postId: number) {
-    throw new Error('Method not implemented.');
-  }
+
   onDeletePost(postId: number) {
     this.postService.deletePost(postId).subscribe({
-      next: () => {
-        this.posts = this.posts.filter((post) => post.id !== postId);
-      },
+      next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
       error: (err) => console.error(err),
     });
   }
 
   ngOnInit() {
-    this.fetchPosts();
-  }
-
-  fetchPosts() {
     this.postService.getPosts(0).subscribe({
-      next: (data) => {
-        this.posts.push(...data);
-      },
-      error: (err) => {
-        console.error(err);
-      },
+      next: (data) => (this.posts = data),
+      error: (err) => console.error(err),
     });
-    console.log(this.posts);
   }
 }

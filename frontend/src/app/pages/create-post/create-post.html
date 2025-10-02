@@ -1,4 +1,4 @@
-<app-navbar-component/>
+<app-navbar-component />
 
 <div class="d-flex flex-column flex-grow-1" style="min-height: calc(100vh - 56px); background-color: #F8F9FA;">
   <!-- Header -->
@@ -6,12 +6,16 @@
     <div class="container px-4 py-3">
       <div class="d-flex justify-content-between align-items-center">
         <div class="d-flex align-items-center gap-3">
-          <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 p-2" style="width: 40px; height: 40px; background-color: #F8F9FA; color: #007EA7;" (click)="handleCancel()">
+          <button class="btn rounded-circle d-flex align-items-center justify-content-center border-0 p-2" 
+                  style="width: 40px; height: 40px; background-color: #F8F9FA; color: #007EA7;" 
+                  (click)="handleCancel()">
             <lucide-icon [img]="ArrowLeftIcon" size="20"></lucide-icon>
           </button>
           <h1 class="h4 mb-0 fw-bold" style="color: #003459;">Create a post</h1>
         </div>
-        <button class="btn px-4 rounded-pill" [disabled]="!content.trim()" (click)="handleSubmit()" 
+        <button class="btn px-4 rounded-pill"
+                [disabled]="!content.trim()" 
+                (click)="handleSubmit()"
                 [style.background-color]="!content.trim() ? '#6c757d' : '#007EA7'" 
                 [style.border-color]="!content.trim() ? '#6c757d' : '#007EA7'" 
                 style="color: white; transition: all 0.2s ease;">
@@ -27,78 +31,76 @@
     <div class="container px-4 py-4 pb-5">
       <div class="row justify-content-center">
         <div class="col-lg-8 col-xl-6">
+
           <!-- Title Input -->
           <div class="mb-4">
-            <input 
-              type="text" 
-              class="form-control form-control-lg border-0 px-0" 
-              placeholder="Post title (optional)" 
-              [(ngModel)]="title" 
-              maxlength="300"
-              style="font-size: 2rem; font-weight: 700; color: #003459; background-color: transparent; outline: none; box-shadow: none;"
-            />
+            <input type="text" 
+                   class="form-control form-control-lg border-0 px-0" 
+                   placeholder="Post title (optional)" 
+                   [(ngModel)]="title" 
+                   maxlength="300"
+                   style="font-size: 2rem; font-weight: 700; color: #003459; background-color: transparent;" />
           </div>
 
           <!-- Content Textarea -->
           <div class="mb-4">
-            <textarea 
-              #contentTextarea 
-              class="form-control border-0 px-0" 
-              rows="12"
-              placeholder="Share your thoughts..." 
-              [(ngModel)]="content" 
-              maxlength="10000"
-              style="min-height: 300px; resize: vertical; font-size: 1.1rem; line-height: 1.6; color: #003459; background-color: transparent; outline: none; box-shadow: none;"
-            ></textarea>
+            <textarea class="form-control border-0 px-0" 
+                      rows="12"
+                      placeholder="Share your thoughts..." 
+                      [(ngModel)]="content" 
+                      maxlength="10000"
+                      style="min-height: 300px; resize: vertical; font-size: 1.1rem; line-height: 1.6; color: #003459; background-color: transparent;">
+            </textarea>
           </div>
 
-          <!-- Media Preview -->
+          <!-- Media Preview OR Upload -->
           @if (previewUrl) {
-          <div class="position-relative rounded-3 overflow-hidden border shadow-sm mb-4" style="border-color: #007EA7;">
-            @if (isFileImage) {
-            <img [src]="previewUrl" alt="Preview" class="img-fluid w-100" style="height: 300px; object-fit: cover;" />
-            }
-            @if (isFileVideo) {
-            <video [src]="previewUrl" controls class="w-100" style="height: 300px;">
-              Your browser does not support the video tag.
-            </video>
-            }
-            <button (click)="removeFile()" class="btn rounded-circle position-absolute top-3 end-3 border-0" style="width: 32px; height: 32px; background-color: #FF6B6B; color: white; opacity: 0.9; transition: opacity 0.2s ease; z-index: 10;">
-              <lucide-icon [img]="XIcon" size="16"></lucide-icon>
-            </button>
-          </div>
-          }
-
-          <!-- Upload Area -->
-          @if (!previewUrl) {
-          <div 
-            class="text-center p-5 border border-dashed rounded-3 cursor-pointer mb-4 position-relative" 
-            [class.border-primary]="dragOver" 
-            style="border-color: #007EA7; background-color: #F8F9FA; transition: all 0.2s ease; cursor: pointer;"
-            (click)="fileInputRef.click()"
-            (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave()"
-            (drop)="onDrop($event)">
-            <div class="position-relative" [style.background-color]="dragOver ? 'rgba(0, 168, 232, 0.1)' : 'transparent'">
-              <lucide-icon [img]="dragOver ? UploadIcon : ImageIcon" size="32" class="d-block mx-auto mb-3" 
-                           [style.color]="dragOver ? '#00A8E8' : '#007EA7'"></lucide-icon>
-              <p class="mb-2 fw-medium" style="color: #003459;">
-                {{ dragOver ? 'Drop your file here' : 'Add a photo or video' }}
-              </p>
-              <p class="text-muted small mb-0" style="color: #6c757d;">Click to upload or drag and drop</p>
+            <div class="position-relative rounded-3 overflow-hidden border shadow-sm mb-4" style="border-color: #007EA7;">
+              @if (isImage) {
+                <img [src]="previewUrl" alt="Preview" class="img-fluid w-100" style="height: 300px; object-fit: cover;" />
+              }
+              @else if (isVideo) {
+                <video [src]="previewUrl" controls class="w-100" style="height: 300px;"></video>
+              }
+              <button (click)="removeFile()" 
+                      class="btn rounded-circle position-absolute top-3 end-3 border-0" 
+                      style="width: 32px; height: 32px; background-color: #FF6B6B; color: white; opacity: 0.9;">
+                <lucide-icon [img]="XIcon" size="16"></lucide-icon>
+              </button>
             </div>
-            <input #fileInputRef type="file" accept="image/*,video/*" (change)="onFileSelect($event)" class="d-none" />
-          </div>
+          }
+          @else {
+            <div class="text-center p-5 border border-dashed rounded-3 cursor-pointer mb-4 position-relative" 
+                 [class.border-primary]="dragOver"
+                 style="border-color: #007EA7; background-color: #F8F9FA; transition: all 0.2s ease;"
+                 (click)="fileInputRef.click()"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave()"
+                 (drop)="onDrop($event)">
+              <div class="position-relative" 
+                   [style.background-color]="dragOver ? 'rgba(0, 168, 232, 0.1)' : 'transparent'">
+                <lucide-icon [img]="dragOver ? UploadIcon : ImageIcon" 
+                             size="32" 
+                             class="d-block mx-auto mb-3"
+                             [style.color]="dragOver ? '#00A8E8' : '#007EA7'"></lucide-icon>
+                <p class="mb-2 fw-medium" style="color: #003459;">
+                  {{ dragOver ? 'Drop your file here' : 'Add a photo or video' }}
+                </p>
+                <p class="text-muted small mb-0">Click to upload or drag and drop</p>
+              </div>
+              <input #fileInputRef type="file" accept="image/*,video/*" (change)="onFileSelect($event)" class="d-none" />
+            </div>
           }
 
           <!-- Character Counter -->
           @if (content.length > 0) {
-          <div class="text-end">
-            <small [class.text-danger]="content.length > 9500" [style.color]="content.length > 9500 ? '#FF6B6B' : '#007EA7'">
-              {{ content.length | number }} / 10,000
-            </small>
-          </div>
+            <div class="text-end">
+              <small [style.color]="content.length > 9500 ? '#FF6B6B' : '#007EA7'">
+                {{ content.length | number }} / 10,000
+              </small>
+            </div>
           }
+
         </div>
       </div>
     </div>

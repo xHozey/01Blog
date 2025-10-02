@@ -8,22 +8,21 @@ public class PostResponse {
     private String content;
     private String author;
     private Long authorId;
-    private String videoPath;
-    private String imagePath;
     private Timestamp createTime;
     private Long likes;
     private Boolean isLiked;
-    public PostResponse(Long id, String title, String content, String author, Long authorId, String videoPath, String imagePath, Timestamp createTime, Long likes, Boolean isLiked) {
+    private String filePath;
+
+    public PostResponse(Long id, String title, String content, String author, Long authorId, String filePath, Timestamp createTime, Long likes, Boolean isLiked) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
         this.authorId = authorId;
-        this.videoPath = videoPath;
-        this.imagePath = imagePath;
         this.createTime = createTime;
         this.likes = likes;
         this.isLiked = isLiked;
+        this.filePath = filePath;
     }
 
     public PostResponse() {}
@@ -60,21 +59,7 @@ public class PostResponse {
         this.author = author;
     }
 
-    public String getVideoPath() {
-        return videoPath;
-    }
 
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
 
     public Timestamp getCreateTime() {
         return createTime;
@@ -106,5 +91,13 @@ public class PostResponse {
 
     public void setAuthorId(Long authorId) {
         this.authorId = authorId;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

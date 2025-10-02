@@ -15,7 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.repository.PostRepository;
@@ -43,10 +42,9 @@ public class PostService {
         newPost.setUser(user);
         newPost.setTitle(post.getTitle());
         newPost.setContent(post.getContent());
-        newPost.setVideoPath(post.getVideoPath());
-        newPost.setImagePath(post.getImagePath());
+        newPost.setFilePath(post.getFilePath());
         Post savedPost = this.postRepository.save(newPost);
-        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getVideoPath(), savedPost.getImagePath(),savedPost.getCreateTime(), 0L, false );
+        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getFilePath(),savedPost.getCreateTime(), 0L, false );
     }
 
     public List<PostResponse> getPosts(Long offset) {
@@ -81,7 +79,7 @@ public class PostService {
     private int getRemaining(JwtUser jwtUser, List<Post> postsByFollowedUsers, List<PostResponse> resultPosts, int remaining) {
         for (Post post : postsByFollowedUsers) {
             if (remaining == 0) break;
-            resultPosts.add(new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
+            resultPosts.add(new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getFilePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
             remaining--;
         }
         return remaining;
@@ -91,7 +89,7 @@ public class PostService {
     public PostResponse getPostById(Long id) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
-        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getVideoPath(),post.getImagePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
+        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getFilePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
     }
 
     public PostResponse updatePost(PostRequest post, Long postId) {
@@ -103,10 +101,9 @@ public class PostService {
         oldPost.setTitle(post.getTitle());   
         oldPost.setContent(post.getContent());
 
-        if (post.getImagePath() != null) oldPost.setImagePath(post.getImagePath());
-        if (post.getVideoPath() != null) oldPost.setVideoPath(post.getVideoPath());
+        if (post.getFilePath() != null) oldPost.setFilePath(post.getFilePath());
         Post savedPost = this.postRepository.save(oldPost);
-        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getVideoPath(), savedPost.getImagePath(),savedPost.getCreateTime(), this.postEngagementRepository.countByPostId(savedPost.getId()),this.postEngagementRepository.existsByPostIdAndUserId(postId, JwtUser.getId()) );
+        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getFilePath(),savedPost.getCreateTime(), this.postEngagementRepository.countByPostId(savedPost.getId()),this.postEngagementRepository.existsByPostIdAndUserId(postId, JwtUser.getId()) );
     }
 
     public void deletePost(Long postId) {
