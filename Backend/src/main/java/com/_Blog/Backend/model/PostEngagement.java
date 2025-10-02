@@ -1,13 +1,6 @@
 package com._Blog.Backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "post_engagement")
@@ -16,17 +9,28 @@ public class PostEngagement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
 
-    @JoinColumn(name = "post_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "post_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_post_engagement_post",
+                    foreignKeyDefinition = "FOREIGN KEY (post_id) REFERENCES post(id) ON DELETE CASCADE"
+            )
+    )
     private Post post;
-    @ManyToOne(fetch = FetchType.LAZY)
 
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "user_id",
+            foreignKey = @ForeignKey(
+                    name = "fk_post_engagement_user",
+                    foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE"
+            )
+    )
     private User user;
 
-    public PostEngagement() {
-    }
+    public PostEngagement() {}
 
     public PostEngagement(Long id, Post post, User user) {
         this.id = id;

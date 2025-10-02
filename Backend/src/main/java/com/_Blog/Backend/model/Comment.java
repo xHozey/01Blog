@@ -1,17 +1,12 @@
 package com._Blog.Backend.model;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,25 +18,26 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank
-    @Size(max = 3000)
+
     private String content;
     private String imagePath;
     private String videoPath;
+
     @CreationTimestamp
     private Timestamp date;
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Comment() {
-    }
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CommentEngagement> engagements = new HashSet<>();
+
+    public Comment() {}
 
     public Comment(Long id, String content, String imagePath, String videoPath, Timestamp date, Post post, User user) {
         this.id = id;

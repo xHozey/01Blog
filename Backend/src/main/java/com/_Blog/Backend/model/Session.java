@@ -4,20 +4,17 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "session")
 public class Session {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String token;
     private Boolean revoked = false;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
-    public Session(String token, User user, Boolean revoked) {
-        this.token = token;
-        this.user = user;
-        this.revoked = revoked;
-    }
 
     public Session() {}
 

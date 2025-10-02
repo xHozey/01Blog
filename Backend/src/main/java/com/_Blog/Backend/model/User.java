@@ -24,35 +24,68 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @NotBlank
     @Size(max = 30, min = 3)
     @Column(unique=true)
     private String username;
+
     @NotBlank
     @Email
     @Size(max=255)
     @Column(unique=true)
     private String email;
+
     @Size(max = 64, min = 8)
     @Column(unique=true)
     private String password;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserRole> roles = new HashSet<>();
+
     private String iconPath;
     private Boolean isBanned = false;
+
     @CreationTimestamp
     private Timestamp creation;
 
-    public User() {
-    }
+    // Cascade posts and engagements
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Post> posts = new HashSet<>();
 
-    public User(Long id, String username, String email, String password, String role, String iconPath, Boolean isBanned, Timestamp creation) {
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PostEngagement> engagements = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Report> reports = new HashSet<>();
+
+    @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Notification> receivedNotifications = new HashSet<>();
+
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Notification> sentNotifications = new HashSet<>();
+
+    @OneToMany(mappedBy = "follower", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follow> following = new HashSet<>();
+
+    @OneToMany(mappedBy = "followed", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Follow> followers = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Session> sessions = new HashSet<>();
+
+    public User() {}
+
+    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp creation) {
         this.id = id;
         this.username = username;
         this.email = email;

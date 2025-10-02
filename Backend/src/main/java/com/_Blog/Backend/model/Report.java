@@ -20,18 +20,21 @@ public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reporter_id")
     private User reporter;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post reportedPost;
+
     private String description;
+
     @CreationTimestamp
     private Timestamp date;
 
-    public Report() {
-    }
+    public Report() {}
 
     public Report(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
         this.id = id;

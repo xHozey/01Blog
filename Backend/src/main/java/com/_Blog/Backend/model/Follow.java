@@ -12,16 +12,16 @@ public class Follow {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "follower_id", updatable = false)
     private User follower;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "followed_id", updatable = false)
     private User followed;
 
-    public Follow() {
-    }
-
+    public Follow() {}
     public Follow(Long id, User follower, User followed) {
         this.id = id;
         this.followed = followed;

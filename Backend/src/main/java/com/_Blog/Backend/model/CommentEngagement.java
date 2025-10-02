@@ -16,19 +16,17 @@ public class CommentEngagement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false, updatable = false)
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    public CommentEngagement() {
-    }
+    public CommentEngagement() {}
 
     public CommentEngagement(Long id, User user, Comment comment) {
         this.id = id;

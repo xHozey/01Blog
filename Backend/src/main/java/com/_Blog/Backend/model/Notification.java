@@ -16,20 +16,20 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String type;
     private String description;
     private Boolean isRead;
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
     private User receiver;
-    @ManyToOne(fetch = FetchType.LAZY)
 
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "send_id")
     private User sender;
 
-    public Notification() {
-    }
+    public Notification() {}
 
     public Notification(Long id, String type, String description, Boolean isRead, User receiver, User sender) {
         this.id = id;
