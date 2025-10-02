@@ -1,9 +1,8 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post-component/post-component';
 import { PostService } from '../../service/post-service';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../service/user-service';
 
 @Component({
   selector: 'app-post-section',
@@ -51,6 +50,17 @@ export class PostSectionComponent implements OnInit {
     this.reportDescription = '';
   }
 
+  onHidePost(postId: number) {
+    this.postService.hidePost(postId).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+
   saveReport() {
     if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
     const payload: reportRequest = {
@@ -58,7 +68,6 @@ export class PostSectionComponent implements OnInit {
       description: this.reportDescription,
     };
 
-    console.log(payload);
     this.postService.reportPost(payload).subscribe({
       next: (res) => {
         console.log(res);

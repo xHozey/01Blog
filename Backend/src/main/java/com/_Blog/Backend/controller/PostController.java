@@ -88,4 +88,9 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body("Post reported successfully");
     }
 
+    @PostMapping("/hide/{id}")
+    public ResponseEntity<String> hidePost(@PathVariable Long id) {
+        this.postService.hidePost(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Post hide successfully");
+    }
 }

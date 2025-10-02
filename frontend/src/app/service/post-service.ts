@@ -39,4 +39,11 @@ export class PostService {
       responseType: 'text',
     });
   }
+
+  hidePost(id: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/hide/${id}`, null, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }

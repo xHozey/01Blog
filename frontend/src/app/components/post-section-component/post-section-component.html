@@ -5,7 +5,7 @@
     @if (posts.length > 0) {
     @for (post of posts; track post.id) {
     <app-post-component [post]="post" (delete)="onDeletePost($event)" (update)="onUpdatePost($event)"
-      (report)="onReportPost($event)">
+      (report)="onReportPost($event)" (hide)="onHidePost($event)">
     </app-post-component>
     }
     } @else {
