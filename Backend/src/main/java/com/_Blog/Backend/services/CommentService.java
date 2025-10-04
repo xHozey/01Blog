@@ -1,8 +1,14 @@
 package com._Blog.Backend.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com._Blog.Backend.dto.CommentRequest;
+import com._Blog.Backend.dto.CommentResponse;
+import com._Blog.Backend.model.CommentEngagement;
 import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.CommentEngagementRepository;
+import com._Blog.Backend.repository.PostRepository;
 import com._Blog.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,33 +27,47 @@ import com._Blog.Backend.repository.CommentRepository;
 public class CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
+    private final CommentEngagementRepository commentEngagementRepository;
+    private final PostRepository postRepository;
+
     @Autowired
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository,  CommentEngagementRepository commentEngagementRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
+        this.commentEngagementRepository = commentEngagementRepository;
+        this.postRepository = postRepository;
     }
 
-    public Comment addComment(Comment comment) {
+    public CommentResponse addComment(CommentRequest comment) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(JwtUser.getId()).orElseThrow(()  -> new ResourceNotFoundException("User not found"));
-        comment.setUser(user);
-        return this.commentRepository.save(comment);
+        Comment newComment = new Comment();
+        newComment.setContent(comment.getContent());
+        newComment.setUser(user);
+        newComment.setFilePath(comment.getFilePath());
+        newComment.setPost(this.postRepository.findById(comment.getPostId()).orElseThrow(()  -> new ResourceNotFoundException("Post not found")));
+        Comment savedComment = this.commentRepository.save(newComment);
+        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getDate(), 0L, false, savedComment.getFilePath());
     }
 
-    public List<Comment> getComments(Long offset) {
-        return commentRepository.findCommentsByOffsetLimit(offset * 10);
+    public List<CommentResponse> getComments(Long offset) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Comment> comments = commentRepository.findCommentsByOffsetLimit(offset * 10);
+        List<CommentResponse> result = new ArrayList<>();
+        for (Comment comment : comments) {
+            result.add(new CommentResponse(comment.getId(), comment.getContent(), comment.getUser().getUsername(), comment.getUser().getId(), comment.getDate(), this.commentEngagementRepository.countByCommentId(comment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId()), comment.getFilePath()));
+        }
+        return result;
     }
 
-    public Comment updateComment(Comment comment) {
+    public CommentResponse updateComment(CommentRequest comment, Long commentId) {
         JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (comment.getId() == null) throw new BadRequestException("Comment id is null");
-        Comment oldComment = commentRepository.findById(comment.getId()).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
+        Comment oldComment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
         if (!user.getId().equals(oldComment.getUser().getId())) throw new UnauthorizedException("You are not allowed to update this comment");
-
+        if (comment.getFilePath() != null) oldComment.setFilePath(comment.getFilePath());
         oldComment.setContent(comment.getContent());
-        oldComment.setImagePath(comment.getImagePath());
-        oldComment.setVideoPath(comment.getVideoPath());
-        return commentRepository.save(oldComment);
+        Comment savedComment = commentRepository.save(oldComment);
+        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getDate(), this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()), savedComment.getFilePath());
     }
 
     public void deleteComment(Long commentId) {

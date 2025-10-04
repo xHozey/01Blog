@@ -20,8 +20,7 @@ public class Comment {
     private Long id;
 
     private String content;
-    private String imagePath;
-    private String videoPath;
+    private String filePath;
 
     @CreationTimestamp
     private Timestamp date;
@@ -39,11 +38,10 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long id, String content, String imagePath, String videoPath, Timestamp date, Post post, User user) {
+    public Comment(Long id, String content, String filePath, Timestamp date, Post post, User user) {
         this.id = id;
         this.content = content;
-        this.imagePath = imagePath;
-        this.videoPath = videoPath;
+        this.filePath = filePath;
         this.date = date;
         this.post = post;
         this.user = user;
@@ -63,22 +61,6 @@ public class Comment {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getImagePath() {
-        return imagePath;
-    }
-
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
-    }
-
-    public String getVideoPath() {
-        return videoPath;
-    }
-
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
     }
 
     public Timestamp getDate() {
@@ -103,5 +85,13 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }

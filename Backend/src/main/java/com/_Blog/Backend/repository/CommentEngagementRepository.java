@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface CommentEngagementRepository extends JpaRepository<CommentEngagement,Long> {
     Optional<CommentEngagement> findByCommentIdAndUserId(Long postId, Long userId);
-
+    Long countByCommentId(Long commentId);
+    Boolean existsByCommentIdAndUserId(Long commentId, Long userId);
 }

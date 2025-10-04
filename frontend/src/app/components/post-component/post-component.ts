@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
 import { EngagementService } from '../../service/engagement-service';
 import { UserService } from '../../service/user-service';
-import { PostService } from '../../service/post-service';
+
 @Component({
   selector: 'app-post-component',
   standalone: true,
