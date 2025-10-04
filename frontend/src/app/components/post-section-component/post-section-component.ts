@@ -4,15 +4,24 @@ import { PostComponent } from '../post-component/post-component';
 import { PostService } from '../../service/post-service';
 import { FormsModule } from '@angular/forms';
 import { Editor, NgxEditorComponent, NgxEditorMenuComponent } from 'ngx-editor';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 @Component({
   selector: 'app-post-section',
   standalone: true,
-  imports: [NgxEditorComponent, NgxEditorMenuComponent,CommonModule, PostComponent, FormsModule],
+  imports: [
+    NgxEditorComponent,
+    NgxEditorMenuComponent,
+    CommonModule,
+    PostComponent,
+    FormsModule,
+    InfiniteScrollDirective,
+  ],
   templateUrl: './post-section-component.html',
 })
 export class PostSectionComponent implements OnInit, OnDestroy {
   posts: postResponse[] = [];
+  page: number = 0;
 
   //Post update form
   selectedPostId?: number;
@@ -160,13 +169,30 @@ export class PostSectionComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.postService.getPosts(0).subscribe({
+    this.postService.getPosts(this.page).subscribe({
       next: (data) => (this.posts = data),
       error: (err) => console.error(err),
     });
-    this.editor = new Editor()
+    this.editor = new Editor();
   }
   ngOnDestroy(): void {
-      this.editor?.destroy()
+    this.editor?.destroy();
+  }
+
+  loadMore() {
+    this.page++;
+    console.log(this.page);
+    this.postService.getPosts(this.page).subscribe({
+      next: (data) => {
+        if (data) {
+          this.posts = [...this.posts, ...data]
+        } else {
+          console.log("no more!")
+        }
+      },
+      error: (err) => {
+        console.error(err)
+      }
+    })
   }
 }
