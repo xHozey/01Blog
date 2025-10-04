@@ -36,6 +36,7 @@ export class CommentSection implements OnInit {
     console.log('show still work :) current page is; ', this.page);
     this.commentService.fetchComments(this.postId, this.page).subscribe({
       next: (data) => {
+        console.log(data);
         if (data.length === 0) {
           this.hasMore = false;
         } else {
@@ -79,4 +80,19 @@ export class CommentSection implements OnInit {
       },
     });
   }
+
+  onDelete(id: number) {
+    this.commentService.deleteComment(id).subscribe({
+      next: () => {
+        this.comments = this.comments.filter((comment) => comment.id != id);
+      },
+      error: (err) => {
+        console.error(err);
+      }
+    });
+  }
+
+  onReport(id: number) {}
+
+  onHide(id: number) {}
 }

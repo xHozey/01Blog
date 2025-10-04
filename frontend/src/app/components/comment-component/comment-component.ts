@@ -2,10 +2,12 @@ import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular
 import { commentResponse } from '../../models/commentResponse';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user-service';
+import { EngagementService } from '../../service/engagement-service';
+import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-comment-component',
-  imports: [CommonModule],
+  imports: [CommonModule, LucideAngularModule],
   templateUrl: './comment-component.html',
   styleUrl: './comment-component.css',
 })
@@ -17,12 +19,22 @@ export class CommentComponent implements OnInit {
   @Output() report = new EventEmitter<number>();
 
   userService = inject(UserService);
+  engagementService = inject(EngagementService);
   user: userResponse | null = null;
 
+  readonly HeartIcon = Heart;
+  readonly EllipsisIcon = Ellipsis;
+
   toggleLike() {
-    this.comment.isLiked = !this.comment.isLiked;
-    this.comment.likes += this.comment.isLiked ? 1 : -1;
-    // TODO: call CommentService to update like state
+    this.engagementService.likeComment(this.comment.id).subscribe({
+      next: () => {
+        this.comment.isLiked = !this.comment.isLiked;
+        this.comment.likes += this.comment.isLiked ? 1 : -1;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   ngOnInit(): void {

@@ -14,9 +14,9 @@
 
       <!-- Dropdown Menu -->
       <div class="dropdown">
-        <button class="btn btn-sm p-1 text-muted rounded" type="button" id="postOptionsBtn" data-bs-toggle="dropdown"
-          aria-expanded="false" style="border: none; background: none; min-width: 32px; height: 32px;">
-          <i class="fa fa-ellipsis-v" style="font-size: 16px; color: #5b6570;"></i>
+        <button class="btn btn-sm p-0 text-muted" type="button" id="commentOptionsBtn" data-bs-toggle="dropdown"
+          aria-expanded="false" style="border: none; background: none;">
+          <i><lucide-icon [img]="EllipsisIcon"></lucide-icon></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="postOptionsBtn">
           @if (user?.id === post.authorId) {

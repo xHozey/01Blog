@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
+import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
 import { EngagementService } from '../../service/engagement-service';
 import { UserService } from '../../service/user-service';
 import { CommentSection } from "../comment-section/comment-section";
@@ -23,6 +23,7 @@ export class PostComponent implements OnInit {
   @Output() report = new EventEmitter<number>();
 
   readonly HeartIcon = Heart;
+  readonly EllipsisIcon = Ellipsis;
   showComments = false;
   liked = false;
   user: userResponse | null = null;
