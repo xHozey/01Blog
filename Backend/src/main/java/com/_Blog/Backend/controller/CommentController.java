@@ -4,6 +4,7 @@ import java.util.List;
 
 import com._Blog.Backend.dto.CommentRequest;
 import com._Blog.Backend.dto.CommentResponse;
+import com._Blog.Backend.services.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +21,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class CommentController {
     
     private final CommentService commentService;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public CommentController(CommentService commentService) {
+    public CommentController(CommentService commentService, CloudinaryService cloudinaryService) {
         this.commentService = commentService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping
@@ -37,7 +40,8 @@ public class CommentController {
         }  catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        
+        String fileUrl = file != null ? this.cloudinaryService.uploadFile(file, "/comments") : null;
+        CommentRequest comment = new CommentRequest(content, fileUrl, id);
         CommentResponse savedPost = this.commentService.addComment(comment);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
@@ -54,8 +58,21 @@ public class CommentController {
     }
 
     @PutMapping
-    public ResponseEntity<Comment> updateComment(@Valid @RequestBody CommentRequest comment) {
-        Comment savedComment = commentService.updateComment(comment);
+    public ResponseEntity<CommentResponse> updateComment(@RequestPart("postId") String postIdStr,
+                                                 @RequestPart("commentId") String commentIdStr,
+                                                 @RequestPart("content") String content,
+                                                 @RequestPart(value = "file", required = false) MultipartFile file) {
+        long commentId = 0;
+        long postId = 0;
+        try {
+            commentId = Long.parseLong(commentIdStr);
+            postId = Long.parseLong(postIdStr);
+        } catch (NumberFormatException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        String fileUrl = file != null ? this.cloudinaryService.uploadFile(file, "/comments") : null;
+        CommentRequest comment = new CommentRequest(content, fileUrl, postId);
+        CommentResponse savedComment = commentService.updateComment(comment, commentId);
         return ResponseEntity.status(HttpStatus.OK).body(savedComment);
     }
 }
