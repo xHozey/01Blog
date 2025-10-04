@@ -14,8 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "post_reports")
-public class ReportPost {
+@Table(name = "comment_reports")
+public class ReportComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,20 +26,20 @@ public class ReportPost {
     private User reporter;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
-    private Post reportedPost;
+    @JoinColumn(name = "comment_id")
+    private Comment reportedComment;
 
     private String description;
 
     @CreationTimestamp
     private Timestamp date;
 
-    public ReportPost() {}
+    public ReportComment() {}
 
-    public ReportPost(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
+    public ReportComment(Long id, User reporter, Comment reportedComment, String description, Timestamp date) {
         this.id = id;
         this.reporter = reporter;
-        this.reportedPost = reportedPost;
+        this.reportedComment = reportedComment;
         this.description = description;
         this.date = date;
     }
@@ -60,12 +60,12 @@ public class ReportPost {
         this.reporter = reporter;
     }
 
-    public Post getReported() {
-        return reportedPost;
+    public Comment getReported() {
+        return reportedComment;
     }
 
-    public void setReported(Post reportedPost) {
-        this.reportedPost = reportedPost;
+    public void setReported(Comment reportedComment) {
+        this.reportedComment = reportedComment;
     }
 
     public String getDescription() {

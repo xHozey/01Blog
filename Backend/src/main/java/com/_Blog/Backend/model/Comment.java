@@ -36,6 +36,9 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CommentEngagement> engagements = new HashSet<>();
 
+    @OneToMany(mappedBy = "reportedComment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReportComment> reportComments = new HashSet<>();
+
     public Comment() {}
 
     public Comment(Long id, String content, String filePath, Timestamp createTime, Post post, User user) {

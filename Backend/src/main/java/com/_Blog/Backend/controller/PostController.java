@@ -12,11 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import com._Blog.Backend.model.JwtUser;
-import com._Blog.Backend.model.Post;
 import com._Blog.Backend.services.PostService;
 
 import jakarta.validation.Valid;
