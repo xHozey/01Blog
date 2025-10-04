@@ -91,8 +91,8 @@ export class CommentSection implements OnInit {
       }
     });
   }
-
-  onReport(id: number) {}
-
-  onHide(id: number) {}
+  reportModal = false;
+  onReport(id: number) {
+    
+  }
 }

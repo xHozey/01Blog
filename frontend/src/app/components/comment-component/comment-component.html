@@ -22,18 +22,8 @@
           <!-- Delete for author -->
           @if (user?.id === comment.authorId) {
           <li>
-            <button class="dropdown-item px-3 py-2" (click)="delete.emit(comment.id)">
+            <button class="dropdown-item px-3 py-2 text-danger" (click)="delete.emit(comment.id)">
               <i class="fa fa-trash me-2"></i>Delete
-            </button>
-          </li>
-          <li><hr class="dropdown-divider my-0"></li>
-          }
-
-          <!-- Hide for admin -->
-          @if (user?.roles?.includes('ADMIN')) {
-          <li>
-            <button class="dropdown-item px-3 py-2" (click)="hide.emit(comment.id)">
-              <i class="fa fa-eye-slash me-2"></i>Hide
             </button>
           </li>
           <li><hr class="dropdown-divider my-0"></li>

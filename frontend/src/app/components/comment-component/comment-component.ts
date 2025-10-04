@@ -15,7 +15,6 @@ export class CommentComponent implements OnInit {
   @Input() comment!: commentResponse;
 
   @Output() delete = new EventEmitter<number>();
-  @Output() hide = new EventEmitter<number>();
   @Output() report = new EventEmitter<number>();
 
   userService = inject(UserService);

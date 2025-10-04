@@ -17,7 +17,7 @@
     [infiniteScrollThrottle]="300" (scrolled)="loadComments()">
 
     @for (comment of comments; track comment.id) {
-    <app-comment-component [comment]="comment" (delete)="onDelete($event)" (hide)="onHide($event)" (report)="onReport($event)"></app-comment-component>
+    <app-comment-component [comment]="comment" (delete)="onDelete($event)" (report)="onReport($event)"></app-comment-component>
     }
     @if (loading) {
     <div class="text-center my-2">
