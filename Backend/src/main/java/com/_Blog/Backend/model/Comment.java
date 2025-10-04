@@ -23,7 +23,7 @@ public class Comment {
     private String filePath;
 
     @CreationTimestamp
-    private Timestamp date;
+    private Timestamp createTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -38,11 +38,11 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long id, String content, String filePath, Timestamp date, Post post, User user) {
+    public Comment(Long id, String content, String filePath, Timestamp createTime, Post post, User user) {
         this.id = id;
         this.content = content;
         this.filePath = filePath;
-        this.date = date;
+        this.createTime = createTime;
         this.post = post;
         this.user = user;
     }
@@ -63,12 +63,12 @@ public class Comment {
         this.content = content;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Timestamp getCreateTime() {
+        return createTime;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
     public Post getPost() {

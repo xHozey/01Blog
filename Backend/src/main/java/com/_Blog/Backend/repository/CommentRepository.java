@@ -10,6 +10,6 @@ import com._Blog.Backend.model.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query(value = "SELECT * FROM comment ORDER BY id LIMIT 10 OFFSET :offset", nativeQuery = true)
-    List<Comment> findCommentsByOffsetLimit(@Param("offset") Long offset);
+    @Query(value = "SELECT * FROM comment WHERE post_id = :postId ORDER BY create_time DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
+    List<Comment> findCommentsByOffsetLimit(@Param("offset") Long offset, @Param("postId") Long postId);
 }

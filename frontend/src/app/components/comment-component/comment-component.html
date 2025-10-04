@@ -1,1 +1,86 @@
-<p>comment-component works!</p>
+<div class="card shadow-sm mb-2 border border-light" style="position: relative;">
+  <div class="card-body py-2 px-3">
+    <div class="d-flex justify-content-between align-items-start">
+      
+      <!-- Author + Time -->
+      <div>
+        <span class="fw-bold me-2 text-primary">
+          {{ comment.author }}
+        </span>
+        <small class="text-muted">
+          {{ comment.createTime | date: 'short' }}
+        </small>
+      </div>
+
+      <!-- Dropdown Menu -->
+      <div class="dropdown">
+        <button class="btn btn-sm p-0 text-muted" type="button" id="commentOptionsBtn" data-bs-toggle="dropdown"
+                aria-expanded="false" style="border: none; background: none;">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="commentOptionsBtn">
+          <!-- Delete for author -->
+          @if (user?.id === comment.authorId) {
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="delete.emit(comment.id)">
+              <i class="fa fa-trash me-2"></i>Delete
+            </button>
+          </li>
+          <li><hr class="dropdown-divider my-0"></li>
+          }
+
+          <!-- Hide for admin -->
+          @if (user?.roles?.includes('ADMIN')) {
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="hide.emit(comment.id)">
+              <i class="fa fa-eye-slash me-2"></i>Hide
+            </button>
+          </li>
+          <li><hr class="dropdown-divider my-0"></li>
+          }
+
+          <!-- Report for everyone -->
+          <li>
+            <button class="dropdown-item px-3 py-2" (click)="report.emit(comment.id)">
+              <i class="fa fa-flag me-2"></i>Report
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <p class="card-text mb-2 text-dark" style="font-size: 0.95rem;">
+      {{ comment.content }}
+    </p>
+
+    <!-- File Preview (if image/video) -->
+    @if (comment.filePath) {
+      @if (comment.filePath.toLowerCase().endsWith('.jpg') 
+        || comment.filePath.toLowerCase().endsWith('.jpeg') 
+        || comment.filePath.toLowerCase().endsWith('.png') 
+        || comment.filePath.toLowerCase().endsWith('.gif')
+        || comment.filePath.toLowerCase().endsWith('.webp')) {
+        <img [src]="comment.filePath" alt="Comment Image"
+             class="img-fluid rounded mb-2 border"
+             style="max-height: 150px; object-fit: cover;" />
+      }
+
+      @if (comment.filePath.toLowerCase().endsWith('.mp4') 
+        || comment.filePath.toLowerCase().endsWith('.webm') 
+        || comment.filePath.toLowerCase().endsWith('.ogg')) {
+        <video controls class="w-100 rounded border mb-2" style="max-height: 150px;">
+          <source [src]="comment.filePath" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      }
+    }
+
+    <!-- Likes -->
+    <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1 px-2 py-1 border rounded-pill"
+            [ngClass]="comment.isLiked ? 'btn-danger text-white' : 'btn-outline-secondary text-dark'">
+      <i class="fa fa-heart"></i>
+      <span class="small">{{ comment.likes }}</span>
+    </button>
+  </div>
+</div>

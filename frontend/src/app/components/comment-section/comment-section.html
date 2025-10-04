@@ -1,1 +1,32 @@
-<p>comment-section works!</p>
+<!-- Add Comment Form -->
+<form (ngSubmit)="submitComment()" #commentForm="ngForm" class="mb-3">
+    <div class="d-flex gap-2">
+        <input type="text" class="form-control" placeholder="Write a comment..." [(ngModel)]="newCommentContent"
+            name="content" required />
+
+        <input type="file" (change)="onFileSelected($event)" accept="image/*,video/*" class="form-control w-auto" />
+
+        <button type="submit" class="btn btn-primary" [disabled]="!newCommentContent && !selectedFile">
+            Post
+        </button>
+    </div>
+</form>
+
+<!-- Scrollable Comment List -->
+<div class="comment-scroll-container mt-3" [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="300" (scrolled)="loadComments()">
+
+    @for (comment of comments; track comment.id) {
+    <app-comment-component [comment]="comment"></app-comment-component>
+    }
+    @if (loading) {
+    <div class="text-center my-2">
+        <span class="spinner-border spinner-border-sm"></span> Loading...
+    </div>
+    }
+    @if (!hasMore && comments.length > 0) {
+    <div class="text-center text-muted small">
+        No more comments
+    </div>
+    }
+</div>

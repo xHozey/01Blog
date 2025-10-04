@@ -25,7 +25,9 @@
               <i class="fa fa-edit me-2"></i>Update
             </button>
           </li>
-          <li><hr class="dropdown-divider my-0"></li>
+          <li>
+            <hr class="dropdown-divider my-0">
+          </li>
           }
           @if (user?.id === post.authorId || user?.roles?.includes("ADMIN")) {
           <li>
@@ -36,7 +38,9 @@
           }
           @if (user?.roles?.includes('ADMIN')) {
           @if (!(user?.id === post.authorId)) {
-          <li><hr class="dropdown-divider my-0"></li>
+          <li>
+            <hr class="dropdown-divider my-0">
+          </li>
           }
           <li>
             <button class="dropdown-item px-3 py-2" (click)="hide.emit(post.id)">
@@ -44,7 +48,9 @@
             </button>
           </li>
           }
-          <li><hr class="dropdown-divider my-0"></li>
+          <li>
+            <hr class="dropdown-divider my-0">
+          </li>
           <li>
             <button class="dropdown-item px-3 py-2" (click)="report.emit(post.id)">
               <i class="fa fa-flag me-2"></i>Report
@@ -68,11 +74,14 @@
   <!-- Media Section -->
   @if (post.filePath) {
   <div class="px-3 pb-3">
-    @if (post.filePath.toLowerCase().endsWith('.jpg') || post.filePath.toLowerCase().endsWith('.jpeg') || post.filePath.toLowerCase().endsWith('.png') || post.filePath.toLowerCase().endsWith('.gif') || post.filePath.toLowerCase().endsWith('.webp')) {
+    @if (post.filePath.toLowerCase().endsWith('.jpg') || post.filePath.toLowerCase().endsWith('.jpeg') ||
+    post.filePath.toLowerCase().endsWith('.png') || post.filePath.toLowerCase().endsWith('.gif') ||
+    post.filePath.toLowerCase().endsWith('.webp')) {
     <img [src]="post.filePath" alt="Post Image" class="img-fluid rounded mb-2 border"
       style="max-height: 250px; object-fit: cover; border-color: #007EA7;" />
     }
-    @if (post.filePath.toLowerCase().endsWith('.mp4') || post.filePath.toLowerCase().endsWith('.webm') || post.filePath.toLowerCase().endsWith('.ogg')) {
+    @if (post.filePath.toLowerCase().endsWith('.mp4') || post.filePath.toLowerCase().endsWith('.webm') ||
+    post.filePath.toLowerCase().endsWith('.ogg')) {
     <video controls class="w-100 rounded border" style="max-height: 250px; border-color: #007EA7;">
       <source [src]="post.filePath" type="video/mp4" />
       Your browser does not support the video tag.
@@ -98,4 +107,12 @@
       </button>
     </div>
   </div>
+
+  <!-- Comment Section -->
+  @if (showComments) {
+  <div class="px-3 pb-3">
+    <app-comment-section [postId]="post.id"></app-comment-section>
+  </div>
+  }
+
 </div>

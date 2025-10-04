@@ -17,9 +17,9 @@ import jakarta.validation.Valid;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("api/v1/comments")
+@RequestMapping("/api/v1/comments")
 public class CommentController {
-    
+
     private final CommentService commentService;
     private final CloudinaryService cloudinaryService;
 
@@ -36,7 +36,7 @@ public class CommentController {
     {
         long id = 0;
         try {
-            Long.parseLong(idStr);
+            id = Long.parseLong(idStr);
         }  catch (NumberFormatException e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -46,9 +46,9 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
 
-    @GetMapping
-    public List<CommentResponse> getComments(@RequestParam(defaultValue = "0") Long page) {
-        return commentService.getComments(page);
+    @GetMapping("{id}")
+    public ResponseEntity<List<CommentResponse>> getComments(@RequestParam(defaultValue = "0") Long page, @PathVariable Long id) {
+        return ResponseEntity.ok(commentService.getComments(page, id));
     }
 
     @DeleteMapping("{id}")

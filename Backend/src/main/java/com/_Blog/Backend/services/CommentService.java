@@ -47,17 +47,25 @@ public class CommentService {
         newComment.setFilePath(comment.getFilePath());
         newComment.setPost(this.postRepository.findById(comment.getPostId()).orElseThrow(()  -> new ResourceNotFoundException("Post not found")));
         Comment savedComment = this.commentRepository.save(newComment);
-        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getDate(), 0L, false, savedComment.getFilePath());
+        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getCreateTime(), 0L, false, savedComment.getFilePath());
     }
 
-    public List<CommentResponse> getComments(Long offset) {
+    public List<CommentResponse> getComments(Long offset, Long postId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Comment> comments = commentRepository.findCommentsByOffsetLimit(offset * 10);
-        List<CommentResponse> result = new ArrayList<>();
-        for (Comment comment : comments) {
-            result.add(new CommentResponse(comment.getId(), comment.getContent(), comment.getUser().getUsername(), comment.getUser().getId(), comment.getDate(), this.commentEngagementRepository.countByCommentId(comment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId()), comment.getFilePath()));
-        }
-        return result;
+        List<Comment> comments = commentRepository.findCommentsByOffsetLimit(offset * 10, postId);
+
+        return comments.stream()
+                .map(comment -> new CommentResponse(
+                        comment.getId(),
+                        comment.getContent(),
+                        comment.getUser().getUsername(),
+                        comment.getUser().getId(),
+                        comment.getCreateTime(),
+                        this.commentEngagementRepository.countByCommentId(comment.getId()),
+                        this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId()),
+                        comment.getFilePath()
+                ))
+                .toList();
     }
 
     public CommentResponse updateComment(CommentRequest comment, Long commentId) {
@@ -67,7 +75,7 @@ public class CommentService {
         if (comment.getFilePath() != null) oldComment.setFilePath(comment.getFilePath());
         oldComment.setContent(comment.getContent());
         Comment savedComment = commentRepository.save(oldComment);
-        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getDate(), this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()), savedComment.getFilePath());
+        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getCreateTime(), this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()), savedComment.getFilePath());
     }
 
     public void deleteComment(Long commentId) {

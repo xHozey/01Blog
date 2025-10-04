@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
 import { EngagementService } from '../../service/engagement-service';
 import { UserService } from '../../service/user-service';
+import { CommentSection } from "../comment-section/comment-section";
 
 @Component({
   selector: 'app-post-component',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, CommentSection],
   templateUrl: './post-component.html',
   styleUrls: ['./post-component.css'],
 })
