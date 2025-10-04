@@ -30,8 +30,13 @@
           <input type="text" class="form-control mb-2" placeholder="Title" [(ngModel)]="updateForm.title" />
 
           <!-- Content -->
-          <textarea class="form-control mb-2" placeholder="Content" rows="4"
-            [(ngModel)]="updateForm.content"></textarea>
+          @if (editor) {
+            <div class="NgxEditor__Wrapper form-control mb-2">
+              <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+              <ngx-editor [editor]="editor" [(ngModel)]="updateForm.content" 
+                [placeholder]="'Type here...'"></ngx-editor>
+              </div>
+            }
 
           <!-- File Upload -->
           <div class="border rounded p-3 text-center" [class.bg-light]="dragOver" (dragover)="onDragOver($event)"

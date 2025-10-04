@@ -61,3 +61,7 @@ app-create-post { /* Or your selector */
     font-size: 1.5rem !important;
   }
 }
+
+::ng-deep .my-editor .NgxEditor__Content {
+  min-height: 600px;
+}

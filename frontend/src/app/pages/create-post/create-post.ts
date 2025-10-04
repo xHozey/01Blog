@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
@@ -12,20 +12,22 @@ import {
 } from 'lucide-angular';
 import { PostService } from '../../service/post-service';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
+import { Editor, NgxEditorComponent, NgxEditorMenuComponent } from 'ngx-editor';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [CommonModule, FormsModule, LucideAngularModule, NavbarComponent],
+  imports: [NgxEditorComponent, NgxEditorMenuComponent,CommonModule, FormsModule, LucideAngularModule, NavbarComponent],
   templateUrl: './create-post.html',
   styleUrls: ['./create-post.css'],
 })
-export class CreatePost {
+export class CreatePost implements OnInit, OnDestroy {
   readonly ArrowLeftIcon = ArrowLeft;
   readonly ImageIcon = ImageIcon;
   readonly SendIcon = SendHorizontal;
   readonly UploadIcon = Upload;
   readonly XIcon = X;
+  editor: Editor | null = null;
 
   title = '';
   content = '';
@@ -123,5 +125,13 @@ export class CreatePost {
   private resetFormAndExit() {
     this.resetForm();
     this.router.navigate(['/']);
+  }
+
+  ngOnInit(): void {
+      this.editor = new Editor()
+  }
+
+  ngOnDestroy(): void {
+      this.editor?.destroy()
   }
 }

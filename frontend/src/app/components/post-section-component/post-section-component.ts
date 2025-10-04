@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post-component/post-component';
 import { PostService } from '../../service/post-service';
 import { FormsModule } from '@angular/forms';
+import { Editor, NgxEditorComponent, NgxEditorMenuComponent } from 'ngx-editor';
 
 @Component({
   selector: 'app-post-section',
   standalone: true,
-  imports: [CommonModule, PostComponent, FormsModule],
+  imports: [NgxEditorComponent, NgxEditorMenuComponent,CommonModule, PostComponent, FormsModule],
   templateUrl: './post-section-component.html',
 })
-export class PostSectionComponent implements OnInit {
+export class PostSectionComponent implements OnInit, OnDestroy {
   posts: postResponse[] = [];
 
   //Post update form
@@ -20,7 +21,7 @@ export class PostSectionComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   dragOver = false;
-
+  editor: Editor | null = null;
   //Post report form
   selectedReportPostId?: number;
   showReportModal = false;
@@ -163,5 +164,9 @@ export class PostSectionComponent implements OnInit {
       next: (data) => (this.posts = data),
       error: (err) => console.error(err),
     });
+    this.editor = new Editor()
+  }
+  ngOnDestroy(): void {
+      this.editor?.destroy()
   }
 }
