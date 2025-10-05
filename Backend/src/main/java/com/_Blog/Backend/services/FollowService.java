@@ -17,7 +17,6 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public FollowService(FollowRepository followRepository, UserRepository userRepository) {
         this.followRepository = followRepository;
         this.userRepository = userRepository;

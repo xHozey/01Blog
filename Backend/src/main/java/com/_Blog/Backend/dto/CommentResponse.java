@@ -1,5 +1,7 @@
 package com._Blog.Backend.dto;
 
+import com._Blog.Backend.model.Comment;
+
 import java.sql.Timestamp;
 
 public class CommentResponse {
@@ -10,9 +12,8 @@ public class CommentResponse {
     private Timestamp createTime;
     private Long likes;
     private Boolean isLiked;
-    private String filePath;
 
-    public CommentResponse(Long id, String content, String author, Long authorId, Timestamp createTime, Long likes, Boolean isLiked, String filePath) {
+    public CommentResponse(Long id, String content, String author, Long authorId, Timestamp createTime, Long likes, Boolean isLiked) {
         this.id = id;
         this.content = content;
         this.author = author;
@@ -20,8 +21,19 @@ public class CommentResponse {
         this.createTime = createTime;
         this.likes = likes;
         this.isLiked = isLiked;
-        this.filePath = filePath;
     }
+
+    public CommentResponse(Comment comment, Long likes, Boolean isLiked) {
+        this.id = comment.getId();
+        this.content = comment.getContent();
+        this.author = comment.getUser().getUsername();
+        this.authorId = comment.getUser().getId();
+        this.createTime = comment.getCreateTime();
+        this.likes = likes;
+        this.isLiked = isLiked;
+    }
+
+    public CommentResponse() {}
 
     public Long getId() {
         return id;
@@ -79,11 +91,4 @@ public class CommentResponse {
         isLiked = liked;
     }
 
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
 }

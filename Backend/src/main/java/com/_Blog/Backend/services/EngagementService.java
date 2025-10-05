@@ -17,7 +17,6 @@ public class EngagementService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public EngagementService(CommentEngagementRepository commentEngagementRepository, PostEngagementRepository postEngagementRepository, PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.commentEngagementRepository = commentEngagementRepository;
         this.postEngagementRepository = postEngagementRepository;

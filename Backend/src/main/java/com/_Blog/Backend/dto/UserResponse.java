@@ -1,5 +1,8 @@
 package com._Blog.Backend.dto;
 
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.model.UserRole;
+
 import java.sql.Timestamp;
 
 public class UserResponse {
@@ -15,6 +18,14 @@ public class UserResponse {
         this.iconPath = iconPath;
         this.creation = creation;
         this.roles = roles;
+    }
+
+    public UserResponse(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.iconPath = user.getIconPath();
+        this.creation = user.getCreation();
+        this.roles = user.getRoles().stream().map(UserRole::getRole).toArray(String[]::new);
     }
 
     public UserResponse() {}

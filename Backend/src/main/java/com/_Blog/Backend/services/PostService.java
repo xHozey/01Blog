@@ -27,7 +27,6 @@ public class PostService {
     private final ReportPostRepository reportPostRepository;
     private final NotificationService notificationService;
 
-    @Autowired
     public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository,  NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
@@ -49,7 +48,7 @@ public class PostService {
 
         Post savedPost = this.postRepository.save(newPost);
         this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
-        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getFilePath(),savedPost.getCreateTime(), 0L, false );
+        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
     }
 
     public List<PostResponse> getPosts(Long offset) {
@@ -84,7 +83,7 @@ public class PostService {
     private int getRemaining(JwtUser jwtUser, List<Post> postsByFollowedUsers, List<PostResponse> resultPosts, int remaining) {
         for (Post post : postsByFollowedUsers) {
             if (remaining == 0) break;
-            resultPosts.add(new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getFilePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
+            resultPosts.add(new PostResponse(post, this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
             remaining--;
         }
         return remaining;
@@ -94,7 +93,7 @@ public class PostService {
     public PostResponse getPostById(Long id) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
-        return new PostResponse(post.getId(), post.getTitle(),post.getContent(), post.getUser().getUsername(),post.getUser().getId(), post.getFilePath(),post.getCreateTime(),this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
+        return new PostResponse(post, this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
     }
 
     public PostResponse updatePost(PostRequest post, Long postId) {
@@ -108,7 +107,7 @@ public class PostService {
 
         if (post.getFilePath() != null) oldPost.setFilePath(post.getFilePath());
         Post savedPost = this.postRepository.save(oldPost);
-        return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getFilePath(),savedPost.getCreateTime(), this.postEngagementRepository.countByPostId(savedPost.getId()),this.postEngagementRepository.existsByPostIdAndUserId(postId, JwtUser.getId()) );
+        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), user.getId()));
     }
 
     public void deletePost(Long postId) {
@@ -118,10 +117,8 @@ public class PostService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtUser currentUser = (JwtUser) auth.getPrincipal();
         Long currentUserId = currentUser.getId();
-        boolean isAdmin = auth.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_ADMIN"));
-        if (!post.getUser().getId().equals(currentUserId) && !isAdmin) {
+
+        if (!post.getUser().getId().equals(currentUserId)) {
             throw new UnauthorizedException("You are not allowed to delete this post");
         }
 

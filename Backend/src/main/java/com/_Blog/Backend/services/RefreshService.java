@@ -16,7 +16,6 @@ public class RefreshService {
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
 
-    @Autowired
     public RefreshService(JwtUtil jwtUtil, SessionRepository sessionRepository, UserRepository userRepository) {
         this.jwtUtil = jwtUtil;
         this.sessionRepository = sessionRepository;

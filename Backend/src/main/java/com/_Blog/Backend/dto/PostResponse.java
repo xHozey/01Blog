@@ -1,5 +1,7 @@
 package com._Blog.Backend.dto;
 
+import com._Blog.Backend.model.Post;
+
 import java.sql.Timestamp;
 
 public class PostResponse {
@@ -11,9 +13,8 @@ public class PostResponse {
     private Timestamp createTime;
     private Long likes;
     private Boolean isLiked;
-    private String filePath;
 
-    public PostResponse(Long id, String title, String content, String author, Long authorId, String filePath, Timestamp createTime, Long likes, Boolean isLiked) {
+    public PostResponse(Long id, String title, String content, String author, Long authorId, Timestamp createTime, Long likes, Boolean isLiked) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -22,7 +23,17 @@ public class PostResponse {
         this.createTime = createTime;
         this.likes = likes;
         this.isLiked = isLiked;
-        this.filePath = filePath;
+    }
+
+    public PostResponse(Post post, Long likes, Boolean isLiked) {
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.author = post.getUser().getUsername();
+        this.authorId = post.getUser().getId();
+        this.createTime = post.getCreateTime();
+        this.likes = likes;
+        this.isLiked = isLiked;
     }
 
     public PostResponse() {}

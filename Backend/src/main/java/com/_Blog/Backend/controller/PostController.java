@@ -43,8 +43,6 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-
-
     @GetMapping
     public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Long page) {
         return ResponseEntity.ok(postService.getPosts(page));
@@ -90,4 +88,5 @@ public class PostController {
         this.postService.hidePost(id);
         return ResponseEntity.status(HttpStatus.OK).body("Post hide successfully");
     }
+
 }

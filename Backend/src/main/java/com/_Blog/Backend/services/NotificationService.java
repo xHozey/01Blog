@@ -24,7 +24,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final FollowRepository followRepository;
 
-    @Autowired
     public NotificationService(NotificationRepository notificationRepository,  FollowRepository followRepository) {
         this.notificationRepository = notificationRepository;
         this.followRepository = followRepository;

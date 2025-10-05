@@ -30,7 +30,6 @@ public class CommentService {
     private final CommentEngagementRepository commentEngagementRepository;
     private final PostRepository postRepository;
 
-    @Autowired
     public CommentService(CommentRepository commentRepository, UserRepository userRepository,  CommentEngagementRepository commentEngagementRepository, PostRepository postRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
@@ -47,7 +46,7 @@ public class CommentService {
         newComment.setFilePath(comment.getFilePath());
         newComment.setPost(this.postRepository.findById(comment.getPostId()).orElseThrow(()  -> new ResourceNotFoundException("Post not found")));
         Comment savedComment = this.commentRepository.save(newComment);
-        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getCreateTime(), 0L, false, savedComment.getFilePath());
+        return new CommentResponse(savedComment, this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), JwtUser.getId()));
     }
 
     public List<CommentResponse> getComments(Long offset, Long postId) {
@@ -55,16 +54,7 @@ public class CommentService {
         List<Comment> comments = commentRepository.findCommentsByOffsetLimit(offset * 10, postId);
 
         return comments.stream()
-                .map(comment -> new CommentResponse(
-                        comment.getId(),
-                        comment.getContent(),
-                        comment.getUser().getUsername(),
-                        comment.getUser().getId(),
-                        comment.getCreateTime(),
-                        this.commentEngagementRepository.countByCommentId(comment.getId()),
-                        this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId()),
-                        comment.getFilePath()
-                ))
+                .map(comment -> new CommentResponse(comment, this.commentEngagementRepository.countByCommentId(comment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId())))
                 .toList();
     }
 
@@ -75,7 +65,7 @@ public class CommentService {
         if (comment.getFilePath() != null) oldComment.setFilePath(comment.getFilePath());
         oldComment.setContent(comment.getContent());
         Comment savedComment = commentRepository.save(oldComment);
-        return new CommentResponse(savedComment.getId(), savedComment.getContent(), savedComment.getUser().getUsername(), savedComment.getUser().getId(), savedComment.getCreateTime(), this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()), savedComment.getFilePath());
+        return new CommentResponse(savedComment, this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()));
     }
 
     public void deleteComment(Long commentId) {
@@ -85,10 +75,8 @@ public class CommentService {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtUser currentUser = (JwtUser) auth.getPrincipal();
         Long currentUserId = currentUser.getId();
-        boolean isAdmin = auth.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .anyMatch(role -> role.equals("ROLE_ADMIN"));
-        if (!comment.getUser().getId().equals(currentUserId) && !isAdmin) {
+
+        if (!comment.getUser().getId().equals(currentUserId)) {
             throw new UnauthorizedException("You are not allowed to delete this comment");
         }
 
