@@ -1,63 +1,58 @@
-/* Navbar container */
+/* General navbar look */
 .custom-navbar {
-  background-color: #003459; /* Navy */
-  padding: 1rem 2rem;
+  border-bottom: 1px solid #eaeaea;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  letter-spacing: 0.2px;
 }
 
-/* Navbar brand */
-.custom-navbar .navbar-brand {
-  color: #00A8E8; /* Aqua */
-  font-weight: bold;
+/* Brand styling */
+.navbar-brand {
+  font-family: "Georgia", serif;
   font-size: 1.5rem;
-  text-decoration: none;
 }
 
-.custom-navbar .navbar-brand:hover {
-  color: #FF6B6B; /* Accent coral */
-}
-
-/* Navbar links */
-.custom-navbar .nav-link {
-  color: #F8F9FA; /* Off-white */
-  font-weight: 500;
-  transition: color 0.3s;
-  text-decoration: none;
-}
-
-.custom-navbar .nav-link:hover {
-  color: #FF6B6B; /* Accent coral */
-}
-
-/* Toggler icon */
-.custom-navbar .navbar-toggler {
-  border-color: #007EA7; /* Teal */
-}
-
-.custom-navbar .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(0,174,167,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
-}
-
-
-/* Sign Up button */
-.custom-btn {
-  background-color: #007EA7; /* Teal */
-  color: #F8F9FA; /* Off-white */
-  font-weight: bold;
-  border-radius: 4px;
+/* Buttons and icons */
+.btn-dark {
+  background-color: #000;
   border: none;
-  padding: 0.5rem 1.5rem;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
 }
 
-.custom-btn:hover {
-  background-color: #00A8E8; /* Aqua */
+.btn-dark:hover {
+  background-color: #333;
+}
+
+/* Avatar image */
+.navbar img {
+  object-fit: cover;
+  border: 1px solid #ddd;
+  transition: transform 0.2s ease;
+}
+
+.navbar img:hover {
   transform: scale(1.05);
 }
 
-/* Responsive spacing */
-@media (max-width: 768px) {
-  .custom-navbar .nav-item {
-    margin-bottom: 0.5rem;
-  }
+/* Notifications */
+button[mat-icon-button] {
+  background: none;
+  border: none;
+  color: #444;
+  cursor: pointer;
+}
+
+button[mat-icon-button]:hover {
+  color: #000;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  border-radius: 12px;
+  border: 1px solid #eaeaea;
+  font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+  background-color: #f8f9fa;
 }

@@ -1,118 +1,82 @@
-<div class="card shadow-sm mb-4 border border-teal" style="border-color: #007EA7; position: relative;">
-  <!-- Post Header -->
-  <div class="card-body pb-2">
-    <div class="d-flex align-items-center justify-content-between mb-2">
-      <!-- Author and Timestamp -->
-      <div class="d-flex align-items-center flex-grow-1">
-        <span class="fw-bold me-2" style="color: #007EA7;">
-          {{ post.author }}
-        </span>
-        <small class="text-muted">
-          {{ post.createTime | date: 'medium' }}
-        </small>
-      </div>
+<article class="post-container">
 
-      <!-- Dropdown Menu -->
-      <div class="dropdown">
-        <button class="btn btn-sm p-0 text-muted" type="button" id="commentOptionsBtn" data-bs-toggle="dropdown"
-          aria-expanded="false" style="border: none; background: none;">
-          <i><lucide-icon [img]="EllipsisIcon"></lucide-icon></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="postOptionsBtn">
-          @if (user?.id === post.authorId) {
-          <li>
-            <button class="dropdown-item px-3 py-2" (click)="update.emit(post.id)">
-              <i class="fa fa-edit me-2"></i>Update
-            </button>
-          </li>
-          <li>
-            <hr class="dropdown-divider my-0">
-          </li>
-          }
-          @if (user?.id === post.authorId || user?.roles?.includes("ADMIN")) {
-          <li>
-            <button class="dropdown-item px-3 py-2 text-danger" (click)="delete.emit(post.id)">
-              <i class="fa fa-trash me-2"></i>Delete
-            </button>
-          </li>
-          }
-          @if (user?.roles?.includes('ADMIN')) {
-          @if (!(user?.id === post.authorId)) {
-          <li>
-            <hr class="dropdown-divider my-0">
-          </li>
-          }
-          <li>
-            <button class="dropdown-item px-3 py-2" (click)="hide.emit(post.id)">
-              <i class="fa fa-eye-slash me-2"></i>Hide
-            </button>
-          </li>
-          }
-          <li>
-            <hr class="dropdown-divider my-0">
-          </li>
-          <li>
-            <button class="dropdown-item px-3 py-2" (click)="report.emit(post.id)">
-              <i class="fa fa-flag me-2"></i>Report
-            </button>
-          </li>
-        </ul>
-      </div>
+  <!-- Header -->
+  <header class="post-header">
+    <div class="author-info">
+      <span class="author-name">{{ post.author }}</span>
+      <span class="post-time">· {{ post.createTime | date: 'medium' }}</span>
     </div>
 
-    <!-- Post Title -->
-    <h5 class="card-title mb-2" style="color: #003459;">
-      {{ post.title }}
-    </h5>
+    <!-- Dropdown -->
+    <div class="dropdown">
+      <button class="btn btn-link text-muted p-0" id="postMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
+        <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+        @if (user?.id === post.authorId) {
+        <li><button class="dropdown-item" (click)="update.emit(post.id)">
+          <i class="fa fa-edit me-2"></i>Edit Post
+        </button></li>
+        <li><hr class="dropdown-divider"></li>
+        }
+        @if (user?.id === post.authorId || user?.roles?.includes('ADMIN')) {
+        <li><button class="dropdown-item text-danger" (click)="delete.emit(post.id)">
+          <i class="fa fa-trash me-2"></i>Delete
+        </button></li>
+        }
+        @if (user?.roles?.includes('ADMIN')) {
+        @if (!(user?.id === post.authorId)) { <li><hr class="dropdown-divider"></li> }
+        <li><button class="dropdown-item" (click)="hide.emit(post.id)">
+          <i class="fa fa-eye-slash me-2"></i>Hide
+        </button></li>
+        }
+        <li><hr class="dropdown-divider"></li>
+        <li><button class="dropdown-item" (click)="report.emit(post.id)">
+          <i class="fa fa-flag me-2"></i>Report
+        </button></li>
+      </ul>
+    </div>
+  </header>
 
-    <!-- Post Content -->
-    <p class="card-text" style="color: #003459;">
-      {{ post.content }}
-    </p>
-  </div>
+  <!-- Title -->
+  <h2 class="post-title">{{ post.title }}</h2>
 
-  <!-- Media Section -->
+  <!-- Content -->
+  <p class="post-body">{{ post.content }}</p>
+
+  <!-- Media -->
   @if (post.filePath) {
-  <div class="px-3 pb-3">
-    @if (post.filePath.toLowerCase().endsWith('.jpg') || post.filePath.toLowerCase().endsWith('.jpeg') ||
-    post.filePath.toLowerCase().endsWith('.png') || post.filePath.toLowerCase().endsWith('.gif') ||
-    post.filePath.toLowerCase().endsWith('.webp')) {
-    <img [src]="post.filePath" alt="Post Image" class="img-fluid rounded mb-2 border"
-      style="max-height: 250px; object-fit: cover; border-color: #007EA7;" />
-    }
-    @if (post.filePath.toLowerCase().endsWith('.mp4') || post.filePath.toLowerCase().endsWith('.webm') ||
-    post.filePath.toLowerCase().endsWith('.ogg')) {
-    <video controls class="w-100 rounded border" style="max-height: 250px; border-color: #007EA7;">
-      <source [src]="post.filePath" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-    }
-  </div>
-  }
-
-  <!-- Action Buttons -->
-  <div class="card-body pt-0 px-3 pb-3">
-    <div class="d-flex gap-2">
-      <button (click)="toggleLike()" class="btn btn-sm d-flex align-items-center gap-1 px-3 py-1 border rounded-pill"
-        [ngClass]="liked ? 'btn-danger text-white' : 'btn-outline-secondary text-dark'">
-        <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
-        <span class="small">{{ post.likes }}</span>
-      </button>
-
-      <button (click)="toggleComments()"
-        class="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 px-3 py-1 rounded-pill"
-        [ngClass]="{'btn-info text-white': showComments}">
-        <i class="fa fa-comment" style="font-size: 14px;"></i>
-        <span class="small">{{ showComments ? 'Hide Comments' : 'Show Comments' }}</span>
-      </button>
+    <div class="post-media">
+      @if (getFileType(post.filePath) === 'image') {
+        <img [src]="post.filePath" alt="Post image" />
+      } @else if (getFileType(post.filePath) === 'video') {
+        <video [src]="post.filePath" controls></video>
+      }
     </div>
-  </div>
-
-  <!-- Comment Section -->
-  @if (showComments) {
-  <div class="px-3 pb-3">
-    <app-comment-section [postId]="post.id"></app-comment-section>
-  </div>
   }
 
-</div>
+  <!-- Actions -->
+  <div class="post-actions">
+    <button (click)="toggleLike()" 
+      [ngClass]="liked ? 'liked' : ''"
+      class="action-btn like-btn">
+      <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
+      <span>{{ post.likes }}</span>
+    </button>
+
+    <button (click)="toggleComments()" 
+      [class.active]="showComments"
+      class="action-btn comment-btn">
+      <i class="fa fa-comment"></i>
+      <span>{{ showComments ? 'Hide' : 'Comments' }}</span>
+    </button>
+  </div>
+
+  <!-- Comments -->
+  @if (showComments) {
+    <div class="comments-section">
+      <app-comment-section [postId]="post.id"></app-comment-section>
+    </div>
+  }
+
+</article>

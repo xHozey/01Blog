@@ -1,0 +1,122 @@
+.post-container {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+}
+
+/* Header */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .75rem;
+}
+
+.author-info {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.author-name {
+  font-weight: 600;
+  color: #007EA7;
+}
+
+.post-time {
+  margin-left: 6px;
+}
+
+/* Title + Body */
+.post-title {
+  font-family: 'Merriweather', serif;
+  color: #003459;
+  font-size: 1.4rem;
+  margin: 0.25rem 0 0.75rem 0;
+}
+
+.post-body {
+  color: #333;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  white-space: pre-line;
+}
+
+/* Media */
+.post-media img, 
+.post-media video {
+  border-radius: 10px;
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+}
+
+/* Actions */
+.post-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-btn {
+  border: none;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: 0.9rem;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.action-btn:hover {
+  color: #000;
+}
+
+.like-btn.liked {
+  color: #e63946;
+}
+
+.comment-btn.active {
+  color: #007EA7;
+}
+
+/* Comments */
+.comments-section {
+  border-top: 1px solid #eee;
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+/* Dropdown styling */
+.dropdown-menu {
+  font-size: 0.9rem;
+  border-radius: 8px;
+}
+
+.dropdown-item {
+  padding: .5rem 1rem;
+  border-radius: 6px;
+}
+
+.dropdown-item:hover {
+  background-color: #f5f5f5;
+}
+
+/* Subtle animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.post-container { animation: fadeIn 0.3s ease; }

@@ -1,19 +1,79 @@
-<nav class="navbar navbar-expand-lg custom-navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">01Blog</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-controls="navbarNav"
-      aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top custom-navbar">
+  <div class="container-fluid px-4">
+    <!-- Blog Name -->
+    <a class="navbar-brand fw-bold fs-4 text-dark" [routerLink]="['/']">
+      01<span class="text-primary">Blog</span>
+    </a>
+
+    <!-- Mobile toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
+
+    <!-- Navbar Links -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav align-items-center gap-3">
+
+        <!-- Create Post Button -->
         @if (!isCreatePostPage) {
-        <li class="nav-item">
-          <a class="nav-link btn px-3" [routerLink]="['/create-post']" routerLinkActive="active">
-            <i class="fa fa-plus me-1"></i>Create Post
-          </a>
-        </li>
+          <li class="nav-item">
+            <a
+              class="btn btn-dark px-3 py-2 rounded-pill"
+              [routerLink]="['/create-post']"
+              routerLinkActive="active"
+            >
+              <i class="fa fa-pen me-1"></i> Write
+            </a>
+          </li>
         }
+
+        <!-- Notification Icon -->
+        <li class="nav-item">
+          <!-- placeholder: notification bell -->
+          <button mat-icon-button class="position-relative">
+            <lucide-icon [img]="BellIcon"></lucide-icon>
+            <!-- placeholder: notification count -->
+            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 border border-light rounded-circle">
+              3
+            </span>
+          </button>
+        </li>
+
+        <!-- Profile Avatar -->
+        <li class="nav-item dropdown">
+          <!-- placeholder: user avatar -->
+          <a
+            class="nav-link dropdown-toggle d-flex align-items-center"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <img
+              src="https://www.pinclipart.com/picdir/big/157-1578186_user-profile-default-image-png-clipart.png"
+              alt="Profile"
+              class="rounded-circle"
+              width="35"
+              height="35"
+            />
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+            <!-- placeholder: user info -->
+            <li><a class="dropdown-item" [routerLink]="['/profile']">Profile</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+          </ul>
+        </li>
+
       </ul>
     </div>
   </div>

@@ -1,67 +1,289 @@
-/* create-post.component.css - Refined for consistency with blog UI */
-.cursor-pointer {
+/* Page Container */
+.create-post-page {
+  min-height: calc(100vh - 56px);
+  background-color: #fafafa;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Header */
+.create-post-header {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 56px;
+  z-index: 100;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.back-btn {
+  border: none;
+  background: none;
   cursor: pointer;
+  color: #666;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
 }
 
-.form-control:focus {
-  border-color: #007EA7 !important;
-  box-shadow: 0 0 0 0.25rem rgba(0, 126, 167, 0.25) !important;
+.back-btn:hover {
+  background-color: #f5f5f5;
+  color: #003459;
 }
 
-.form-control::placeholder {
-  color: #6c757d !important;
-  opacity: 0.6;
-}
-
-.btn:hover:not(:disabled) {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0, 126, 167, 0.2);
-}
-
-.border-dashed:hover {
-  border-color: #00A8E8 !important;
-  background-color: rgba(0, 168, 232, 0.05) !important;
-}
-
-/* Ensure full height without bottom blank space */
-html, body {
-  height: 100%;
+.page-title {
+  font-family: 'Merriweather', serif;
+  color: #003459;
+  font-size: 1.5rem;
+  font-weight: 700;
   margin: 0;
 }
 
-app-create-post { /* Or your selector */
+.publish-btn {
+  background-color: #007EA7;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.75rem;
+  border-radius: 24px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
   display: flex;
-  flex-direction: column;
-  height: 100vh;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Custom navbar styling for consistency */
-.custom-navbar {
-  background-color: #F8F9FA !important;
-  border-bottom: 1px solid #007EA7 !important;
+.publish-btn:hover:not(:disabled) {
+  background-color: #006690;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 126, 167, 0.3);
 }
 
-.navbar-brand {
-  color: #003459 !important;
-  font-weight: 700 !important;
+.publish-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Editor Area */
+.editor-container {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
+}
+
+/* Title Input */
+.title-input {
+  border: none;
+  outline: none;
+  width: 100%;
+  font-family: 'Merriweather', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #003459;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 1.5rem;
+  line-height: 1.2;
+}
+
+.title-input::placeholder {
+  color: #ccc;
+}
+
+.title-input:focus {
+  outline: none;
+}
+
+/* Content Editor */
+.editor-wrapper {
+  margin-bottom: 2rem;
+}
+
+.NgxEditor__Wrapper {
+  border: none;
+}
+
+.NgxEditor__Wrapper .NgxEditor__MenuBar {
+  background-color: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.NgxEditor__Wrapper .NgxEditor {
+  border: none;
+  min-height: 300px;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+.NgxEditor__Wrapper .NgxEditor__Content {
+  padding: 0;
+}
+
+/* Media Upload Area */
+.upload-area {
+  border: 2px dashed #d0d0d0;
+  border-radius: 12px;
+  background-color: #fafafa;
+  padding: 3rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 2rem;
+  position: relative;
+}
+
+.upload-area:hover {
+  border-color: #007EA7;
+  background-color: #f5f9fa;
+}
+
+.upload-area.drag-over {
+  border-color: #007EA7;
+  background-color: #e8f4f7;
+  border-style: solid;
+}
+
+.upload-icon-wrapper {
+  margin-bottom: 1rem;
+}
+
+.upload-icon {
+  width: 48px;
+  height: 48px;
+  color: #007EA7;
+  margin: 0 auto;
+  display: block;
+}
+
+.upload-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #003459;
+  margin-bottom: 0.5rem;
+}
+
+.upload-subtitle {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+/* Media Preview */
+.media-preview {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.media-preview img,
+.media-preview video {
+  width: 100%;
+  max-height: 450px;
+  object-fit: cover;
+  display: block;
+}
+
+.remove-media-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: #e63946;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.remove-media-btn:hover {
+  background-color: #e63946;
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Character Counter */
+.char-counter {
+  text-align: right;
+  margin-top: 1rem;
+}
+
+.char-count {
+  font-size: 0.9rem;
+  color: #999;
+  font-weight: 500;
+}
+
+.char-count.warning {
+  color: #e63946;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container {
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+  .editor-container {
+    padding: 1.5rem 1rem;
   }
-  
-  h1.h4 {
+
+  .title-input {
+    font-size: 2rem;
+  }
+
+  .page-title {
     font-size: 1.25rem;
   }
-  
-  .form-control[style*="font-size: 2rem"] {
-    font-size: 1.5rem !important;
+
+  .upload-area {
+    padding: 2rem 1rem;
+  }
+
+  .publish-btn {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
   }
 }
 
-::ng-deep .my-editor .NgxEditor__Content {
-  min-height: 600px;
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.editor-container {
+  animation: fadeIn 0.3s ease;
 }
