@@ -40,11 +40,7 @@ public class PostService {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        Post newPost = new Post();
-        newPost.setUser(user);
-        newPost.setTitle(post.getTitle());
-        newPost.setContent(post.getContent());
-        newPost.setFilePath(post.getFilePath());
+        Post newPost = new Post(post.getTitle(), post.getContent(), user);
 
         Post savedPost = this.postRepository.save(newPost);
         this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
@@ -105,7 +101,6 @@ public class PostService {
         oldPost.setTitle(post.getTitle());   
         oldPost.setContent(post.getContent());
 
-        if (post.getFilePath() != null) oldPost.setFilePath(post.getFilePath());
         Post savedPost = this.postRepository.save(oldPost);
         return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), user.getId()));
     }

@@ -10,12 +10,10 @@ public class PostRequest {
     @NotBlank
     @Size(max = 3000)
     private String content;
-    private String filePath;
 
-    public PostRequest(String title, String content, String filePath) {
+    public PostRequest(String title, String content) {
         this.title = title;
         this.content = content;
-        this.filePath = filePath;
     }
 
     public PostRequest() {}
@@ -34,14 +32,6 @@ public class PostRequest {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
 }

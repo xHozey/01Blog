@@ -17,7 +17,6 @@ public class Post {
 
     private String title;
     private String content;
-    private String filePath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -40,14 +39,19 @@ public class Post {
 
     public Post() {}
 
-    public Post(Long id, String title, String content, String filePath, User user, Boolean isHide, Timestamp createTime) {
+    public Post(Long id, String title, String content, User user, Boolean isHide, Timestamp createTime) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.filePath = filePath;
         this.user = user;
         this.isHide = isHide;
         this.createTime = createTime;
+    }
+
+    public Post(String title, String content, User user) {
+        this.title = title;
+        this.content = content;
+        this.user = user;
     }
 
     public Long getId() {
@@ -72,14 +76,6 @@ public class Post {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public User getUser() {

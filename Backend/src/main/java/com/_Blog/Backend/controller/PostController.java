@@ -24,21 +24,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
-    private final CloudinaryService cloudinaryService;
+
     @Autowired
-    public PostController(PostService postService, CloudinaryService cloudinaryService) {
+    public PostController(PostService postService) {
         this.postService = postService;
-        this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<PostResponse> createPost(
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart(value = "file", required = false) MultipartFile file
-    ) throws IOException {
-        String fileUrl = file != null ? cloudinaryService.uploadFile(file, "posts/") : null;
-        PostRequest postRequest = new PostRequest(title, content, fileUrl);
+    public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest postRequest) {
         PostResponse response = postService.addPost(postRequest);
         return ResponseEntity.ok(response);
     }
@@ -59,20 +52,8 @@ public class PostController {
         return ResponseEntity.ok("Post deleted successfully");
     }
 
-    @PutMapping
-    public ResponseEntity<PostResponse> updatePost(@RequestPart("id") String idStr,
-                                           @RequestPart("title") String title,
-                                           @RequestPart("content") String content,
-                                           @RequestPart(value = "file", required = false) MultipartFile file) {
-        long id;
-        try {
-            id = Long.parseLong(idStr);
-        } catch (NumberFormatException e) {
-            throw new BadRequestException("Invalid post ID");
-        }
-        String fileUrl = file != null ? cloudinaryService.uploadFile(file, "posts/") : null;
-        PostRequest postRequest = new PostRequest(title, content, fileUrl);
-
+    @PutMapping("/{id}")
+    public ResponseEntity<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id) {
         PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
