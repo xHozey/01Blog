@@ -14,4 +14,5 @@ public interface FollowRepository extends CrudRepository<Follow,Integer> {
     Long countByFollowedId(Long followedId);
     Long countByFollowerId(Long followerId);
     List<Follow> findByFollowerId(Long followerId);
+    List<Follow> findByFollowedId(Long followedId);
 }

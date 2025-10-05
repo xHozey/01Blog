@@ -25,24 +25,30 @@ public class PostService {
     private final FollowRepository followRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final ReportPostRepository reportPostRepository;
+    private final NotificationService notificationService;
+
     @Autowired
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository,  NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
         this.postEngagementRepository = postEngagementRepository;
         this.reportPostRepository = reportPostRepository;
+        this.notificationService = notificationService;
     }
 
     public PostResponse addPost(PostRequest post) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         Post newPost = new Post();
         newPost.setUser(user);
         newPost.setTitle(post.getTitle());
         newPost.setContent(post.getContent());
         newPost.setFilePath(post.getFilePath());
+
         Post savedPost = this.postRepository.save(newPost);
+        this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
         return new PostResponse(savedPost.getId(), savedPost.getTitle(), savedPost.getContent(), savedPost.getUser().getUsername(),savedPost.getUser().getId(), savedPost.getFilePath(),savedPost.getCreateTime(), 0L, false );
     }
 

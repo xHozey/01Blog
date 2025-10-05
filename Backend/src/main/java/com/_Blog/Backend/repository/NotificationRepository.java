@@ -1,7 +1,13 @@
 package com._Blog.Backend.repository;
 
+import com._Blog.Backend.model.Notification;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public interface NotificationRepository {
+public interface NotificationRepository extends JpaRepository<Notification, Long> {
+    List<Notification> findByReceiverId(Long receiverId, Pageable pageable);
 }

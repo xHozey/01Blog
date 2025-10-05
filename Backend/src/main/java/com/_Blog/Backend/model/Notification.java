@@ -8,6 +8,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "notification")
@@ -17,9 +20,8 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String type;
     private String description;
-    private Boolean isRead;
+    private Boolean isRead = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id")
@@ -29,15 +31,18 @@ public class Notification {
     @JoinColumn(name = "send_id")
     private User sender;
 
+    @CreationTimestamp
+    private Timestamp createTime;
+
     public Notification() {}
 
-    public Notification(Long id, String type, String description, Boolean isRead, User receiver, User sender) {
+    public Notification(Long id, String description, Boolean isRead, User receiver, User sender, Timestamp createTime) {
         this.id = id;
-        this.type = type;
         this.description = description;
         this.isRead = isRead;
         this.receiver = receiver;
         this.sender = sender;
+        this.createTime = createTime;
     }
 
     public Long getId() {
@@ -46,14 +51,6 @@ public class Notification {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getDescription() {
@@ -86,5 +83,13 @@ public class Notification {
 
     public void setSender(User sender) {
         this.sender = sender;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 }
