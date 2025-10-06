@@ -20,4 +20,8 @@ public class UserRoleService {
         user.getRoles().add(userRole);
         userRoleRepository.save(userRole);
     }
+
+    public void deleteRole(Role role, User user) {
+        this.userRoleRepository.deleteByUserAndRole(user, role);
+    }
 }

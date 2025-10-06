@@ -20,13 +20,14 @@ public class ReportUser {
 
     private String description;
     @CreationTimestamp
-    private Timestamp date;
+    private Timestamp createAt;
 
-    public ReportUser(Long id,  User reporter, User reportedUser, String description) {
+    public ReportUser(Long id, User reporter, User reportedUser, String description, Timestamp createAt) {
         this.id = id;
         this.reporter = reporter;
         this.reportedUser = reportedUser;
         this.description = description;
+        this.createAt = createAt;
     }
 
     public ReportUser(User reporter, User reportedUser, String description) {
@@ -68,5 +69,13 @@ public class ReportUser {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

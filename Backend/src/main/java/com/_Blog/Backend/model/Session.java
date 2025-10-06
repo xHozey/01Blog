@@ -1,6 +1,10 @@
 package com._Blog.Backend.model;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
+
 @Entity
 @Table(name = "session")
 public class Session {
@@ -15,6 +19,16 @@ public class Session {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+    @CreationTimestamp
+    private Timestamp createAt;
+
+    public Session(Long id, String token, User user, Boolean revoked, Timestamp createAt) {
+        this.id = id;
+        this.token = token;
+        this.user = user;
+        this.revoked = revoked;
+        this.createAt = createAt;
+    }
 
     public Session() {}
 
@@ -48,5 +62,13 @@ public class Session {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

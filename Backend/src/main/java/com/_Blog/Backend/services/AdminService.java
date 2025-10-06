@@ -8,6 +8,7 @@ import com._Blog.Backend.model.*;
 import com._Blog.Backend.repository.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,14 +21,16 @@ public class AdminService {
     private final PostEngagementRepository postEngagementRepository;
     private final ReportUserRepository reportUserRepository;
     private final ReportPostRepository reportPostRepository;
+    private final ReportCommentRepository reportCommentRepository;
 
-    AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository) {
+    AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository,  ReportCommentRepository reportCommentRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.postEngagementRepository = postEngagementRepository;
         this.reportUserRepository = reportUserRepository;
         this.reportPostRepository = reportPostRepository;
+        this.reportCommentRepository = reportCommentRepository;
     }
 
     public void deletePost(Long postId) {
@@ -72,12 +75,17 @@ public class AdminService {
     }
 
     public List<ReportUser> getUserReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("username").descending());
         return this.reportUserRepository.findAll(pageable).toList();
     }
 
     public List<ReportPost> getPostReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"createAt"));
         return this.reportPostRepository.findAll(pageable).toList();
+    }
+
+    public List<ReportComment> getCommentReports(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return this.reportCommentRepository.findAll(pageable).toList();
     }
 }

@@ -12,6 +12,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.sql.Timestamp;
 
 
 @Entity
@@ -29,7 +32,15 @@ public class UserRole {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    public UserRole() {}
+    @CreationTimestamp
+    private Timestamp createAt;
+
+    public UserRole(Long id,  Role role, User user,  Timestamp createAt) {
+        this.id = id;
+        this.role = role;
+        this.user = user;
+        this.createAt = createAt;
+    }
 
     public UserRole(User user, Role role) {
         this.user = user;
@@ -54,5 +65,13 @@ public class UserRole {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Timestamp getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

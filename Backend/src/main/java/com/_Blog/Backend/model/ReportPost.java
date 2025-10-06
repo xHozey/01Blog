@@ -32,16 +32,16 @@ public class ReportPost {
     private String description;
 
     @CreationTimestamp
-    private Timestamp date;
+    private Timestamp createAt;
 
     public ReportPost() {}
 
-    public ReportPost(Long id, User reporter, Post reportedPost, String description, Timestamp date) {
+    public ReportPost(Long id, User reporter, Post reportedPost, String description, Timestamp createAt) {
         this.id = id;
         this.reporter = reporter;
         this.reportedPost = reportedPost;
         this.description = description;
-        this.date = date;
+        this.createAt = createAt;
     }
 
     public Long getId() {
@@ -76,11 +76,11 @@ public class ReportPost {
         this.description = description;
     }
 
-    public Timestamp getDate() {
-        return date;
+    public Timestamp getCreateAt() {
+        return createAt;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 }

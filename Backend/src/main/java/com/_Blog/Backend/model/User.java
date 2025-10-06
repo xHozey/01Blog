@@ -53,7 +53,7 @@ public class User implements UserDetails {
     private Boolean isBanned = false;
 
     @CreationTimestamp
-    private Timestamp creation;
+    private Timestamp createAt;
 
     // Cascade posts and engagements
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -88,14 +88,14 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp creation) {
+    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp createAt) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.iconPath = iconPath;
         this.isBanned = isBanned;
-        this.creation = creation;
+        this.createAt = createAt;
     }
 
     public Long getId() {
@@ -156,12 +156,12 @@ public class User implements UserDetails {
         this.isBanned = isBanned;
     }
 
-    public Timestamp getCreation() {
-        return creation;
+    public Timestamp getCreateAt() {
+        return createAt;
     }
 
-    public void setCreation(Timestamp creation) {
-        this.creation = creation;
+    public void setCreateAt(Timestamp createAt) {
+        this.createAt = createAt;
     }
 
     @Override

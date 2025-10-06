@@ -39,8 +39,7 @@ public class SecurityConfig {
                 }))
                 .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login", "/api/v1/users/me", "/api/v1/refresh").permitAll()
-                .requestMatchers("/api/v1/posts/hide/**").hasRole("ADMIN")
-                .requestMatchers("/api/v1/posts/**", "/api/v1/comments/**", "/api/v1/engagement/**").hasRole("USER")
+                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
