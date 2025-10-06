@@ -28,6 +28,11 @@ public class CommentEngagement {
 
     public CommentEngagement() {}
 
+    public CommentEngagement(User user, Comment comment) {
+        this.user = user;
+        this.comment = comment;
+    }
+
     public CommentEngagement(Long id, User user, Comment comment) {
         this.id = id;
         this.user = user;

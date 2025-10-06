@@ -131,9 +131,4 @@ public class PostService {
         this.reportPostRepository.save(reportPost);
     }
 
-    public void hidePost(Long postId) {
-        Post post = this.postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", postId)));
-        post.setIsHide(!post.getIsHide());
-        this.postRepository.save(post);
-    }
 }

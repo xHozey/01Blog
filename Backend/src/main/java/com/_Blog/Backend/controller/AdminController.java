@@ -2,6 +2,8 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
+import com._Blog.Backend.model.ReportPost;
+import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.services.AdminService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +29,6 @@ public class AdminController {
     public ResponseEntity<String> deletePost(@PathVariable Long id){
         this.adminService.deletePost(id);
         return ResponseEntity.ok("post deleted");
-    }
-
-    @PostMapping("/comment/{id}/hide")
-    public void hideComment(@PathVariable Long id){
-
     }
 
     @DeleteMapping("/comment/{id}/delete")
@@ -69,4 +66,15 @@ public class AdminController {
         return ResponseEntity.ok("user has unbanned");
     }
 
+    @GetMapping("/report/user")
+    public ResponseEntity<List<ReportUser>> getUserReports(@RequestParam(defaultValue = "0") Integer page) {
+        List<ReportUser> reports = this.adminService.getUserReports(page);
+        return ResponseEntity.ok(reports);
+    }
+
+    @GetMapping("/report/post")
+    public ResponseEntity<List<ReportPost>> getPostReports(@RequestParam(defaultValue = "0") Integer page) {
+        List<ReportPost> reports = this.adminService.getPostReports(page);
+        return ResponseEntity.ok(reports);
+    }
 }

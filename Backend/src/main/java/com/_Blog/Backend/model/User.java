@@ -83,6 +83,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Session> sessions = new HashSet<>();
 
+    @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReportUser> reportedUsers = new HashSet<>();
+
     public User() {}
 
     public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp creation) {

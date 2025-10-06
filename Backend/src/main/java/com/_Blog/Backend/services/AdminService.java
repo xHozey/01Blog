@@ -4,13 +4,8 @@ import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
 import com._Blog.Backend.dto.PostResponse;
 import com._Blog.Backend.exception.ResourceNotFoundException;
-import com._Blog.Backend.model.Post;
-import com._Blog.Backend.model.PostEngagement;
-import com._Blog.Backend.model.User;
-import com._Blog.Backend.repository.CommentRepository;
-import com._Blog.Backend.repository.PostEngagementRepository;
-import com._Blog.Backend.repository.PostRepository;
-import com._Blog.Backend.repository.UserRepository;
+import com._Blog.Backend.model.*;
+import com._Blog.Backend.repository.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -23,12 +18,16 @@ public class AdminService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final PostEngagementRepository postEngagementRepository;
+    private final ReportUserRepository reportUserRepository;
+    private final ReportPostRepository reportPostRepository;
 
-    AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository) {
+    AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.postEngagementRepository = postEngagementRepository;
+        this.reportUserRepository = reportUserRepository;
+        this.reportPostRepository = reportPostRepository;
     }
 
     public void deletePost(Long postId) {
@@ -70,5 +69,15 @@ public class AdminService {
     public List<AdminUserDTO> getBannedUsers(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
         return this.userRepository.findAllByIsBanned(true,  pageable).map(AdminUserDTO::new).toList();
+    }
+
+    public List<ReportUser> getUserReports(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.reportUserRepository.findAll(pageable).toList();
+    }
+
+    public List<ReportPost> getPostReports(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.reportPostRepository.findAll(pageable).toList();
     }
 }

@@ -32,6 +32,11 @@ public class PostEngagement {
 
     public PostEngagement() {}
 
+    public PostEngagement(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
+
     public PostEngagement(Long id, Post post, User user) {
         this.id = id;
         this.post = post;

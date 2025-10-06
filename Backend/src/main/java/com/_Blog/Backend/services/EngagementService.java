@@ -31,12 +31,9 @@ public class EngagementService {
         if (engagement.isPresent()) {
             postEngagementRepository.deleteById(engagement.get().getId());
         } else {
-            PostEngagement postEngagement = new PostEngagement();
             User user = userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
             Post post =  postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-            postEngagement.setPost(post);
-            postEngagement.setUser(user);
-            postEngagementRepository.save(postEngagement);
+            postEngagementRepository.save(new PostEngagement(post, user));
         }
     }
 
@@ -46,12 +43,9 @@ public class EngagementService {
         if (engagement.isPresent()) {
             commentEngagementRepository.deleteById(engagement.get().getId());
         } else {
-            CommentEngagement commentEngagement = new CommentEngagement();
             User user = userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
             Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
-            commentEngagement.setComment(comment);
-            commentEngagement.setUser(user);
-            commentEngagementRepository.save(commentEngagement);
+            commentEngagementRepository.save(new CommentEngagement(user, comment));
         }
     }
 }

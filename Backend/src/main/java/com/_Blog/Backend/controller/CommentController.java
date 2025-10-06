@@ -21,28 +21,15 @@ import org.springframework.web.multipart.MultipartFile;
 public class CommentController {
 
     private final CommentService commentService;
-    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public CommentController(CommentService commentService, CloudinaryService cloudinaryService) {
+    public CommentController(CommentService commentService) {
         this.commentService = commentService;
-        this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponse> createComment(@RequestPart("postId") String idStr,
-                                                         @RequestPart("content") String content,
-                                                         @RequestPart(value = "file", required = false) MultipartFile file)
-    {
-        long id = 0;
-        try {
-            id = Long.parseLong(idStr);
-        }  catch (NumberFormatException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        String fileUrl = file != null ? this.cloudinaryService.uploadFile(file, "/comments") : null;
-        CommentRequest comment = new CommentRequest(content, fileUrl, id);
-        CommentResponse savedPost = this.commentService.addComment(comment);
+    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentRequest commentRequest) {
+        CommentResponse savedPost = this.commentService.addComment(commentRequest);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }
 
@@ -57,22 +44,9 @@ public class CommentController {
         return ResponseEntity.ok("Comment deleted successfully");
     }
 
-    @PutMapping
-    public ResponseEntity<CommentResponse> updateComment(@RequestPart("postId") String postIdStr,
-                                                 @RequestPart("commentId") String commentIdStr,
-                                                 @RequestPart("content") String content,
-                                                 @RequestPart(value = "file", required = false) MultipartFile file) {
-        long commentId = 0;
-        long postId = 0;
-        try {
-            commentId = Long.parseLong(commentIdStr);
-            postId = Long.parseLong(postIdStr);
-        } catch (NumberFormatException e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        String fileUrl = file != null ? this.cloudinaryService.uploadFile(file, "/comments") : null;
-        CommentRequest comment = new CommentRequest(content, fileUrl, postId);
-        CommentResponse savedComment = commentService.updateComment(comment, commentId);
+    @PutMapping("{id}")
+    public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest commentRequest, @PathVariable Long id) {
+        CommentResponse savedComment = commentService.updateComment(commentRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedComment);
     }
 }

@@ -25,12 +25,11 @@ public class PostController {
 
     private final PostService postService;
 
-    @Autowired
     public PostController(PostService postService) {
         this.postService = postService;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping
     public ResponseEntity<PostResponse> createPost(@RequestBody @Valid PostRequest postRequest) {
         PostResponse response = postService.addPost(postRequest);
         return ResponseEntity.ok(response);
@@ -62,12 +61,6 @@ public class PostController {
     public ResponseEntity<String> reportPost(@Valid @RequestBody ReportRequest reportRequest) {
         this.postService.reportPost(reportRequest);
         return ResponseEntity.status(HttpStatus.OK).body("Post reported successfully");
-    }
-
-    @PostMapping("/hide/{id}")
-    public ResponseEntity<String> hidePost(@PathVariable Long id) {
-        this.postService.hidePost(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Post hide successfully");
     }
 
 }
