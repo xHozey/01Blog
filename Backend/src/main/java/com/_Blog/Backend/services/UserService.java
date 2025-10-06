@@ -1,9 +1,6 @@
 package com._Blog.Backend.services;
 
-import com._Blog.Backend.dto.LoginRequest;
-import com._Blog.Backend.dto.RegisterRequest;
-import com._Blog.Backend.dto.ReportRequest;
-import com._Blog.Backend.dto.UserResponse;
+import com._Blog.Backend.dto.*;
 import com._Blog.Backend.model.*;
 import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.SessionRepository;
@@ -24,11 +21,13 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final ReportUserRepository reportUserRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, JwtUtil jwtUtil,  ReportUserRepository reportUserRepository) {
+    public UserService(UserRepository userRepository, JwtUtil jwtUtil,  ReportUserRepository reportUserRepository,  PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.reportUserRepository = reportUserRepository;
         this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponse GetUser(String token) {
@@ -48,5 +47,19 @@ public class UserService {
         User reported = this.userRepository.findById(reportedId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         ReportUser reportUser = new ReportUser(reporter, reported, reportRequest.getDescription());
         this.reportUserRepository.save(reportUser);
+    }
+
+    public UserResponse updateProfile(UserProfileUpdateRequest profileUpdateRequest) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (!this.passwordEncoder.matches(profileUpdateRequest.getConfirmPassword(), user.getPassword())) {
+            throw new UnauthorizedException("Wrong Password");
+        }
+        if (profileUpdateRequest.getIconProfile() != null) user.setIconPath(profileUpdateRequest.getIconProfile());
+        if (profileUpdateRequest.getUsername() != null) user.setUsername(profileUpdateRequest.getUsername());
+        if (profileUpdateRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(profileUpdateRequest.getPassword()));
+
+        User savedUser = this.userRepository.save(user);
+        return new UserResponse(savedUser);
     }
 }

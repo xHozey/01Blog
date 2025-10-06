@@ -66,6 +66,12 @@ public class AdminController {
         return ResponseEntity.ok("user has unbanned");
     }
 
+    @DeleteMapping("/user/{id}/delete")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id){
+        this.adminService.deleteUser(id);
+        return ResponseEntity.ok("user deleted");
+    }
+
     @GetMapping("/report/user")
     public ResponseEntity<List<ReportUser>> getUserReports(@RequestParam(defaultValue = "0") Integer page) {
         List<ReportUser> reports = this.adminService.getUserReports(page);

@@ -1,9 +1,6 @@
 package com._Blog.Backend.controller;
 
-import com._Blog.Backend.dto.LoginRequest;
-import com._Blog.Backend.dto.RegisterRequest;
-import com._Blog.Backend.dto.ReportRequest;
-import com._Blog.Backend.dto.UserResponse;
+import com._Blog.Backend.dto.*;
 import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.utils.CookiesUtil;
 import jakarta.servlet.http.HttpServletResponse;
@@ -44,10 +41,15 @@ public class UserController {
         return ResponseEntity.ok(userService.GetUserById(id));
     }
 
-    @PostMapping("/user/{id}/report")
+    @PostMapping("/{id}/report")
     public ResponseEntity<String> reportUser(@RequestBody ReportRequest reportRequest, @PathVariable Long id) {
         this.userService.reportUser(reportRequest, id);
         return ResponseEntity.ok("report submitted");
     }
 
+    @PutMapping("/me")
+    public ResponseEntity<UserResponse> updateProfile(@RequestBody @Valid UserProfileUpdateRequest userProfileUpdateRequest) {
+        UserResponse user = this.userService.updateProfile(userProfileUpdateRequest);
+        return  ResponseEntity.ok(user);
+    }
 }

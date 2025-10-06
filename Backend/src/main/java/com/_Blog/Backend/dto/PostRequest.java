@@ -8,12 +8,15 @@ public class PostRequest {
     @Size(max = 300)
     private String title;
     @NotBlank
-    @Size(max = 3000)
+    @Size(max = 10000)
     private String content;
+    @Size(max = 300)
+    private String[] media;
 
-    public PostRequest(String title, String content) {
+    public PostRequest(String title, String content, String[] media) {
         this.title = title;
         this.content = content;
+        this.media = media;
     }
 
     public PostRequest() {}

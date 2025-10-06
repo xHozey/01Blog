@@ -88,4 +88,8 @@ public class AdminService {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
         return this.reportCommentRepository.findAll(pageable).toList();
     }
+
+    public void deleteUser(Long userId) {
+        this.userRepository.deleteById(userId);
+    }
 }
