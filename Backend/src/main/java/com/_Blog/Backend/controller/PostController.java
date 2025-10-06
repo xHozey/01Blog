@@ -36,7 +36,7 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Long page) {
+    public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Integer page) {
         return ResponseEntity.ok(postService.getPosts(page));
     }
 

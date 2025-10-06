@@ -34,7 +34,7 @@ public class CommentController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<List<CommentResponse>> getComments(@RequestParam(defaultValue = "0") Long page, @PathVariable Long id) {
+    public ResponseEntity<List<CommentResponse>> getComments(@RequestParam(defaultValue = "0") Integer page, @PathVariable Long id) {
         return ResponseEntity.ok(commentService.getComments(page, id));
     }
 

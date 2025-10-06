@@ -1,6 +1,8 @@
 package com._Blog.Backend.repository;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +12,5 @@ import com._Blog.Backend.model.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    @Query(value = "SELECT * FROM comment WHERE post_id = :postId ORDER BY create_time DESC LIMIT 10 OFFSET :offset", nativeQuery = true)
-    List<Comment> findCommentsByOffsetLimit(@Param("offset") Long offset, @Param("postId") Long postId);
+    Page<Comment> findAllByPostId(Long id, Pageable pageable);
 }

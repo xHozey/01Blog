@@ -9,6 +9,10 @@ import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.model.*;
 import com._Blog.Backend.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +51,7 @@ public class PostService {
         return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
     }
 
-    public List<PostResponse> getPosts(Long offset) {
+    public List<PostResponse> getPosts(Integer page) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Long> followedUserIds = followRepository.findByFollowerId(jwtUser.getId())
@@ -55,36 +59,48 @@ public class PostService {
                 .map(follow -> follow.getFollowed().getId())
                 .toList();
 
-        List<Post> postsByFollowedUsers = postRepository.findPostsByUserIds(followedUserIds, offset * 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         List<PostResponse> resultPosts = new ArrayList<>();
         int remaining = 10;
+
         if (!followedUserIds.isEmpty()) {
+            List<Post> postsByFollowedUsers = postRepository
+                    .findAllByUserIdInAndIsHideFalse(followedUserIds, pageable)
+                    .getContent();
 
             remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
-            System.out.println(remaining);
 
             if (remaining > 0) {
-                List<Post> postsFromOthers = postRepository.findRandomPostsExcludingUsers(followedUserIds);
+                List<Post> postsFromOthers = postRepository
+                        .findRandomPostsExcludingUsers(followedUserIds, PageRequest.of(0, remaining))
+                        .getContent();
+
                 getRemaining(jwtUser, postsFromOthers, resultPosts, remaining);
-                System.out.println(postsFromOthers);
             }
         } else {
-            List<Post> posts = this.postRepository.findNewestPosts(offset * 10);
-            getRemaining(jwtUser, posts, resultPosts, remaining);
+            List<Post> newestPosts = postRepository
+                    .findAllByIsHideFalse(pageable)
+                    .getContent();
+
+            getRemaining(jwtUser, newestPosts, resultPosts, remaining);
         }
+
         return resultPosts;
     }
 
-    private int getRemaining(JwtUser jwtUser, List<Post> postsByFollowedUsers, List<PostResponse> resultPosts, int remaining) {
-        for (Post post : postsByFollowedUsers) {
+    private int getRemaining(JwtUser jwtUser, List<Post> posts, List<PostResponse> resultPosts, int remaining) {
+        for (Post post : posts) {
             if (remaining == 0) break;
-            resultPosts.add(new PostResponse(post, this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())));
+            resultPosts.add(new PostResponse(
+                    post,
+                    postEngagementRepository.countByPostId(post.getId()),
+                    postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())
+            ));
             remaining--;
         }
         return remaining;
     }
-
 
     public PostResponse getPostById(Long id) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

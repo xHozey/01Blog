@@ -11,6 +11,8 @@ import com._Blog.Backend.repository.CommentEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
 import com._Blog.Backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,9 +51,9 @@ public class CommentService {
         return new CommentResponse(savedComment, this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), JwtUser.getId()));
     }
 
-    public List<CommentResponse> getComments(Long offset, Long postId) {
+    public List<CommentResponse> getComments(Integer page, Long postId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        List<Comment> comments = commentRepository.findCommentsByOffsetLimit(offset * 10, postId);
+        List<Comment> comments = commentRepository.findAllByPostId(postId, PageRequest.of(page, 10, Sort.by("createTime").descending())).getContent();
 
         return comments.stream()
                 .map(comment -> new CommentResponse(comment, this.commentEngagementRepository.countByCommentId(comment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId())))
