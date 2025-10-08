@@ -104,4 +104,20 @@ public class Comment {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+
+    public Set<CommentEngagement> getEngagements() {
+        return engagements;
+    }
+
+    public void setEngagements(Set<CommentEngagement> engagements) {
+        this.engagements = engagements;
+    }
+
+    public Set<ReportComment> getReportComments() {
+        return reportComments;
+    }
+
+    public void setReportComments(Set<ReportComment> reportComments) {
+        this.reportComments = reportComments;
+    }
 }

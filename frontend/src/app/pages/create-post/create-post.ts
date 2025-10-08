@@ -1,137 +1,117 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import {
-  ArrowLeft,
-  Image as ImageIcon,
-  SendHorizontal,
-  Upload,
-  X,
-  LucideAngularModule,
-} from 'lucide-angular';
+import { LucideAngularModule } from 'lucide-angular';
+import { MediaService } from '../../service/media-service';
 import { PostService } from '../../service/post-service';
+import { QuillModule } from 'ngx-quill';
+import Quill from 'quill';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
-import { Editor, NgxEditorComponent, NgxEditorMenuComponent } from 'ngx-editor';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [NgxEditorComponent, NgxEditorMenuComponent,CommonModule, FormsModule, LucideAngularModule, NavbarComponent],
+  imports: [CommonModule, FormsModule, LucideAngularModule, QuillModule, NavbarComponent],
   templateUrl: './create-post.html',
   styleUrls: ['./create-post.css'],
 })
-export class CreatePost implements OnInit, OnDestroy {
-  readonly ArrowLeftIcon = ArrowLeft;
-  readonly ImageIcon = ImageIcon;
-  readonly SendIcon = SendHorizontal;
-  readonly UploadIcon = Upload;
-  readonly XIcon = X;
-  editor: Editor | null = null;
-
-  title = '';
-  content = '';
-  previewUrl: string | null = null;
-  selectedFile: File | null = null;
-  dragOver = false;
-
-  @ViewChild('fileInputRef') fileInputRef!: ElementRef<HTMLInputElement>;
-
-  constructor(private postService: PostService, private router: Router) {}
-
-  // --- File handling ---
-  onFileSelect(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files?.length) this.setFile(input.files[0]);
-  }
-
-  onDragOver(event: DragEvent) {
-    event.preventDefault();
-    this.dragOver = true;
-  }
-
-  onDragLeave() {
-    this.dragOver = false;
-  }
-
-  onDrop(event: DragEvent) {
-    event.preventDefault();
-    this.dragOver = false;
-    const file = event.dataTransfer?.files?.[0];
-    if (file) this.setFile(file);
-  }
-
-  private setFile(file: File) {
-    if (!file.type.startsWith('image/') && !file.type.startsWith('video/')) return;
-    this.selectedFile = file;
-
-    const reader = new FileReader();
-    reader.onload = () => (this.previewUrl = reader.result as string);
-    reader.readAsDataURL(file);
-  }
-
-  get isImage() {
-    return this.selectedFile?.type.startsWith('image/');
-  }
-
-  get isVideo() {
-    return this.selectedFile?.type.startsWith('video/');
-  }
-
-  removeFile() {
-    this.selectedFile = null;
-    this.previewUrl = null;
-    if (this.fileInputRef?.nativeElement) {
-      this.fileInputRef.nativeElement.value = '';
-    }
-  }
-
-  // --- Submit ---
-  handleSubmit() {
-    if (!this.content.trim()) return;
-
-    const formData = new FormData();
-    formData.append('title', this.title);
-    formData.append('content', this.content);
-    if (this.selectedFile) formData.append('file', this.selectedFile);
-
-    this.postService.addPost(formData).subscribe({
-      next: () => {
-        this.resetForm();
-        this.router.navigate(['/']);
+export class CreatePost {
+  private mediaService = inject(MediaService);
+  private postService = inject(PostService);
+  private router = inject(Router);
+  quill!: Quill;
+  modules = {
+    toolbar: {
+      container: [
+        ['bold', 'italic'],
+        [{ header: 1 }, { header: 2 }, { header: 3 }],
+        [{ list: 'ordered' }, { list: 'bullet' }],
+        ['blockquote', 'code-block'],
+        ['image', 'video'],
+      ],
+      handlers: {
+        image: () => this.handleImageUpload(),
+        video: () => this.handleVideoUpload(),
       },
-      error: (err) => console.error(err),
+    },
+  };
+
+  handleImageUpload() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = () => {
+      if (!input.files?.length) return;
+      const file = input.files[0];
+      const form = new FormData();
+      form.append('file', file);
+
+      this.mediaService.addPostImage(form).subscribe({
+        next: (url: string) => {
+          const range = this.quill.getSelection(true);
+          this.quill.insertEmbed(range.index, 'image', url);
+          this.quill.insertText(range.index + 1, '\n\n');
+          this.quill.setSelection(range.index + 3, 0);
+        },
+        error: (err) => console.error(err),
+      });
+    };
+    input.click();
+  }
+
+  handleVideoUpload() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'video/*';
+    input.onchange = () => {
+      if (!input.files?.length) return;
+      const file = input.files[0];
+      const form = new FormData();
+      form.append('file', file);
+
+      this.mediaService.addPostVideo(form).subscribe({
+        next: (url: string) => {
+          const range = this.quill.getSelection(true);
+          this.quill.clipboard.dangerouslyPasteHTML(
+            range.index,
+            `<video controls src="${url}" style="max-width:100%"></video>`
+          );
+          this.quill.insertText(range.index + 1, '\n\n');
+          this.quill.setSelection(range.index + 3, 0);
+        },
+        error: (err) => console.error(err),
+      });
+    };
+    input.click();
+  }
+
+  onEditorCreated(quill: Quill) {
+    this.quill = quill;
+    this.quill.root.style.height = '200px';
+    this.quill.on('text-change', () => {
+      this.content = this.quill.root.innerHTML;
     });
   }
 
-  handleCancel() {
-    if (this.title || this.content || this.selectedFile) {
-      if (confirm('Discard changes?')) this.resetFormAndExit();
-    } else {
-      this.router.navigate(['/']);
-    }
-  }
+  title = '';
+  content = '';
 
-  private resetForm() {
-    this.title = '';
-    this.content = '';
-    this.selectedFile = null;
-    this.previewUrl = null;
-    if (this.fileInputRef?.nativeElement) {
-      this.fileInputRef.nativeElement.value = '';
-    }
-  }
+  onSubmit() {
+    console.log(this.content);
+    if (!this.title.trim() || !this.content.trim()) return;
+    const payload: postRequest = {
+      title: this.title,
+      content: this.content,
+    };
 
-  private resetFormAndExit() {
-    this.resetForm();
-    this.router.navigate(['/']);
-  }
-
-  ngOnInit(): void {
-      this.editor = new Editor()
-  }
-
-  ngOnDestroy(): void {
-      this.editor?.destroy()
+    this.postService.addPost(payload).subscribe({
+      next: (res) => {
+        this.router.navigate(['/']);
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 }
