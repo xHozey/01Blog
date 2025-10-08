@@ -101,8 +101,8 @@ export class CreatePost {
     console.log(this.content);
     if (!this.title.trim() || !this.content.trim()) return;
     const payload: postRequest = {
-      title: this.title,
-      content: this.content,
+      title: this.title.trim(),
+      content: this.content.trim(),
     };
 
     this.postService.addPost(payload).subscribe({

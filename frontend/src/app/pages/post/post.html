@@ -1,0 +1,44 @@
+<app-navbar-component></app-navbar-component>
+
+<main class="post-page container">
+    @if (post) {
+
+        <article class="post-container">
+            
+            <!-- Header -->
+            <header class="post-header">
+                <div class="author-info">
+                    <span class="author-name">{{ post.author }}</span>
+                    <span class="post-time">· {{ post.createdAt | date:'medium' }}</span>
+                </div>
+            </header>
+            
+            <!-- Title -->
+            <h1 class="post-title">{{ post.title }}</h1>
+            
+            <!-- Content -->
+            <div class="post-body" [innerHTML]="safeContent"></div>
+            
+            <!-- Actions -->
+            <div class="post-actions">
+                <button (click)="toggleLike()" [ngClass]="isLiked ? 'liked' : ''" class="action-btn like-btn">
+                    <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
+                    <span>{{ post.likes }}</span>
+                </button>
+                
+                <button (click)="toggleComments()" [class.active]="showComments" class="action-btn comment-btn">
+                    <i class="fa fa-comment"></i>
+                    <span>{{ showComments ? 'Hide' : 'Comments' }}</span>
+                </button>
+            </div>
+            <!-- Comments -->
+            @if (showComments) {
+                <div class="comments-section">
+                    <app-comment-section [postId]="post.id"></app-comment-section>
+                </div>
+            }
+            
+        </article>
+        
+    }
+    </main>

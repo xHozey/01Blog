@@ -3,6 +3,7 @@ import { Home } from './pages/home/home';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { CreatePost } from './pages/create-post/create-post';
+import { Post } from './pages/post/post';
 
 export const routes: Routes = [
   {
@@ -20,5 +21,9 @@ export const routes: Routes = [
   {
     path: 'create-post',
     component: CreatePost
+  },
+  {
+    path: 'post/:id',
+    component: Post
   }
 ];

@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
 import { EngagementService } from '../../service/engagement-service';
 import { UserService } from '../../service/user-service';
-import { CommentSection } from "../comment-section/comment-section";
+import { CommentSection } from '../comment-section/comment-section';
+import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-post-component',
@@ -13,8 +16,10 @@ import { CommentSection } from "../comment-section/comment-section";
   styleUrls: ['./post-component.css'],
 })
 export class PostComponent implements OnInit {
-  constructor(private engagementService: EngagementService, private userService: UserService) {}
-
+  private engagementService: EngagementService = inject(EngagementService);
+  private userService: UserService = inject(UserService);
+  private sanitizer: DomSanitizer = inject(DomSanitizer)
+  private router: Router = inject(Router)
   @Input() post!: postResponse;
 
   @Output() delete = new EventEmitter<number>();
@@ -67,4 +72,20 @@ export class PostComponent implements OnInit {
   toggleComments() {
     this.showComments = !this.showComments;
   }
+
+  getSnippet(content: string) {
+    // Sanitize content
+    const cleanContent = DOMPurify.sanitize(content);
+    console.log(cleanContent)
+    // Truncate safely
+    const snippet = cleanContent.length > 400
+      ? cleanContent.slice(0, 400) + '...'
+      : cleanContent;
+
+    return this.sanitizer.bypassSecurityTrustHtml(snippet);
+  }
+
+  goToPost() {
+  this.router.navigate(['/post', this.post.id]);
+}
 }
