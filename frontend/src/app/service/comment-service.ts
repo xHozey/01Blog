@@ -3,6 +3,7 @@ import { API_URL, API_VERSION } from '../../config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { commentResponse } from '../models/commentResponse';
+import { commentRequest } from '../models/commentRequest';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +18,11 @@ export class CommentService {
     });
   }
 
-  addComment(payload: FormData): Observable<commentResponse> {
+  addComment(payload: commentRequest): Observable<commentResponse> {
     return this.http.post<commentResponse>(`${this.apiUrl}`, payload, { withCredentials: true });
   }
 
-  updateComment(payload: FormData): Observable<commentResponse> {
+  updateComment(payload: commentRequest): Observable<commentResponse> {
     return this.http.put<commentResponse>(`${this.apiUrl}`, payload, { withCredentials: true });
   }
 

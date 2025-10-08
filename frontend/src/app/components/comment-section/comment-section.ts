@@ -4,6 +4,7 @@ import { commentResponse } from '../../models/commentResponse';
 import { CommentComponent } from '../comment-component/comment-component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { commentRequest } from '../../models/commentRequest';
 
 @Component({
   selector: 'app-comment-section',
@@ -60,18 +61,16 @@ export class CommentSection implements OnInit {
   }
 
   submitComment() {
-    if (!this.postId || (!this.newCommentContent && !this.selectedFile)) return;
+    if (!this.postId || !this.newCommentContent) return;
 
-    const formData = new FormData();
-    formData.append('postId', this.postId.toString());
-    formData.append('content', this.newCommentContent);
-    if (this.selectedFile) {
-      formData.append('file', this.selectedFile);
+    const payload: commentRequest = {
+      postId: this.postId,
+      content: this.newCommentContent,
     }
 
-    this.commentService.addComment(formData).subscribe({
+    this.commentService.addComment(payload).subscribe({
       next: (comment) => {
-        this.comments.unshift(comment); // show new comment immediately
+        this.comments.unshift(comment);
         this.newCommentContent = '';
         this.selectedFile = null;
       },
