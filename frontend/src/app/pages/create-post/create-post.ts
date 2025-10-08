@@ -98,7 +98,6 @@ export class CreatePost {
   content = '';
 
   onSubmit() {
-    console.log(this.content);
     if (!this.title.trim() || !this.content.trim()) return;
     const payload: postRequest = {
       title: this.title.trim(),

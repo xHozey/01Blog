@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/register/register';
 import { CreatePost } from './pages/create-post/create-post';
 import { Post } from './pages/post/post';
 import { UpdatePost } from './pages/update-post/update-post';
+import { postEditGuard } from './guards/post-edit-guard-guard';
 
 export const routes: Routes = [
   {
@@ -21,14 +22,15 @@ export const routes: Routes = [
   },
   {
     path: 'create-post',
-    component: CreatePost
+    component: CreatePost,
   },
   {
     path: 'post/:id',
-    component: Post
+    component: Post,
   },
   {
     path: 'edit/:id',
-    component: UpdatePost
-  }
+    component: UpdatePost,
+    canActivate: [postEditGuard],
+  },
 ];

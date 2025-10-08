@@ -52,7 +52,6 @@ export class PostSectionComponent implements OnInit {
 
     this.postService.reportPost(payload).subscribe({
       next: (res) => {
-        console.log(res);
         this.resetReportForm();
       },
       error: (err) => {
@@ -69,7 +68,6 @@ export class PostSectionComponent implements OnInit {
 
   loadMore() {
     this.page++;
-    console.log(this.page);
     this.postService.getPosts(this.page).subscribe({
       next: (data) => {
         if (data) {
