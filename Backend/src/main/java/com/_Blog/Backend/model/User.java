@@ -190,4 +190,84 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return !Boolean.TRUE.equals(this.isBanned);
     }
+
+    public Set<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(Set<Post> posts) {
+        this.posts = posts;
+    }
+
+    public Set<PostEngagement> getEngagements() {
+        return engagements;
+    }
+
+    public void setEngagements(Set<PostEngagement> engagements) {
+        this.engagements = engagements;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<ReportPost> getReportPosts() {
+        return reportPosts;
+    }
+
+    public void setReportPosts(Set<ReportPost> reportPosts) {
+        this.reportPosts = reportPosts;
+    }
+
+    public Set<Notification> getReceivedNotifications() {
+        return receivedNotifications;
+    }
+
+    public void setReceivedNotifications(Set<Notification> receivedNotifications) {
+        this.receivedNotifications = receivedNotifications;
+    }
+
+    public Set<Notification> getSentNotifications() {
+        return sentNotifications;
+    }
+
+    public void setSentNotifications(Set<Notification> sentNotifications) {
+        this.sentNotifications = sentNotifications;
+    }
+
+    public Set<Follow> getFollowing() {
+        return following;
+    }
+
+    public void setFollowing(Set<Follow> following) {
+        this.following = following;
+    }
+
+    public Set<Follow> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(Set<Follow> followers) {
+        this.followers = followers;
+    }
+
+    public Set<Session> getSessions() {
+        return sessions;
+    }
+
+    public void setSessions(Set<Session> sessions) {
+        this.sessions = sessions;
+    }
+
+    public Set<ReportUser> getReportedUsers() {
+        return reportedUsers;
+    }
+
+    public void setReportedUsers(Set<ReportUser> reportedUsers) {
+        this.reportedUsers = reportedUsers;
+    }
 }
