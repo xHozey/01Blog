@@ -1,19 +1,20 @@
 package com._Blog.Backend.services;
 
-import com._Blog.Backend.dto.*;
-import com._Blog.Backend.model.*;
-import com._Blog.Backend.repository.ReportUserRepository;
-import com._Blog.Backend.repository.SessionRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com._Blog.Backend.exception.ConflictException;
+import com._Blog.Backend.dto.ReportRequest;
+import com._Blog.Backend.dto.UserProfileUpdateRequest;
+import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
+import com._Blog.Backend.model.JwtUser;
+import com._Blog.Backend.model.ReportUser;
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
-import com._Blog.Backend.utils.Role;
 
 @Service
 public class UserService {
@@ -23,7 +24,7 @@ public class UserService {
     private final ReportUserRepository reportUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, JwtUtil jwtUtil,  ReportUserRepository reportUserRepository,  PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, JwtUtil jwtUtil, ReportUserRepository reportUserRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.reportUserRepository = reportUserRepository;
         this.jwtUtil = jwtUtil;
@@ -55,9 +56,15 @@ public class UserService {
         if (!this.passwordEncoder.matches(profileUpdateRequest.getConfirmPassword(), user.getPassword())) {
             throw new UnauthorizedException("Wrong Password");
         }
-        if (profileUpdateRequest.getIconProfile() != null) user.setIconPath(profileUpdateRequest.getIconProfile());
-        if (profileUpdateRequest.getUsername() != null) user.setUsername(profileUpdateRequest.getUsername());
-        if (profileUpdateRequest.getPassword() != null) user.setPassword(passwordEncoder.encode(profileUpdateRequest.getPassword()));
+        if (profileUpdateRequest.getIconProfile() != null) {
+            user.setIconPath(profileUpdateRequest.getIconProfile());
+        }
+        if (profileUpdateRequest.getUsername() != null) {
+            user.setUsername(profileUpdateRequest.getUsername());
+        }
+        if (profileUpdateRequest.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(profileUpdateRequest.getPassword()));
+        }
 
         User savedUser = this.userRepository.save(user);
         return new UserResponse(savedUser);

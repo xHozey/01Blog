@@ -1,15 +1,20 @@
 package com._Blog.Backend.controller;
 
-import com._Blog.Backend.dto.*;
-import com._Blog.Backend.model.JwtUser;
-import com._Blog.Backend.utils.CookiesUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import com._Blog.Backend.dto.ReportRequest;
+import com._Blog.Backend.dto.UserProfileUpdateRequest;
+import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.services.UserService;
 
 import jakarta.validation.Valid;
@@ -31,7 +36,6 @@ public class UserController {
         if (token == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
         return ResponseEntity.ok(userService.GetUser(token));
     }
 

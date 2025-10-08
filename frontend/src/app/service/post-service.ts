@@ -35,8 +35,8 @@ export class PostService {
     });
   }
 
-  updatePost(formData: FormData): Observable<postResponse> {
-    return this.http.put<postResponse>(`${this.apiUrl}`, formData, { withCredentials: true });
+  updatePost(payload: postRequest, id: number): Observable<postResponse> {
+    return this.http.put<postResponse>(`${this.apiUrl}/${id}`, payload, { withCredentials: true });
   }
 
   reportPost(payload: reportRequest): Observable<string> {

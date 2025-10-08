@@ -1,9 +1,8 @@
 package com._Blog.Backend.dto;
 
-import com._Blog.Backend.model.User;
-import com._Blog.Backend.model.UserRole;
-
 import java.sql.Timestamp;
+
+import com._Blog.Backend.model.User;
 
 public class UserResponse {
     private Long id;
@@ -25,7 +24,7 @@ public class UserResponse {
         this.username = user.getUsername();
         this.iconPath = user.getIconPath();
         this.creation = user.getCreateAt();
-        this.roles = user.getRoles().stream().map(UserRole::getRole).toArray(String[]::new);
+        this.roles = user.getRoles().stream().map(r -> r.getRole().name()).toArray(String[]::new);
     }
 
     public UserResponse() {}

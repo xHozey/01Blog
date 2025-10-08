@@ -1,4 +1,4 @@
-<article class="post-container" (click)="goToPost()" >
+<article class="post-container" >
 
   <!-- Header -->
   <header class="post-header">
@@ -45,8 +45,8 @@
   </header>
 
   <!-- Title -->
-  <h2 class="post-title">{{ post.title }}</h2>
-  <div class="post-body" [innerHTML]="getSnippet(post.content)">
+  <h2 class="post-title" (click)="goToPost()">{{ post.title }}</h2>
+  <div class="post-body" [innerHTML]="getSnippet(post.content)" (click)="goToPost()">
   </div>
 
   <!-- Actions -->

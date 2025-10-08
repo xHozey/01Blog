@@ -16,6 +16,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "post")
@@ -26,6 +28,7 @@ public class Post {
     private Long id;
 
     private String title;
+    @Size(max=10000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -110,5 +113,29 @@ public class Post {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public Set<PostEngagement> getEngagements() {
+        return engagements;
+    }
+
+    public void setEngagements(Set<PostEngagement> engagements) {
+        this.engagements = engagements;
+    }
+
+    public Set<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public Set<ReportPost> getReportPosts() {
+        return reportPosts;
+    }
+
+    public void setReportPosts(Set<ReportPost> reportPosts) {
+        this.reportPosts = reportPosts;
     }
 }

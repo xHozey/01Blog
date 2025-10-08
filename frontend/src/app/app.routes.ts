@@ -4,6 +4,7 @@ import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { CreatePost } from './pages/create-post/create-post';
 import { Post } from './pages/post/post';
+import { UpdatePost } from './pages/update-post/update-post';
 
 export const routes: Routes = [
   {
@@ -25,5 +26,9 @@ export const routes: Routes = [
   {
     path: 'post/:id',
     component: Post
+  },
+  {
+    path: 'edit/:id',
+    component: UpdatePost
   }
 ];

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { PostSectionComponent } from '../../components/post-section-component/post-section-component';
 import { UserService } from '../../service/user-service';
@@ -11,8 +11,7 @@ import { UserService } from '../../service/user-service';
 })
 export class Home implements OnInit {
   user: userResponse | null = null;
-  constructor(private userService: UserService) {}
-
+  private userService: UserService = inject(UserService);
   ngOnInit() {
     this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));

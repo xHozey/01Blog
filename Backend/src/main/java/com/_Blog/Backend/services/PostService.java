@@ -124,7 +124,7 @@ public class PostService {
         User user =  userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
         Post oldPost = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         if (!user.getId().equals(oldPost.getUser().getId())) throw new UnauthorizedException("You are not allowed to update this post");
-
+    
         oldPost.setTitle(post.getTitle());   
         oldPost.setContent(post.getContent());
 

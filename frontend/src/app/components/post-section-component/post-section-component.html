@@ -19,56 +19,7 @@
     }
   </div>
 
-  <!-- Update File Modal -->
-  @if (showUpdateModal) {
-  <div class="modal d-block" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Update Post</h5>
-          <button type="button" class="btn-close" (click)="resetUpdateForm(fileInput)"></button>
-        </div>
-
-        <div class="modal-body">
-          <!-- Title -->
-          <input type="text" class="form-control mb-2" placeholder="Title" [(ngModel)]="updateForm.title" />
-
-          <!-- Content -->
-          @if (editor) {
-          <div class="NgxEditor__Wrapper form-control mb-2">
-            <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
-            <ngx-editor [editor]="editor" [(ngModel)]="updateForm.content" [placeholder]="'Type here...'"></ngx-editor>
-          </div>
-          }
-
-          <!-- File Upload -->
-          <div class="border rounded p-3 text-center" [class.bg-light]="dragOver" (dragover)="onDragOver($event)"
-            (dragleave)="onDragLeave()" (drop)="onDrop($event)">
-            <input type="file" #fileInput hidden (change)="onFileSelect($event)" accept="image/*,video/*" />
-            <button class="btn btn-outline-primary" (click)="fileInput.click()">Choose File</button>
-            <p class="mt-2 mb-0 text-muted">Drag & drop or click to upload (image/video)</p>
-
-            <!-- Preview -->
-            @if (previewUrl) {
-            @if (isFileImage) {
-            <img [src]="previewUrl" class="img-fluid rounded mt-3" style="max-height: 200px;" />
-            } @else if (isFileVideo) {
-            <video [src]="previewUrl" controls class="w-100 rounded mt-3" style="max-height: 200px;"></video>
-            }
-            <button class="btn btn-sm btn-danger mt-2" (click)="removeFile(fileInput)">Remove</button>
-            }
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="resetUpdateForm(fileInput)">Cancel</button>
-          <button class="btn btn-primary" (click)="saveUpdate(fileInput)">Save</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  }
-
+  
   @if (showReportModal) {
   <div class="modal d-block" tabindex="-1">
     <div class="modal-dialog">
