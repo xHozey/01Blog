@@ -1,7 +1,6 @@
 package com._Blog.Backend.dto;
 
 import com._Blog.Backend.model.Post;
-import org.springframework.security.core.parameters.P;
 
 public class AdminPostDTO {
     private Long id;

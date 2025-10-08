@@ -1,8 +1,8 @@
 package com._Blog.Backend.dto;
 
-import com._Blog.Backend.model.User;
-
 import java.sql.Timestamp;
+
+import com._Blog.Backend.model.User;
 
 public class AdminUserDTO {
         private Long id;
@@ -27,7 +27,7 @@ public class AdminUserDTO {
         this.email = user.getEmail();
         this.iconPath = user.getIconPath();
         this.isBanned = user.getIsBanned();
-        this.creation = user.getCreation();
+        this.creation = user.getCreateAt();
     }
 
     public AdminUserDTO() {}
