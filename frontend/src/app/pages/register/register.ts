@@ -45,7 +45,9 @@ export class RegisterComponent {
     };
 
     this.auth.register(payload).subscribe({
-      next: (res) => {},
+      next: (res) => {
+        console.log(res);
+      },
       error: (err) => {
         console.error(err);
       },

@@ -60,17 +60,6 @@ export class PostSectionComponent implements OnInit, OnDestroy {
     this.reportDescription = '';
   }
 
-  onHidePost(postId: number) {
-    this.postService.hidePost(postId).subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-  }
-
   saveReport() {
     if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
     const payload: reportRequest = {

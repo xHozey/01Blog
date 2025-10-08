@@ -1,5 +1,9 @@
 package com._Blog.Backend.model;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+
 import com._Blog.Backend.utils.Role;
 
 import jakarta.persistence.Entity;
@@ -12,9 +16,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.sql.Timestamp;
 
 
 @Entity
@@ -46,6 +47,8 @@ public class UserRole {
         this.user = user;
         this.role = role;
     }
+
+    public UserRole() {}
 
     public Long getId() {
         return id;

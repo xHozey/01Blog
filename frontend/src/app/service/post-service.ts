@@ -16,8 +16,14 @@ export class PostService {
     });
   }
 
-  addPost(formData: FormData): Observable<postResponse> {
-    return this.http.post<postResponse>(`${this.apiUrl}`, formData, {
+  getPost(id: number): Observable<postResponse> {
+      return this.http.get<postResponse>(`${this.apiUrl}/${id}`, {
+        withCredentials: true
+      })
+  }
+
+  addPost(payload: postRequest): Observable<postResponse> {
+    return this.http.post<postResponse>(`${this.apiUrl}`, payload, {
       withCredentials: true,
     });
   }
@@ -40,10 +46,4 @@ export class PostService {
     });
   }
 
-  hidePost(id: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/hide/${id}`, null, {
-      withCredentials: true,
-      responseType: 'text',
-    });
-  }
 }

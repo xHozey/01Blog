@@ -3,7 +3,7 @@
   <header class="comment-header">
     <div class="author-section">
       <span class="comment-author">{{ comment.author }}</span>
-      <span class="comment-time">{{ comment.createTime | date: 'short' }}</span>
+      <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
     </div>
     
     <!-- Dropdown Menu -->
@@ -37,7 +37,7 @@
   <!-- Content -->
   <p class="comment-content">{{ comment.content }}</p>
 
-  <!-- Media -->
+  <!-- Media
   @if (comment.filePath) {
     <div class="comment-media">
       @if (comment.filePath.toLowerCase().endsWith('.jpg') ||
@@ -56,7 +56,7 @@
         </video>
       }
     </div>
-  }
+  } -->
 
   <!-- Like Button -->
   <div class="like-action">

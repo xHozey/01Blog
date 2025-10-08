@@ -3,23 +3,27 @@ package com._Blog.Backend.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import com._Blog.Backend.dto.PostRequest;
-import com._Blog.Backend.dto.PostResponse;
-import com._Blog.Backend.dto.ReportRequest;
-import com._Blog.Backend.model.*;
-import com._Blog.Backend.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com._Blog.Backend.dto.PostRequest;
+import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
+import com._Blog.Backend.model.JwtUser;
+import com._Blog.Backend.model.Post;
+import com._Blog.Backend.model.ReportPost;
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.FollowRepository;
+import com._Blog.Backend.repository.PostEngagementRepository;
+import com._Blog.Backend.repository.PostRepository;
+import com._Blog.Backend.repository.ReportPostRepository;
+import com._Blog.Backend.repository.UserRepository;
 
 @Service
 public class PostService {
@@ -52,6 +56,8 @@ public class PostService {
     }
 
     public List<PostResponse> getPosts(Integer page) {
+        try {
+            
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Long> followedUserIds = followRepository.findByFollowerId(jwtUser.getId())
@@ -87,6 +93,11 @@ public class PostService {
         }
 
         return resultPosts;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        return null;
     }
 
     private int getRemaining(JwtUser jwtUser, List<Post> posts, List<PostResponse> resultPosts, int remaining) {

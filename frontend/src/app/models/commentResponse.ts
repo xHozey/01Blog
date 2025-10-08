@@ -3,8 +3,7 @@ export interface commentResponse {
   content: string;
   author: string;
   authorId: number;
-  createTime: string;
+  createdAt: string;
   likes: number;
   isLiked: boolean;
-  filePath: string;
 }

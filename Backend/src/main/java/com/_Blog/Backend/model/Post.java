@@ -4,8 +4,18 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "post")
@@ -25,7 +35,7 @@ public class Post {
     private Boolean isHide = false;
 
     @CreationTimestamp
-    private Timestamp createTime;
+    private Timestamp createdAt;
 
     // Cascade engagements and comments
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -39,13 +49,13 @@ public class Post {
 
     public Post() {}
 
-    public Post(Long id, String title, String content, User user, Boolean isHide, Timestamp createTime) {
+    public Post(Long id, String title, String content, User user, Boolean isHide, Timestamp createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.user = user;
         this.isHide = isHide;
-        this.createTime = createTime;
+        this.createdAt = createdAt;
     }
 
     public Post(String title, String content, User user) {
@@ -94,11 +104,11 @@ public class Post {
         this.isHide = isHide;
     }
 
-    public Timestamp getCreateTime() {
-        return createTime;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

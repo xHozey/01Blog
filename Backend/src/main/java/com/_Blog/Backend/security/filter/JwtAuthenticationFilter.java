@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import com._Blog.Backend.utils.CookiesUtil;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com._Blog.Backend.model.JwtUser;
+import com._Blog.Backend.utils.CookiesUtil;
 import com._Blog.Backend.utils.JwtUtil;
 
 import jakarta.servlet.FilterChain;
@@ -79,7 +78,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch(Exception e) {
+        } catch(AuthenticationServiceException e) {
             throw new AuthenticationServiceException("Invalid token: " + e.getMessage());
         }
         chain.doFilter(request, response);

@@ -16,6 +16,8 @@ public class ReportRequest {
         this.description = description;
     }
 
+    public ReportRequest() {}
+
     public Long getPostId() {
         return postId;
     }

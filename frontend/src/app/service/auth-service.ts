@@ -18,8 +18,6 @@ export class AuthService {
     });
   }
 
-
-
   register(payload: userRequest): Observable<string> {
     return this.http.post(`${this.apiUrl}/register`, payload, {
       withCredentials: true,

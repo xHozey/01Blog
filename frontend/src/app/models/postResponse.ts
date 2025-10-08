@@ -4,8 +4,7 @@ interface postResponse {
   content: string;
   author: string;
   authorId: number;
-  filePath: string;
-  createTime: string;
+  createdAt: string;
   likes: number;
   isLiked: boolean;
 }

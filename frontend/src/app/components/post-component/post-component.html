@@ -4,7 +4,7 @@
   <header class="post-header">
     <div class="author-info">
       <span class="author-name">{{ post.author }}</span>
-      <span class="post-time">· {{ post.createTime | date: 'medium' }}</span>
+      <span class="post-time">· {{ post.createdAt | date: 'medium' }}</span>
     </div>
 
     <!-- Dropdown -->
@@ -45,7 +45,7 @@
   <p class="post-body">{{ post.content }}</p>
 
   <!-- Media -->
-  @if (post.filePath) {
+  <!-- @if (post.filePath) {
     <div class="post-media">
       @if (getFileType(post.filePath) === 'image') {
         <img [src]="post.filePath" alt="Post image" />
@@ -53,7 +53,7 @@
         <video [src]="post.filePath" controls></video>
       }
     </div>
-  }
+  } -->
 
   <!-- Actions -->
   <div class="post-actions">

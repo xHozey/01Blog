@@ -1,23 +1,25 @@
 package com._Blog.Backend.controller;
 
-import java.io.IOException;
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
 import com._Blog.Backend.dto.ReportRequest;
-import com._Blog.Backend.exception.BadRequestException;
-import com._Blog.Backend.services.CloudinaryService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import com._Blog.Backend.services.PostService;
 
 import jakarta.validation.Valid;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -37,6 +39,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Integer page) {
+        System.out.println(page);
         return ResponseEntity.ok(postService.getPosts(page));
     }
 

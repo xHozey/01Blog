@@ -1,5 +1,8 @@
 package com._Blog.Backend.services;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com._Blog.Backend.dto.LoginRequest;
 import com._Blog.Backend.dto.RegisterRequest;
 import com._Blog.Backend.exception.ConflictException;
@@ -11,8 +14,6 @@ import com._Blog.Backend.repository.SessionRepository;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
 import com._Blog.Backend.utils.Role;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
@@ -46,7 +47,6 @@ public class AuthService {
     }
 
     public String[] login(LoginRequest user) {
-        System.out.println(user.getUsername());
         User existingUser = userRepository.findByUsername(user.getUsername())
                 .orElseGet(() -> userRepository.findByEmail(user.getUsername())
                         .orElseThrow(() -> new ResourceNotFoundException("User not found")));

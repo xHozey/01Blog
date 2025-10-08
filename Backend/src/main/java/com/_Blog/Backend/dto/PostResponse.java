@@ -1,8 +1,8 @@
 package com._Blog.Backend.dto;
 
-import com._Blog.Backend.model.Post;
-
 import java.sql.Timestamp;
+
+import com._Blog.Backend.model.Post;
 
 public class PostResponse {
     private Long id;
@@ -10,17 +10,17 @@ public class PostResponse {
     private String content;
     private String author;
     private Long authorId;
-    private Timestamp createTime;
+    private Timestamp createdAt;
     private Long likes;
     private Boolean isLiked;
 
-    public PostResponse(Long id, String title, String content, String author, Long authorId, Timestamp createTime, Long likes, Boolean isLiked) {
+    public PostResponse(Long id, String title, String content, String author, Long authorId, Timestamp createdAt, Long likes, Boolean isLiked) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
         this.authorId = authorId;
-        this.createTime = createTime;
+        this.createdAt = createdAt;
         this.likes = likes;
         this.isLiked = isLiked;
     }
@@ -31,7 +31,7 @@ public class PostResponse {
         this.content = post.getContent();
         this.author = post.getUser().getUsername();
         this.authorId = post.getUser().getId();
-        this.createTime = post.getCreateTime();
+        this.createdAt = post.getCreatedAt();
         this.likes = likes;
         this.isLiked = isLiked;
     }
@@ -72,12 +72,12 @@ public class PostResponse {
 
 
 
-    public Timestamp getCreateTime() {
-        return createTime;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getLikes() {

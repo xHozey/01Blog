@@ -35,7 +35,9 @@ export class LoginComponent {
     };
 
     this.auth.login(payload).subscribe({
-      next: (res) => {},
+      next: (res) => {
+        console.log(res)
+      },
       error: (err) => {
         console.error(err);
       },
