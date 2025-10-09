@@ -14,10 +14,27 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   fetchCurrentUser() {
-    this.http.get<userResponse>(`${this.apiUrl}/me`, { withCredentials: true }).subscribe(user => this._user.next(user));
+    this.http
+      .get<userResponse>(`${this.apiUrl}/me`, { withCredentials: true })
+      .subscribe((user) => this._user.next(user));
   }
 
   getUser(): userResponse | null {
-    return this._user.value
+    return this._user.value;
   }
+
+  getUserById(id: number): Observable<userResponse> {
+    return this.http.get<userResponse>(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+    });
+  }
+
+  reportUser(report: reportRequest, id: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/${id}/report`, report, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
+
+  updateUser() {}
 }

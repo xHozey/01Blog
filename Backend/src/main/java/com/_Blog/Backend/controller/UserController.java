@@ -41,8 +41,14 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getUser(@PathVariable Long id) {
+        try {
+
         this.userService.GetUserById(id);
         return ResponseEntity.ok(userService.GetUserById(id));
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return ResponseEntity.ok(null);
     }
 
     @PostMapping("/{id}/report")
