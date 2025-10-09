@@ -32,17 +32,17 @@ public class Notification {
     private User sender;
 
     @CreationTimestamp
-    private Timestamp createTime;
+    private Timestamp createdAt;
 
     public Notification() {}
 
-    public Notification(Long id, String description, Boolean isRead, User receiver, User sender, Timestamp createTime) {
+    public Notification(Long id, String description, Boolean isRead, User receiver, User sender, Timestamp createdAt) {
         this.id = id;
         this.description = description;
         this.isRead = isRead;
         this.receiver = receiver;
         this.sender = sender;
-        this.createTime = createTime;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -85,11 +85,11 @@ public class Notification {
         this.sender = sender;
     }
 
-    public Timestamp getCreateTime() {
-        return createTime;
+    public Timestamp getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
+    public void setCreatedAt(Timestamp createdAt) {
+        this.createdAt = createdAt;
     }
 }

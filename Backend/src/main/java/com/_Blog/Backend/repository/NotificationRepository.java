@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByReceiverId(Long receiverId, Pageable pageable);
+    Long countByReceiverId(Long receiverId);
 }

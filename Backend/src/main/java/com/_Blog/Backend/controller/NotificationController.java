@@ -30,4 +30,9 @@ public class NotificationController {
         this.notificationService.readNotifications(ids);
         return ResponseEntity.ok("notifications readed");
     }
+
+    @GetMapping("/count")
+    public ResponseEntity<Long> getNotificationsCount() {
+        return ResponseEntity.ok(this.notificationService.countNotifications());
+    }
 }

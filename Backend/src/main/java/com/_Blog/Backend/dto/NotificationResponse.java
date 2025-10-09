@@ -20,7 +20,7 @@ public class NotificationResponse {
     public NotificationResponse(Notification notification) {
         this.id = notification.getId();
         this.description = notification.getDescription();
-        this.createdTime = notification.getCreateTime();
+        this.createdTime = notification.getCreatedAt();
         this.isRead = notification.getIsRead();
     }
 
