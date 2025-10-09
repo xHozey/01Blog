@@ -23,4 +23,11 @@ export class MediaService {
       responseType: 'text',
     });
   }
+
+  addUserIcon(form: FormData): Observable<string> {
+    return this.http.post(`${this.apiUrl}/user/icon`, form, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }

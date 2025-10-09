@@ -1,79 +1,79 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top custom-navbar">
   <div class="container-fluid px-4">
-    <!-- Blog Name -->
     <a class="navbar-brand fw-bold fs-4 text-dark" [routerLink]="['/']">
       01<span class="text-primary">Blog</span>
     </a>
 
-    <!-- Mobile toggle -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar Links -->
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav align-items-center gap-3">
-
-        <!-- Create Post Button -->
         @if (!isCreatePostPage) {
-          <li class="nav-item">
-            <a
-              class="btn btn-dark px-3 py-2 rounded-pill"
-              [routerLink]="['/create-post']"
-              routerLinkActive="active"
-            >
-              <i class="fa fa-pen me-1"></i> Write
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="btn btn-dark px-3 py-2 rounded-pill" [routerLink]="['/create-post']">
+            <i class="fa fa-pen me-1"></i> Write
+          </a>
+        </li>
         }
 
         <!-- Notification Icon -->
-        <li class="nav-item">
-          <!-- placeholder: notification bell -->
-          <button mat-icon-button class="position-relative">
+        <li class="nav-item position-relative">
+          <button class="btn btn-link text-dark position-relative" (click)="toggleNotifications()">
             <lucide-icon [img]="BellIcon"></lucide-icon>
-            <!-- placeholder: notification count -->
-            <span class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 border border-light rounded-circle">
-              3
+            @if (totalNotifications > 0) {
+            <span
+              class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 border border-light rounded-circle">
+              {{ totalNotifications }}
             </span>
+            }
           </button>
+          <!-- Notification Modal -->
+          <!-- Notification Modal -->
+          @if (showNotificationsModal) {
+          <div class="position-absolute end-0 mt-2 bg-white border rounded shadow p-2"
+            style="width: 320px; max-height: 400px; overflow-y: auto;">
+            <h6 class="mb-2 fw-bold text-center">Notifications</h6>
+
+            @if (notifications.length === 0) {
+            <div class="text-center text-muted py-3">
+              No notifications yet.
+            </div>
+            }
+
+            <ul class="list-group mb-0">
+              @for (n of notifications; track n.id) {
+              <li class="list-group-item small" [class.bg-light]="!n.isRead">
+                <p class="mb-1">{{ n.description }}</p>
+                <small class="text-muted">{{ n.createdTime }}</small>
+              </li>
+              }
+            </ul>
+
+            <!-- Sentinel always present -->
+            <div #notificationsEnd class="invisible" style="height: 1px;"></div>
+          </div>
+          }
         </li>
 
-        <!-- Profile Avatar -->
+        <!-- Profile -->
         <li class="nav-item dropdown">
-          <!-- placeholder: user avatar -->
-          <a
-            class="nav-link dropdown-toggle d-flex align-items-center"
-            href="#"
-            role="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            <img
-              src="https://www.pinclipart.com/picdir/big/157-1578186_user-profile-default-image-png-clipart.png"
-              alt="Profile"
-              class="rounded-circle"
-              width="35"
-              height="35"
-            />
+          <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+            data-bs-toggle="dropdown">
+            <img [src]="user?.iconPath"
+              alt="Profile" class="rounded-circle" width="35" height="35" />
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-            <!-- placeholder: user info -->
             <li><a class="dropdown-item" [routerLink]="['/profile']">Profile</a></li>
             <li><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
-            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
             <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
           </ul>
         </li>
-
       </ul>
     </div>
   </div>

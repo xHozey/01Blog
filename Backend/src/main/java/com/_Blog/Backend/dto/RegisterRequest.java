@@ -16,13 +16,16 @@ public class RegisterRequest {
     @NotBlank(message = "Password is required")
     @Size(min = 8, max = 64, message = "Password must be between 8 and 64 characters")
     private String password;
+    @Size(max=2000)
+    private String iconUrl;
 
     public RegisterRequest() {}
 
-    public RegisterRequest(String email, String username, String password) {
+    public RegisterRequest(String email, String username, String password, String iconUrl) {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.iconUrl = iconUrl;
     }
 
 
@@ -48,5 +51,13 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl;
+    }
+
+    public String getIconUrl() {
+        return this.iconUrl;
     }
 }

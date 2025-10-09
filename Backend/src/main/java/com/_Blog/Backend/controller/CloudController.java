@@ -25,5 +25,11 @@ public class CloudController {
         String url = this.cloudinaryService.uploadFile(file, "/post/video");
         return ResponseEntity.ok(url);
     }
+
+    @PostMapping("/user/icon")
+    public ResponseEntity<String> saveIconImage(@RequestPart(value = "file") MultipartFile file) {
+        String url = this.cloudinaryService.uploadFile(file, "/user");
+        return ResponseEntity.ok(url);
+    }
     
 }

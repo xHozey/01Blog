@@ -1,39 +1,63 @@
 <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-  <div class="d-flex justify-content-center align-items-center vh-100">
-      <div class="card shadow-lg p-4" style="width: 28rem;">
-          <h3 class="text-center mb-4">Register</h3>
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="width: 28rem;">
+            <h3 class="text-center mb-4">Create Account</h3>
 
-          <!-- Username -->
-          <div class="form-floating mb-3">
-              <input type="text" class="form-control" id="floatingUsername" formControlName="username" placeholder="Username">
-              <label for="floatingUsername">Username</label>
-          </div>
+            <!-- Avatar Upload -->
+            <div class="text-center mb-3">
+                <div class="position-relative d-inline-block">
+                    <img [src]="previewUrl || 'assets/default-avatar.png'" class="rounded-circle shadow-sm" width="100"
+                        height="100" style="object-fit: cover;" />
+                    <label
+                        class="upload-btn position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2 cursor-pointer">
+                        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
+                        <i class="bi bi-camera"></i>
+                    </label>
+                </div>
+                @if (isUploading) {
+                <div class="small text-muted mt-2">
+                    Uploading photo...
+                </div>
+                }
+            </div>
 
-          <!-- Email -->
-          <div class="form-floating mb-3">
-              <input type="email" class="form-control" id="floatingEmail" formControlName="email" placeholder="Email">
-              <label for="floatingEmail">Email address</label>
-          </div>
+            <!-- Username -->
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="floatingUsername" formControlName="username"
+                    placeholder="Username" />
+                <label for="floatingUsername">Username</label>
+            </div>
 
-          <!-- Password -->
-          <div class="form-floating mb-3">
-              <input type="password" class="form-control" id="floatingPassword" formControlName="password" placeholder="Password">
-              <label for="floatingPassword">Password</label>
-          </div>
+            <!-- Email -->
+            <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="floatingEmail" formControlName="email"
+                    placeholder="Email" />
+                <label for="floatingEmail">Email address</label>
+            </div>
 
-          <!-- Confirm Password -->
-          <div class="form-floating mb-3">
-              <input type="password" class="form-control" id="floatingConfirmPassword" formControlName="confirmPassword" placeholder="Confirm Password">
-              <label for="floatingConfirmPassword">Confirm Password</label>
-          </div>
+            <!-- Password -->
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingPassword" formControlName="password"
+                    placeholder="Password" />
+                <label for="floatingPassword">Password</label>
+            </div>
 
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-primary w-100">Register</button>
+            <!-- Confirm Password -->
+            <div class="form-floating mb-3">
+                <input type="password" class="form-control" id="floatingConfirmPassword"
+                    formControlName="confirmPassword" placeholder="Confirm Password" />
+                <label for="floatingConfirmPassword">Confirm Password</label>
+            </div>
 
-          <!-- Link -->
-          <p class="text-center mt-3 mb-0">
-              Already have an account? <a routerLink="/login">Login</a>
-          </p>
-      </div>
-  </div>
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100" [disabled]="isUploading || registerForm.invalid">
+                {{ isUploading ? 'Please wait...' : 'Register' }}
+            </button>
+
+            <p class="text-center mt-3 mb-0">
+                Already have an account?
+                <a routerLink="/login">Login</a>
+            </p>
+        </div>
+    </div>
 </form>
