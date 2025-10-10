@@ -55,7 +55,6 @@ public class User implements UserDetails {
     @CreationTimestamp
     private Timestamp createAt;
 
-    // Cascade posts and engagements
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Post> posts = new HashSet<>();
 

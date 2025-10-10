@@ -34,6 +34,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   showNotificationsModal = false;
   notifications: notificationDTO[] = [];
   notificationsPage = 0;
+  isLoading = false;
 
   @ViewChild('notificationsEnd') notificationsEnd?: ElementRef<HTMLDivElement>;
   private observer?: IntersectionObserver;
@@ -42,7 +43,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   private notificationsService = inject(NotificationsService);
   private userService: UserService = inject(UserService);
   user: userResponse | null = null;
-  
+
   ngOnInit(): void {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -54,6 +55,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (res) => (this.totalNotifications = res),
       error: (err) => console.error(err),
     });
+    this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));
   }
 
@@ -69,12 +71,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleNotifications(): void {
     this.showNotificationsModal = !this.showNotificationsModal;
-
+    
     if (this.showNotificationsModal) {
       this.notifications = [];
       this.notificationsPage = 0;
+      this.isLoading = false
       this.getNotifications();
-
       // Allow DOM to render, then start observing
       setTimeout(() => {
         if (this.notificationsEnd?.nativeElement) {
@@ -87,19 +89,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getNotifications(): void {
+    if (this.isLoading) return;
+    this.isLoading = true;
     this.notificationsService.getNotifications(this.notificationsPage).subscribe({
       next: (res) => {
-        if (res.length === 0) return; // no more results
+        if (res.length === 0) return;
         this.notifications = [...this.notifications, ...res];
         this.notificationsPage++;
-
+        this.isLoading = false;
         setTimeout(() => {
           if (this.notificationsEnd?.nativeElement) {
             this.observer?.observe(this.notificationsEnd.nativeElement);
           }
         });
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        console.error(err);
+        this.isLoading = false;
+      },
     });
   }
 

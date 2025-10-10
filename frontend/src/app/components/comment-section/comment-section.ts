@@ -90,6 +90,7 @@ export class CommentSection implements OnInit {
       }
     });
   }
+  
   reportModal = false;
   onReport(id: number) {
     

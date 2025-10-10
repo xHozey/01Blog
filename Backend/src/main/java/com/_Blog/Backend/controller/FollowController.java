@@ -19,25 +19,24 @@ public class FollowController {
 
     @PostMapping("/{id}/follow")
     public ResponseEntity<String> follow(@PathVariable Long id) {
-        followService.addFollow(id);
-        return  ResponseEntity.ok("follow");
+        followService.toggleFollow(id);
+        return ResponseEntity.ok("follow");
     }
 
-    @PostMapping("/{id}/unfollow")
-    public ResponseEntity<String> unfollow(@PathVariable Long id) {
-        followService.removeFollow(id);
-        return  ResponseEntity.ok("unfollow");
+    @GetMapping("/{id}/follow")
+    public ResponseEntity<Boolean> checkIsFollow(@PathVariable Long id) {
+        return ResponseEntity.ok(followService.isFollowing(id));
     }
 
-    @GetMapping("/followers")
-    public ResponseEntity<Long> getFollowers() {
-        Long total = followService.getFollowersTotal();
+    @GetMapping("/{id}/followers")
+    public ResponseEntity<Long> getFollowers(@PathVariable Long id) {
+        Long total = followService.getFollowersTotal(id);
         return ResponseEntity.ok(total);
     }
 
-    @GetMapping("/followed")
-    public ResponseEntity<Long> getFollowed() {
-        Long total = followService.getFollowedTotal();
+    @GetMapping("/{id}/followed")
+    public ResponseEntity<Long> getFollowed(@PathVariable Long id) {
+        Long total = followService.getFollowedTotal(id);
         return ResponseEntity.ok(total);
     }
 }

@@ -67,13 +67,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerForm.invalid || !this.iconPath) return;
+    if (this.registerForm.invalid) return;
 
     const payload: userRequest = {
       username: this.registerForm.value.username,
       email: this.registerForm.value.email,
       password: this.registerForm.value.password,
-      iconUrl: this.iconPath,
+      iconUrl: this.iconPath || "",
     };
 
     this.authService.register(payload).subscribe({

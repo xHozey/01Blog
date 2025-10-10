@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.Repository;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 @Service
 public class FollowService {
@@ -22,31 +23,40 @@ public class FollowService {
         this.userRepository = userRepository;
     }
 
-    public void addFollow(Long followedId) {
+    public void toggleFollow(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (followedId.equals(jwtUser.getId())) throw new ConflictException("you can't follow yourself");
-        User followerUser = userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("follower user not found"));
-        User followedUser = userRepository.findById(followedId).orElseThrow(() -> new ResourceNotFoundException("followed user not found"));
-        Follow follow = new Follow();
-        follow.setFollower(followerUser);
-        follow.setFollowed(followedUser);
-        followRepository.save(follow);
+
+        if (followedId.equals(jwtUser.getId()))
+            throw new ConflictException("you can't follow yourself");
+
+        User followerUser = userRepository.findById(jwtUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("follower user not found"));
+        User followedUser = userRepository.findById(followedId)
+                .orElseThrow(() -> new ResourceNotFoundException("followed user not found"));
+
+        Optional<Follow> existingFollow = followRepository.findByFollowerIdAndFollowedId(jwtUser.getId(), followedId);
+
+        if (existingFollow.isPresent()) {
+            followRepository.delete(existingFollow.get());
+        } else {
+            Follow follow = new Follow();
+            follow.setFollower(followerUser);
+            follow.setFollowed(followedUser);
+            followRepository.save(follow);
+        }
     }
 
-    public void removeFollow(Long followedId) {
+    public Boolean isFollowing(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (followedId.equals(jwtUser.getId())) throw new ConflictException("you can't unfollow yourself");
-        Follow follow = followRepository.findByFollowedIdAndFollowerId(jwtUser.getId(), followedId).orElseThrow(() -> new ResourceNotFoundException("followed user not found"));
-        followRepository.delete(follow);
+        if (followedId.equals(jwtUser.getId())) return false;
+        return followRepository.existsByFollowerIdAndFollowedId(jwtUser.getId(), followedId);
     }
 
-    public Long getFollowersTotal() {
-        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return followRepository.countByFollowedId(jwtUser.getId());
+    public Long getFollowersTotal(Long userId) {
+        return followRepository.countByFollowedId(userId);
     }
 
-    public Long getFollowedTotal() {
-        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return followRepository.countByFollowerId(jwtUser.getId());
+    public Long getFollowedTotal(Long userId) {
+        return followRepository.countByFollowerId(userId);
     }
 }
