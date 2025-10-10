@@ -55,9 +55,17 @@ public class PostService {
         return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
     }
 
+    public List<PostResponse> getUserPosts(Long userId, Integer page) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        return this.postRepository
+            .findByUserIdAndIsHideFalse(userId, pageable)
+            .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
+                    postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
+            .getContent();
+    }
+
     public List<PostResponse> getPosts(Integer page) {
-        try {
-            
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         List<Long> followedUserIds = followRepository.findByFollowerId(jwtUser.getId())
@@ -93,11 +101,6 @@ public class PostService {
         }
 
         return resultPosts;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        return null;
     }
 
     private int getRemaining(JwtUser jwtUser, List<Post> posts, List<PostResponse> resultPosts, int remaining) {

@@ -21,7 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             countQuery = "SELECT COUNT(*) FROM post WHERE user_id NOT IN :userIds AND is_hide = false",
             nativeQuery = true)
     Page<Post> findRandomPostsExcludingUsers(@Param("userIds") List<Long> userIds, Pageable pageable);
-
+    Page<Post> findByUserIdAndIsHideFalse(Long userId, Pageable pageable);
     Page<Post> findAllByIsHideFalse(Pageable pageable);
 }
 

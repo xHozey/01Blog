@@ -4,10 +4,11 @@ import { FollowService } from '../../service/follow-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { CommonModule } from '@angular/common';
+import { UserPosts } from "../../components/user-posts/user-posts";
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent, CommonModule],
+  imports: [NavbarComponent, CommonModule, UserPosts],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -16,7 +17,7 @@ export class Profile implements OnInit {
   private followService = inject(FollowService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private userId!: number;
+  userId!: number;
 
   user!: userResponse;
   isFollowing = false;

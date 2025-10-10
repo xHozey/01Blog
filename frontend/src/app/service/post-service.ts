@@ -17,9 +17,9 @@ export class PostService {
   }
 
   getPost(id: number): Observable<postResponse> {
-      return this.http.get<postResponse>(`${this.apiUrl}/${id}`, {
-        withCredentials: true
-      })
+    return this.http.get<postResponse>(`${this.apiUrl}/${id}`, {
+      withCredentials: true,
+    });
   }
 
   addPost(payload: postRequest): Observable<postResponse> {
@@ -46,4 +46,9 @@ export class PostService {
     });
   }
 
+  getUserPosts(userId: number, page: number): Observable<postResponse[]> {
+    return this.http.get<postResponse[]>(`${this.apiUrl}/users/${userId}?page=${page}`, {
+      withCredentials: true,
+    });
+  }
 }
