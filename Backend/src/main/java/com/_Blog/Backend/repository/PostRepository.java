@@ -16,8 +16,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findAllByUserIdInAndIsHideFalse(List<Long> userIds, Pageable pageable);
 
     @Query(value = "SELECT * FROM post " +
-            "WHERE user_id NOT IN :userIds AND is_hide = false " +
-            "ORDER BY RANDOM()",
+            "WHERE user_id NOT IN :userIds AND is_hide = false",
             countQuery = "SELECT COUNT(*) FROM post WHERE user_id NOT IN :userIds AND is_hide = false",
             nativeQuery = true)
     Page<Post> findRandomPostsExcludingUsers(@Param("userIds") List<Long> userIds, Pageable pageable);

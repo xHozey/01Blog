@@ -39,6 +39,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> getPosts(@RequestParam(defaultValue = "0") Integer page) {
+        System.out.println(page);
         return ResponseEntity.ok(postService.getPosts(page));
     }
 

@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -75,33 +77,23 @@ public class PostService {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
-        List<PostResponse> resultPosts = new ArrayList<>();
-        int remaining = 10;
+        Page<Post> postsPage;
 
         if (!followedUserIds.isEmpty()) {
-            List<Post> postsByFollowedUsers = postRepository
-                    .findAllByUserIdInAndIsHideFalse(followedUserIds, pageable)
-                    .getContent();
+            // Include user's own posts too
+            followedUserIds = new ArrayList<>(followedUserIds);
+            followedUserIds.add(jwtUser.getId());
 
-            remaining = getRemaining(jwtUser, postsByFollowedUsers, resultPosts, remaining);
-
-            if (remaining > 0) {
-                List<Post> postsFromOthers = postRepository
-                        .findRandomPostsExcludingUsers(followedUserIds, PageRequest.of(0, remaining))
-                        .getContent();
-
-                getRemaining(jwtUser, postsFromOthers, resultPosts, remaining);
-            }
+            postsPage = postRepository.findAllByUserIdInAndIsHideFalse(followedUserIds, pageable);
         } else {
-            List<Post> newestPosts = postRepository
-                    .findAllByIsHideFalse(pageable)
-                    .getContent();
-
-            getRemaining(jwtUser, newestPosts, resultPosts, remaining);
+            // If no followed users, show public posts
+            postsPage = postRepository.findAllByIsHideFalse(pageable);
         }
 
-        return resultPosts;
+        return postsPage.getContent().stream()
+                                    .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId()))).toList();
     }
+
 
     private int getRemaining(JwtUser jwtUser, List<Post> posts, List<PostResponse> resultPosts, int remaining) {
         for (Post post : posts) {
