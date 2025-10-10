@@ -21,52 +21,52 @@
 
         <!-- Notification Icon -->
         <li class="nav-item position-relative">
-          <button class="btn btn-link text-dark position-relative" (click)="toggleNotifications()">
-            <lucide-icon [img]="BellIcon"></lucide-icon>
-            @if (totalNotifications > 0) {
-            <span
-              class="badge bg-danger position-absolute top-0 start-100 translate-middle p-1 border border-light rounded-circle">
-              {{ totalNotifications }}
-            </span>
-            }
-          </button>
-          <!-- Notification Modal -->
-          <!-- Notification Modal -->
-          @if (showNotificationsModal) {
-          <div class="position-absolute end-0 mt-2 bg-white border rounded shadow p-2"
-            style="width: 320px; max-height: 400px; overflow-y: auto;">
-            <h6 class="mb-2 fw-bold text-center">Notifications</h6>
+          <button class="btn btn-link text-dark position-relative p-0" (click)="toggleNotifications()"
+            style="line-height: 1;">
+            <div class="position-relative d-inline-block">
+              <lucide-icon [img]="BellIcon" class="fs-4"></lucide-icon>
 
+              @if (totalNotifications > 0) {
+              <span class="notification-badge">
+                {{ totalNotifications }}
+              </span>
+              }
+            </div>
+          </button>
+
+          @if (showNotificationsModal) {
+          <div class="notifications-dropdown position-absolute end-0 mt-2 bg-white border rounded-3 shadow-sm p-2"
+            style="width: 340px; max-height: 420px; overflow-y: auto;">
             @if (notifications.length === 0) {
             <div class="text-center text-muted py-3">
               No notifications yet.
             </div>
             }
 
-            <ul class="list-group mb-0">
+            <ul class="list-unstyled mb-0">
               @for (n of notifications; track n.id) {
-              <li class="list-group-item small" [class.bg-light]="!n.isRead">
-                <p class="mb-1">{{ n.description }}</p>
-                <small class="text-muted">{{ n.createdTime }}</small>
+              <li class="notification-item d-flex flex-column px-3 py-2 mb-1 rounded-2" [class.unread]="!n.isRead">
+                <p class="mb-1 fw-medium">{{ n.description }}</p>
+                <small class="text-muted">{{ n.createdTime | date:"medium" }}</small>
               </li>
               }
             </ul>
 
-            <!-- Sentinel always present -->
             <div #notificationsEnd class="invisible" style="height: 1px;"></div>
           </div>
           }
+
         </li>
+
 
         <!-- Profile -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
             data-bs-toggle="dropdown">
-            <img [src]="user?.iconPath"
-              alt="Profile" class="rounded-circle" width="35" height="35" />
+            <img [src]="user?.iconPath" alt="Profile" class="rounded-circle" width="35" height="35" />
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-            <li><a class="dropdown-item" [routerLink]="['/profile']">Profile</a></li>
+            <li><a class="dropdown-item" [routerLink]="[`/profile/${user?.id}`]">Profile</a></li>
             <li><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
             <li>
               <hr class="dropdown-divider" />

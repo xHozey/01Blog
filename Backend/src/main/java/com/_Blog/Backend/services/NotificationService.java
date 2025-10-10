@@ -61,7 +61,7 @@ public class NotificationService {
 
     public Long countNotifications() {
         JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return this.notificationRepository.countByReceiverId(user.getId());
+        return this.notificationRepository.countByReceiverIdAndIsReadFalse(user.getId());
     }
 }
 

@@ -23,5 +23,10 @@ export class NotificationsService {
     });
   }
 
-  readNotification(ids: number[]) {}
+  readNotification(ids: number[]): Observable<string> {
+    return this.http.post(`${this.apiUrl}/read`, ids, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }

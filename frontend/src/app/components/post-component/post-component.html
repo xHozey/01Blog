@@ -3,7 +3,7 @@
   <!-- Header -->
   <header class="post-header">
     <div class="author-info">
-      <span class="author-name">{{ post.author }}</span>
+      <span class="author-name" (click)="goToProfile()">{{ post.author }}</span>
       <span class="post-time">· {{ post.createdAt | date: 'medium' }}</span>
     </div>
 

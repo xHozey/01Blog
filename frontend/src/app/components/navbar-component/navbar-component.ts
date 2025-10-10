@@ -12,6 +12,7 @@ import { Bell, LucideAngularModule } from 'lucide-angular';
 import { filter } from 'rxjs/operators';
 import { NotificationsService } from '../../service/notifications-service';
 import { UserService } from '../../service/user-service';
+import { CommonModule } from '@angular/common';
 
 interface notificationDTO {
   id: number;
@@ -23,11 +24,12 @@ interface notificationDTO {
 @Component({
   selector: 'app-navbar-component',
   standalone: true,
-  imports: [RouterLink, LucideAngularModule],
+  imports: [RouterLink, LucideAngularModule, CommonModule],
   templateUrl: './navbar-component.html',
   styleUrls: ['./navbar-component.css'],
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
+
   isCreatePostPage = false;
   readonly BellIcon = Bell;
   totalNotifications = 0;
@@ -71,11 +73,11 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleNotifications(): void {
     this.showNotificationsModal = !this.showNotificationsModal;
-    
+
     if (this.showNotificationsModal) {
       this.notifications = [];
       this.notificationsPage = 0;
-      this.isLoading = false
+      this.isLoading = false;
       this.getNotifications();
       // Allow DOM to render, then start observing
       setTimeout(() => {
@@ -91,6 +93,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   getNotifications(): void {
     if (this.isLoading) return;
     this.isLoading = true;
+
     this.notificationsService.getNotifications(this.notificationsPage).subscribe({
       next: (res) => {
         if (res.length === 0) return;
@@ -100,6 +103,16 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         setTimeout(() => {
           if (this.notificationsEnd?.nativeElement) {
             this.observer?.observe(this.notificationsEnd.nativeElement);
+          }
+        });
+        console.log(res, res[0]?.isRead)
+        const unreadIds = res.filter((n) => !n.isRead).map((n) => n.id);
+        if (unreadIds.length > 0) this.notificationsService.readNotification(unreadIds).subscribe({
+          next: (res) => {
+            console.log(res)
+          },
+          error: (err) => {
+            console.error(err)
           }
         });
       },

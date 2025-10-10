@@ -18,8 +18,8 @@ import DOMPurify from 'dompurify';
 export class PostComponent implements OnInit {
   private engagementService: EngagementService = inject(EngagementService);
   private userService: UserService = inject(UserService);
-  private sanitizer: DomSanitizer = inject(DomSanitizer)
-  private router: Router = inject(Router)
+  private sanitizer: DomSanitizer = inject(DomSanitizer);
+  private router: Router = inject(Router);
   @Input() post!: postResponse;
 
   @Output() delete = new EventEmitter<number>();
@@ -61,7 +61,6 @@ export class PostComponent implements OnInit {
         } else {
           this.post.likes--;
         }
-        console.log(res);
       },
       error: (err) => {
         console.error(err);
@@ -76,16 +75,17 @@ export class PostComponent implements OnInit {
   getSnippet(content: string) {
     // Sanitize content
     const cleanContent = DOMPurify.sanitize(content);
-    console.log(cleanContent)
     // Truncate safely
-    const snippet = cleanContent.length > 400
-      ? cleanContent.slice(0, 400) + '...'
-      : cleanContent;
+    const snippet = cleanContent.length > 400 ? cleanContent.slice(0, 400) + '...' : cleanContent;
 
     return this.sanitizer.bypassSecurityTrustHtml(snippet);
   }
 
   goToPost() {
-  this.router.navigate(['/post', this.post.id]);
-}
+    this.router.navigate(['/post', this.post.id]);
+  }
+
+  goToProfile() {
+    this.router.navigate(['/profile', this.post.authorId]);
+  }
 }

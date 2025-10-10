@@ -28,6 +28,7 @@
 .author-name {
   font-weight: 600;
   color: #007EA7;
+  cursor: pointer;
 }
 
 .post-time {
