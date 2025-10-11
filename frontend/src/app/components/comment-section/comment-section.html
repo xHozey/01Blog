@@ -4,7 +4,7 @@
   <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form">
     <div class="comment-input-wrapper">
       <img
-        src="https://www.pinclipart.com/picdir/big/157-1578186_user-profile-default-image-png-clipart.png"
+        [src]="user?.iconPath"
         alt="User Avatar"
         class="comment-avatar"
       />
@@ -35,7 +35,7 @@
             class="btn btn-dark rounded-pill px-3 py-1"
             [disabled]="!newCommentContent && !selectedFile"
           >
-            Post
+            Send
           </button>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { CommentComponent } from '../comment-component/comment-component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { commentRequest } from '../../models/commentRequest';
+import { UserService } from '../../service/user-service';
 
 @Component({
   selector: 'app-comment-section',
@@ -14,18 +15,21 @@ import { commentRequest } from '../../models/commentRequest';
 })
 export class CommentSection implements OnInit {
   commentService = inject(CommentService);
+  userService = inject(UserService);
 
   @Input() postId!: number;
   comments: commentResponse[] = [];
   page: number = 0;
   loading: boolean = false;
   hasMore: boolean = true;
+  user: userResponse | null = null;
 
   newCommentContent: string = '';
   selectedFile: File | null = null;
 
   ngOnInit(): void {
     this.loadComments();
+    this.userService.user$.subscribe((user) => (this.user = user));
   }
 
   loadComments() {
@@ -34,7 +38,6 @@ export class CommentSection implements OnInit {
       return;
     }
     this.loading = true;
-    console.log('show still work :) current page is; ', this.page);
     this.commentService.fetchComments(this.postId, this.page).subscribe({
       next: (data) => {
         console.log(data);
@@ -66,7 +69,7 @@ export class CommentSection implements OnInit {
     const payload: commentRequest = {
       postId: this.postId,
       content: this.newCommentContent,
-    }
+    };
 
     this.commentService.addComment(payload).subscribe({
       next: (comment) => {
@@ -87,12 +90,10 @@ export class CommentSection implements OnInit {
       },
       error: (err) => {
         console.error(err);
-      }
+      },
     });
   }
-  
+
   reportModal = false;
-  onReport(id: number) {
-    
-  }
+  onReport(id: number) {}
 }
