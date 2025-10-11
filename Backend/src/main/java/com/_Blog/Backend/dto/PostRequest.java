@@ -2,7 +2,13 @@ package com._Blog.Backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class PostRequest {
     @NotBlank
     @Size(max = 300)
@@ -10,28 +16,5 @@ public class PostRequest {
     @NotBlank
     @Size(max = 10000)
     private String content;
-
-    public PostRequest(String title, String content) {
-        this.title = title;
-        this.content = content;
-    }
-
-    public PostRequest() {}
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 
 }

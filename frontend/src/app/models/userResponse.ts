@@ -1,7 +1,8 @@
 interface userResponse {
-    id: number,
-    username: string,
-    iconPath: string,
-    creation: string,
-    roles: string[]
+  id: number;
+  username: string;
+  iconPath: string;
+  creation: string;
+  roles: string[];
+  bio: string;
 }

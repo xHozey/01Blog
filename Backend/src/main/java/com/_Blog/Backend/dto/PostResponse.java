@@ -4,7 +4,15 @@ import java.sql.Timestamp;
 
 import com._Blog.Backend.model.Post;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class PostResponse {
+
     private Long id;
     private String title;
     private String content;
@@ -13,17 +21,6 @@ public class PostResponse {
     private Timestamp createdAt;
     private Long likes;
     private Boolean isLiked;
-
-    public PostResponse(Long id, String title, String content, String author, Long authorId, Timestamp createdAt, Long likes, Boolean isLiked) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.author = author;
-        this.authorId = authorId;
-        this.createdAt = createdAt;
-        this.likes = likes;
-        this.isLiked = isLiked;
-    }
 
     public PostResponse(Post post, Long likes, Boolean isLiked) {
         this.id = post.getId();
@@ -35,74 +32,5 @@ public class PostResponse {
         this.likes = likes;
         this.isLiked = isLiked;
     }
-
-    public PostResponse() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Long getLikes() {
-        return likes;
-    }
-
-    public void setLikes(Long likes) {
-        this.likes = likes;
-    }
-
-    public Boolean getIsLiked() {
-        return isLiked;
-    }
-
-    public void setIsLiked(Boolean liked) {
-        isLiked = liked;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
-    }
-
 
 }
