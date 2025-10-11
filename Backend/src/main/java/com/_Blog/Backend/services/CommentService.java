@@ -2,6 +2,9 @@ package com._Blog.Backend.services;
 
 import java.util.List;
 
+import com._Blog.Backend.dto.ReportRequest;
+import com._Blog.Backend.model.*;
+import com._Blog.Backend.repository.*;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -12,13 +15,6 @@ import com._Blog.Backend.dto.CommentRequest;
 import com._Blog.Backend.dto.CommentResponse;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
-import com._Blog.Backend.model.Comment;
-import com._Blog.Backend.model.JwtUser;
-import com._Blog.Backend.model.User;
-import com._Blog.Backend.repository.CommentEngagementRepository;
-import com._Blog.Backend.repository.CommentRepository;
-import com._Blog.Backend.repository.PostRepository;
-import com._Blog.Backend.repository.UserRepository;
 
 @Service
 public class CommentService {
@@ -27,12 +23,14 @@ public class CommentService {
     private final UserRepository userRepository;
     private final CommentEngagementRepository commentEngagementRepository;
     private final PostRepository postRepository;
+    private final ReportCommentRepository reportCommentRepository;
 
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, CommentEngagementRepository commentEngagementRepository, PostRepository postRepository) {
+    public CommentService(CommentRepository commentRepository, UserRepository userRepository, CommentEngagementRepository commentEngagementRepository, PostRepository postRepository, ReportCommentRepository reportCommentRepository) {
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.commentEngagementRepository = commentEngagementRepository;
         this.postRepository = postRepository;
+        this.reportCommentRepository = reportCommentRepository;
     }
 
     public CommentResponse addComment(CommentRequest comment) {
@@ -83,5 +81,13 @@ public class CommentService {
         }
 
         commentRepository.delete(comment);
+    }
+
+    public void reportComment(ReportRequest reportRequest) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Comment comment = this.commentRepository.findById(reportRequest.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", reportRequest.getId())));
+        User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", jwtUser.getId())));
+        ReportComment reportComment = new ReportComment(user, comment, reportRequest.getDescription());
+        this.reportCommentRepository.save(reportComment);
     }
 }

@@ -46,7 +46,7 @@ export class PostSectionComponent implements OnInit {
   saveReport() {
     if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
     const payload: reportRequest = {
-      postId: this.selectedReportPostId,
+      id: this.selectedReportPostId,
       description: this.reportDescription,
     };
 

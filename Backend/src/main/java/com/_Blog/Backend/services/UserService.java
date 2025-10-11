@@ -43,10 +43,10 @@ public class UserService {
         return new UserResponse(user);
     }
 
-    public void reportUser(ReportRequest reportRequest, Long reportedId) {
+    public void reportUser(ReportRequest reportRequest) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User reporter = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        User reported = this.userRepository.findById(reportedId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User reported = this.userRepository.findById(reportRequest.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         ReportUser reportUser = new ReportUser(reporter, reported, reportRequest.getDescription());
         this.reportUserRepository.save(reportUser);
     }

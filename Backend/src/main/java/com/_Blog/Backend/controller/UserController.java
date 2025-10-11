@@ -52,9 +52,9 @@ public class UserController {
         return ResponseEntity.ok(null);
     }
 
-    @PostMapping("/{id}/report")
-    public ResponseEntity<String> reportUser(@RequestBody ReportRequest reportRequest, @PathVariable Long id) {
-        this.userService.reportUser(reportRequest, id);
+    @PostMapping("/report")
+    public ResponseEntity<String> reportUser(@RequestBody ReportRequest reportRequest) {
+        this.userService.reportUser(reportRequest);
         return ResponseEntity.ok("report submitted");
     }
 

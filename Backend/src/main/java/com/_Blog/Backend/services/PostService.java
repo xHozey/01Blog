@@ -129,12 +129,9 @@ public class PostService {
 
     public void reportPost(ReportRequest reportRequest) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Post post = this.postRepository.findById(reportRequest.getPostId()).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", reportRequest.getPostId())));
-        ReportPost reportPost = new ReportPost();
-        reportPost.setReported(post);
+        Post post = this.postRepository.findById(reportRequest.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", reportRequest.getId())));
         User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", jwtUser.getId())));
-        reportPost.setReporter(user);
-        reportPost.setDescription(reportRequest.getDescription());
+        ReportPost reportPost = new ReportPost(user, post, reportRequest.getDescription());
         this.reportPostRepository.save(reportPost);
     }
 

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class ReportRequest {
     @NotNull
-    private Long postId;
+    private Long id;
     @NotBlank
     @Size(min = 1, max = 250)
     private String description;

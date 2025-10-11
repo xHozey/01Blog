@@ -44,6 +44,12 @@ public class ReportComment {
         this.createAt = createAt;
     }
 
+    public ReportComment(User reporter, Comment reportedComment, String description) {
+        this.reporter = reporter;
+        this.reportedComment = reportedComment;
+        this.description = description;
+    }
+
     public Long getId() {
         return id;
     }

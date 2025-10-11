@@ -1,4 +1,4 @@
 interface reportRequest {
-  postId: number;
+  id: number;
   description: string;
 }
