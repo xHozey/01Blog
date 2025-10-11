@@ -1,5 +1,6 @@
 package com._Blog.Backend.controller;
 
+import com._Blog.Backend.dto.UserAccountUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,15 @@ public class UserController {
         return ResponseEntity.ok("report submitted");
     }
 
-    @PutMapping("/me")
+    @PutMapping("/me/profile")
     public ResponseEntity<UserResponse> updateProfile(@RequestBody @Valid UserProfileUpdateRequest userProfileUpdateRequest) {
         UserResponse user = this.userService.updateProfile(userProfileUpdateRequest);
-        return  ResponseEntity.ok(user);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/me/account")
+    public ResponseEntity<UserResponse> updateAccount(@RequestBody @Valid UserAccountUpdateRequest userAccountUpdateRequest) {
+        UserResponse user = this.userService.updateAccount(userAccountUpdateRequest);
+        return ResponseEntity.ok(user);
     }
 }

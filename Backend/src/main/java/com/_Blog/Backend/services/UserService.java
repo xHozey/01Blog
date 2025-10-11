@@ -5,6 +5,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.dto.ReportRequest;
+import com._Blog.Backend.dto.UserAccountUpdateRequest;
 import com._Blog.Backend.dto.UserProfileUpdateRequest;
 import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.exception.ResourceNotFoundException;
@@ -53,19 +54,34 @@ public class UserService {
     public UserResponse updateProfile(UserProfileUpdateRequest profileUpdateRequest) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        if (!this.passwordEncoder.matches(profileUpdateRequest.getConfirmPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Wrong Password");
-        }
+
         if (profileUpdateRequest.getIconProfile() != null) {
             user.setIconPath(profileUpdateRequest.getIconProfile());
         }
         if (profileUpdateRequest.getUsername() != null) {
             user.setUsername(profileUpdateRequest.getUsername());
         }
-        if (profileUpdateRequest.getPassword() != null) {
-            user.setPassword(passwordEncoder.encode(profileUpdateRequest.getPassword()));
+        if (profileUpdateRequest.getBio() != null) {
+            user.setBio(profileUpdateRequest.getBio());
         }
 
+        User savedUser = this.userRepository.save(user);
+        return new UserResponse(savedUser);
+    }
+
+    public UserResponse updateAccount(UserAccountUpdateRequest accountUpdateRequest) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (accountUpdateRequest.getOldPassword() == null ||
+                !passwordEncoder.matches(accountUpdateRequest.getOldPassword(), user.getPassword())) {
+            throw new UnauthorizedException("Wrong password");
+        }
+        if (accountUpdateRequest.getEmail() == null || !user.getEmail().equals(accountUpdateRequest.getEmail())) {
+            throw new UnauthorizedException("Wrong email");
+        }
+        if (accountUpdateRequest.getNewPassword() != null) {
+            user.setPassword(passwordEncoder.encode(accountUpdateRequest.getNewPassword()));
+        }
         User savedUser = this.userRepository.save(user);
         return new UserResponse(savedUser);
     }

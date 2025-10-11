@@ -28,7 +28,7 @@ public class CloudController {
     @PostMapping("/post/image")
     public ResponseEntity<String> savePostImage(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".")))) {
+        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".") +1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/post/image");
@@ -38,7 +38,7 @@ public class CloudController {
     @PostMapping("/post/video")
     public ResponseEntity<String> savePostVideo(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_VIDEOS.contains(fileName.substring(fileName.indexOf(".")))) {
+        if (fileName != null && !ALLOWED_TYPES_VIDEOS.contains(fileName.substring(fileName.indexOf(".")+1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/post/video");
@@ -48,7 +48,8 @@ public class CloudController {
     @PostMapping("/user/icon")
     public ResponseEntity<String> saveIconImage(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".")))) {
+        System.out.println(fileName);
+        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".")+1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/user");

@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { NavbarComponent } from "../../components/navbar-component/navbar-component";
+import { NavbarComponent } from '../../components/navbar-component/navbar-component';
+import { UserService } from '../../service/user-service';
+import { MediaService } from '../../service/media-service';
 
 @Component({
   selector: 'app-settings',
@@ -11,16 +13,23 @@ import { NavbarComponent } from "../../components/navbar-component/navbar-compon
   styleUrls: ['./settings.css'],
 })
 export class Settings implements OnInit {
+  private userService = inject(UserService);
+  private mediaService = inject(MediaService);
+
   activeTab: 'profile' | 'account' = 'profile';
-  
-  user = {
-    username: 'xHozey',
-    email: 'xhozey@example.com',
-    bio: 'Just documenting my journey.',
-    iconPath: 'assets/default-avatar.png',
-  };
+
+  user: userResponse | null = null;
+  accountPayload: userAccountUpdateRequest = { email: null, oldPassword: null, newPassword: null };
+  profilePayload: userProfileUpdateRequest = { username: null, bio: null, iconProfile: null };
+
   ngOnInit(): void {
-    
+    this.userService.fetchCurrentUser();
+    this.userService.user$.subscribe((user) => {
+      this.user = user;
+      this.profilePayload.bio = this.user?.bio || null;
+      this.profilePayload.username = this.user?.username || null;
+      this.profilePayload.iconProfile = this.user?.iconPath || null;
+    });
   }
 
   selectTab(tab: 'profile' | 'account') {
@@ -28,19 +37,36 @@ export class Settings implements OnInit {
   }
 
   onSaveProfile() {
-    console.log('Profile saved:', this.user);
+    this.userService.updateUserProfile(this.profilePayload).subscribe({
+      next: (res) => {},
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   onSaveAccount() {
-    console.log('Account settings saved');
+    this.userService.updateUserAccount(this.accountPayload).subscribe({
+      next: (res) => {},
+      error: (err) => {
+        console.error(err);
+      },
+    });
   }
 
   onAvatarChange(event: any) {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => (this.user.iconPath = reader.result as string);
-      reader.readAsDataURL(file);
+      const form = new FormData();
+      form.append('file', file);
+      this.mediaService.addUserIcon(form).subscribe({
+        next: (res) => {
+          this.profilePayload.iconProfile = res;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { API_URL, API_VERSION } from '../../config';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ export class UserService {
   private _user = new BehaviorSubject<userResponse | null>(null);
   user$: Observable<userResponse | null> = this._user.asObservable();
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient)
 
   fetchCurrentUser() {
     this.http
@@ -36,5 +36,15 @@ export class UserService {
     });
   }
 
-  updateUser() {}
+  updateUserProfile(payload: userProfileUpdateRequest): Observable<userResponse> {
+    return this.http.put<userResponse>(`${this.apiUrl}/me/profile`, payload, {
+      withCredentials: true,
+    });
+  }
+
+  updateUserAccount(payload: userAccountUpdateRequest): Observable<userResponse> {
+    return this.http.put<userResponse>(`${this.apiUrl}/me/account`, payload, {
+      withCredentials: true,
+    });
+  }
 }
