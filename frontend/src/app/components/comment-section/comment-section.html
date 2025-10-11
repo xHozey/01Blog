@@ -3,38 +3,20 @@
   <!-- Add Comment -->
   <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form">
     <div class="comment-input-wrapper">
-      <img
-        [src]="user?.iconPath"
-        alt="User Avatar"
-        class="comment-avatar"
-      />
+      <img [src]="user?.iconPath" alt="User Avatar" class="comment-avatar" />
 
       <div class="input-area">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Write a thoughtful comment..."
-          [(ngModel)]="newCommentContent"
-          name="content"
-          required
-        />
+        <input type="text" class="form-control" placeholder="Write a thoughtful comment..."
+          [(ngModel)]="newCommentContent" name="content" required />
 
         <div class="input-actions">
           <label class="file-upload">
             <i class="fa fa-paperclip"></i>
-            <input
-              type="file"
-              (change)="onFileSelected($event)"
-              accept="image/*,video/*"
-              hidden
-            />
+            <input type="file" (change)="onFileSelected($event)" accept="image/*,video/*" hidden />
           </label>
 
-          <button
-            type="submit"
-            class="btn btn-dark rounded-pill px-3 py-1"
-            [disabled]="!newCommentContent && !selectedFile"
-          >
+          <button type="submit" class="btn btn-dark rounded-pill px-3 py-1"
+            [disabled]="!newCommentContent && !selectedFile">
             Send
           </button>
         </div>
@@ -43,35 +25,30 @@
   </form>
 
   <!-- Comments List -->
-  <div
-    class="comments-list"
-    [scrollWindow]="false"
-    infiniteScroll
-    [infiniteScrollDistance]="1"
-    [infiniteScrollThrottle]="300"
-    (scrolled)="loadComments()"
-  >
+  <div class="comments-list" [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="1"
+    [infiniteScrollThrottle]="300" (scrolled)="loadComments()">
     @for (comment of comments; track comment.id) {
-      <app-comment-component
-        [comment]="comment"
-        (delete)="onDelete($event)"
-        (report)="onReport($event)"
-      ></app-comment-component>
+    <app-comment-component [comment]="comment" (delete)="onDelete($event)"
+      (report)="onReport($event)"></app-comment-component>
     }
 
     @if (loading) {
-      <div class="text-center py-2 text-muted small">
-        <span class="spinner-border spinner-border-sm me-1"></span> Loading...
-      </div>
+    <div class="text-center py-2 text-muted small">
+      <span class="spinner-border spinner-border-sm me-1"></span> Loading...
+    </div>
     }
 
     @if (!hasMore && comments.length > 0) {
-      <div class="text-center text-muted small mt-2">No more comments</div>
+    <div class="text-center text-muted small mt-2">No more comments</div>
     }
 
     @if (!loading && comments.length === 0 && page === 0) {
-      <div class="text-center text-muted small mt-2">Be the first to comment!</div>
+    <div class="text-center text-muted small mt-2">Be the first to comment!</div>
     }
   </div>
+  @if (showReportModal) {
+  <app-report-modal-component [show]="showReportModal" [type]="reportType" [targetId]="targetId"
+    (closed)="showReportModal = false" (submitted)="handleReportSubmit($event)"></app-report-modal-component>
+  }
 
 </section>

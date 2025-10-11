@@ -5,21 +5,23 @@ import { PostService } from '../../service/post-service';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Router } from '@angular/router';
+import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 
 @Component({
   selector: 'app-post-section',
   standalone: true,
-  imports: [CommonModule, PostComponent, FormsModule, InfiniteScrollDirective],
+  imports: [
+    CommonModule,
+    PostComponent,
+    FormsModule,
+    InfiniteScrollDirective,
+    ReportModalComponent,
+  ],
   templateUrl: './post-section-component.html',
 })
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
   page: number = 0;
-
-  //Post report form
-  selectedReportPostId?: number;
-  showReportModal = false;
-  reportDescription: string = '';
 
   private postService = inject(PostService);
   private router = inject(Router);
@@ -37,33 +39,27 @@ export class PostSectionComponent implements OnInit {
     });
   }
 
-  onReportPost(postId: number) {
+  showReportModal = false;
+  reportDescription = '';
+  reportType: 'post' | 'comment' | 'user' = 'post';
+  targetId = 0;
+  onReport(id: number) {
+    this.targetId = id;
     this.showReportModal = true;
-    this.selectedReportPostId = postId;
-    this.reportDescription = '';
   }
 
-  saveReport() {
-    if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
+  handleReportSubmit(event: { type: string; targetId?: number; description: string }) {
+    if (!event.targetId) return;
     const payload: reportRequest = {
-      id: this.selectedReportPostId,
-      description: this.reportDescription,
+      id: event.targetId,
+      description: event.description,
     };
-
     this.postService.reportPost(payload).subscribe({
-      next: (res) => {
-        this.resetReportForm();
-      },
+      next: (res) => {},
       error: (err) => {
         console.error(err);
       },
     });
-  }
-
-  resetReportForm() {
-    this.showReportModal = false;
-    this.selectedReportPostId = undefined;
-    this.reportDescription = '';
   }
 
   loadMore() {

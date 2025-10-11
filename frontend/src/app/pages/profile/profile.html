@@ -33,12 +33,18 @@
                     </div>
                 </div>
 
-                @if (currentUser?.id != user.id) {
-                <button class="btn px-4" [ngClass]="isFollowing ? 'btn-outline-primary' : 'btn-primary'"
-                    (click)="toggleFollow()">
-                    {{ isFollowing ? 'Unfollow' : 'Follow' }}
-                </button>
-                }
+                <div class="d-flex justify-content-center gap-2 my-3">
+                    @if (currentUser?.id != user.id) {
+                    <button class="btn px-4" [ngClass]="isFollowing ? 'btn-outline-primary' : 'btn-primary'"
+                        (click)="toggleFollow()">
+                        {{ isFollowing ? 'Unfollow' : 'Follow' }}
+                    </button>
+
+                    <button class="btn btn-outline-danger px-4" (click)="onReport(); reportType='user'">
+                        Report User
+                    </button>
+                    }
+                </div>
             </div>
         </div>
     </div>
@@ -50,4 +56,8 @@
     }
 
     <app-user-posts [userId]="userId"></app-user-posts>
+    @if (showReportModal) {
+    <app-report-modal-component [show]="showReportModal" [type]="reportType" [targetId]="targetId"
+        (closed)="showReportModal = false" (submitted)="handleReportSubmit($event)"></app-report-modal-component>
+    }
 </div>

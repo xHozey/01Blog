@@ -1,0 +1,164 @@
+<app-navbar-component />
+
+<div class="container my-4">
+  <!-- Dashboard Summary Cards -->
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body">
+          <h6 class="text-muted d-flex align-items-center">
+            <i class="bi bi-people me-2"></i> Total Users
+          </h6>
+          <h3 class="fw-bold">1,234</h3>
+          <small class="text-success">+12% from last month</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body">
+          <h6 class="text-muted d-flex align-items-center">
+            <i class="bi bi-file-earmark-text me-2"></i> Total Posts
+          </h6>
+          <h3 class="fw-bold">5,678</h3>
+          <small class="text-success">+8% from last month</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body">
+          <h6 class="text-muted d-flex align-items-center">
+            <i class="bi bi-flag me-2"></i> Pending Reports
+          </h6>
+          <h3 class="fw-bold">12</h3>
+          <small class="text-warning">Requires attention</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body">
+          <h6 class="text-muted d-flex align-items-center">
+            <i class="bi bi-activity me-2"></i> Active Users
+          </h6>
+          <h3 class="fw-bold">892</h3>
+          <small class="text-muted">Currently online</small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <ul class="nav nav-tabs mb-3">
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'users' }" (click)="setTab('users')">
+        Users
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'postReports' }" (click)="setTab('postReports')">
+        Post Reports
+      </button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'commentReports' }" (click)="setTab('commentReports')">
+        Comment Reports
+      </button>
+    </li>
+  </ul>
+
+  <!-- Users Tab -->
+  <div *ngIf="activeTab === 'users'" class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">User Management</h5>
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let user of users">
+            <td><strong>@{{ user.username }}</strong></td>
+            <td>{{ user.email }}</td>
+            <td><span class="badge bg-secondary">{{ user.role }}</span></td>
+            <td><span class="badge bg-primary">{{ user.status }}</span></td>
+            <td>
+              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
+              <i class="bi bi-slash-circle me-2 text-danger" role="button"></i>
+              <i class="bi bi-trash text-danger" role="button"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Post Reports Tab -->
+  <div *ngIf="activeTab === 'postReports'" class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">Post Reports</h5>
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Post ID</th>
+            <th>Reporter</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of postReports">
+            <td>#{{ report.postId }}</td>
+            <td>@{{ report.reporter }}</td>
+            <td>{{ report.reason }}</td>
+            <td>{{ report.date | date }}</td>
+            <td>
+              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
+              <i class="bi bi-trash text-danger" role="button"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Comment Reports Tab -->
+  <div *ngIf="activeTab === 'commentReports'" class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">Comment Reports</h5>
+      <table class="table align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Comment ID</th>
+            <th>Reporter</th>
+            <th>Reason</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of commentReports">
+            <td>#{{ report.commentId }}</td>
+            <td>@{{ report.reporter }}</td>
+            <td>{{ report.reason }}</td>
+            <td>{{ report.date | date }}</td>
+            <td>
+              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
+              <i class="bi bi-trash text-danger" role="button"></i>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

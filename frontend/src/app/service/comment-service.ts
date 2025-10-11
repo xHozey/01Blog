@@ -32,4 +32,11 @@ export class CommentService {
       responseType: 'text',
     });
   }
+
+  reportComment(payload: reportRequest) {
+    return this.http.post(`${this.apiUrl}/report`, payload, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }

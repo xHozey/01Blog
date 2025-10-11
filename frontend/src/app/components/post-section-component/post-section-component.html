@@ -8,7 +8,7 @@
 
       @for (post of posts; track post.id) {
       <app-post-component [post]="post" (delete)="onDeletePost($event)" (update)="onUpdatePost($event)"
-        (report)="onReportPost($event)">
+        (report)="onReport($event)">
       </app-post-component>
       }
     </div>
@@ -19,28 +19,11 @@
     }
   </div>
 
-  
+
   @if (showReportModal) {
-  <div class="modal d-block" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Report Post</h5>
-          <button type="button" class="btn-close" (click)="resetReportForm()"></button>
-        </div>
-
-        <div class="modal-body">
-          <textarea class="form-control mb-2" placeholder="description" rows="4"
-            [(ngModel)]="reportDescription"></textarea>
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-secondary" (click)="resetReportForm()">Cancel</button>
-          <button class="btn btn-primary" (click)="saveReport()">Send</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-report-modal-component [show]="showReportModal" [type]="reportType" [targetId]="targetId"
+    (closed)="showReportModal = false" (submitted)="handleReportSubmit($event)"></app-report-modal-component>
   }
+
 
 </div>

@@ -11,7 +11,7 @@ export class UserService {
   private _user = new BehaviorSubject<userResponse | null>(null);
   user$: Observable<userResponse | null> = this._user.asObservable();
 
-  private http = inject(HttpClient)
+  private http = inject(HttpClient);
 
   fetchCurrentUser() {
     this.http
@@ -29,8 +29,8 @@ export class UserService {
     });
   }
 
-  reportUser(report: reportRequest, id: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/${id}/report`, report, {
+  reportUser(report: reportRequest): Observable<string> {
+    return this.http.post(`${this.apiUrl}/report`, report, {
       withCredentials: true,
       responseType: 'text',
     });

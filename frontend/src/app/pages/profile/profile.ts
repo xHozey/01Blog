@@ -5,10 +5,11 @@ import { ActivatedRoute } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { CommonModule } from '@angular/common';
 import { UserPosts } from '../../components/user-posts/user-posts';
+import { ReportModalComponent } from '../../components/report-modal-component/report-modal-component';
 
 @Component({
   selector: 'app-profile',
-  imports: [NavbarComponent, CommonModule, UserPosts],
+  imports: [NavbarComponent, CommonModule, UserPosts, ReportModalComponent],
   templateUrl: './profile.html',
   styleUrl: './profile.css',
 })
@@ -67,6 +68,30 @@ export class Profile implements OnInit {
         this.isFollowing = !this.isFollowing;
         if (!this.isFollowing) this.followersCount--;
         else this.followersCount++;
+      },
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
+  showReportModal = false;
+  reportType: 'post' | 'comment' | 'user' = 'user';
+  targetId = 0;
+  onReport() {
+    this.showReportModal = true;
+    this.targetId = this.userId;
+  }
+
+  handleReportSubmit($event: { type: string; targetId?: number; description: string }) {
+    if ($event.targetId == null) return;
+    const payload: reportRequest = {
+      id: $event.targetId,
+      description: $event.description,
+    };
+
+    this.userService.reportUser(payload).subscribe({
+      next: (res) => {
+        console.log(res);
       },
       error: (err) => {
         console.error(err);

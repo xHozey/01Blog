@@ -6,12 +6,13 @@ import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { commentRequest } from '../../models/commentRequest';
 import { UserService } from '../../service/user-service';
+import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 
 @Component({
   selector: 'app-comment-section',
   templateUrl: './comment-section.html',
   styleUrls: ['./comment-section.css'],
-  imports: [CommentComponent, FormsModule, InfiniteScrollDirective],
+  imports: [CommentComponent, FormsModule, InfiniteScrollDirective, ReportModalComponent],
 })
 export class CommentSection implements OnInit {
   commentService = inject(CommentService);
@@ -94,6 +95,26 @@ export class CommentSection implements OnInit {
     });
   }
 
-  reportModal = false;
-  onReport(id: number) {}
+  showReportModal = false;
+  reportDescription = '';
+  reportType: 'post' | 'comment' | 'user' = 'comment';
+  targetId = 0;
+  onReport(id: number) {
+    this.targetId = id;
+    this.showReportModal = true;
+  }
+
+  handleReportSubmit(event: { type: string; targetId?: number; description: string }) {
+    if (!event.targetId) return;
+    const payload: reportRequest = {
+      id: event.targetId,
+      description: event.description,
+    };
+    this.commentService.reportComment(payload).subscribe({
+      next: (res) => {},
+      error: (err) => {
+        console.error(err);
+      },
+    });
+  }
 }
