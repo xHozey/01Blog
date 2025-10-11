@@ -13,12 +13,15 @@ public class UserProfileUpdateRequest {
     private String confirmPassword;
     @Size(max = 1500)
     private String iconProfile;
+    @Size(max = 3000)
+    private String bio;
 
-    public UserProfileUpdateRequest(String username, String password, String confirmPassword, String iconProfile) {
+    public UserProfileUpdateRequest(String username, String password, String confirmPassword, String iconProfile, String bio) {
         this.username = username;
         this.password = password;
         this.confirmPassword = confirmPassword;
         this.iconProfile = iconProfile;
+        this.bio = bio;
     }
 
     public  UserProfileUpdateRequest() {}
@@ -53,5 +56,13 @@ public class UserProfileUpdateRequest {
 
     public void setIconProfile(String iconProfile) {
         this.iconProfile = iconProfile;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

@@ -3,10 +3,9 @@ package com._Blog.Backend.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,7 +36,7 @@ public class PostService {
     private final ReportPostRepository reportPostRepository;
     private final NotificationService notificationService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository,  NotificationService notificationService) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository, NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
@@ -61,10 +60,10 @@ public class PostService {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
         return this.postRepository
-            .findByUserIdAndIsHideFalse(userId, pageable)
-            .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
-                    postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
-            .getContent();
+                .findByUserIdAndIsHideFalse(userId, pageable)
+                .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
+                postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
+                .getContent();
     }
 
     public List<PostResponse> getPosts(Integer page) {
@@ -80,32 +79,16 @@ public class PostService {
         Page<Post> postsPage;
 
         if (!followedUserIds.isEmpty()) {
-            // Include user's own posts too
             followedUserIds = new ArrayList<>(followedUserIds);
             followedUserIds.add(jwtUser.getId());
 
             postsPage = postRepository.findAllByUserIdInAndIsHideFalse(followedUserIds, pageable);
         } else {
-            // If no followed users, show public posts
             postsPage = postRepository.findAllByIsHideFalse(pageable);
         }
 
         return postsPage.getContent().stream()
-                                    .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId()))).toList();
-    }
-
-
-    private int getRemaining(JwtUser jwtUser, List<Post> posts, List<PostResponse> resultPosts, int remaining) {
-        for (Post post : posts) {
-            if (remaining == 0) break;
-            resultPosts.add(new PostResponse(
-                    post,
-                    postEngagementRepository.countByPostId(post.getId()),
-                    postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId())
-            ));
-            remaining--;
-        }
-        return remaining;
+                .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()), postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId()))).toList();
     }
 
     public PostResponse getPostById(Long id) {
@@ -116,11 +99,13 @@ public class PostService {
 
     public PostResponse updatePost(PostRequest post, Long postId) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user =  userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
+        User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
         Post oldPost = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-        if (!user.getId().equals(oldPost.getUser().getId())) throw new UnauthorizedException("You are not allowed to update this post");
-    
-        oldPost.setTitle(post.getTitle());   
+        if (!user.getId().equals(oldPost.getUser().getId())) {
+            throw new UnauthorizedException("You are not allowed to update this post");
+        }
+
+        oldPost.setTitle(post.getTitle());
         oldPost.setContent(post.getContent());
 
         Post savedPost = this.postRepository.save(oldPost);

@@ -7,6 +7,7 @@ import { Post } from './pages/post/post';
 import { UpdatePost } from './pages/update-post/update-post';
 import { postEditGuard } from './guards/post-edit-guard-guard';
 import { Profile } from './pages/profile/profile';
+import { Settings } from './pages/settings/settings';
 
 export const routes: Routes = [
   {
@@ -38,4 +39,8 @@ export const routes: Routes = [
     path: 'profile/:id',
     component: Profile,
   },
+  {
+    path: "settings",
+    component: Settings
+  }
 ];

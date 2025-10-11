@@ -1,16 +1,26 @@
 package com._Blog.Backend.services;
 
-import com._Blog.Backend.exception.ResourceNotFoundException;
-import com._Blog.Backend.model.*;
-import com._Blog.Backend.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import com._Blog.Backend.exception.ResourceNotFoundException;
+import com._Blog.Backend.model.Comment;
+import com._Blog.Backend.model.CommentEngagement;
+import com._Blog.Backend.model.JwtUser;
+import com._Blog.Backend.model.Post;
+import com._Blog.Backend.model.PostEngagement;
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.CommentEngagementRepository;
+import com._Blog.Backend.repository.CommentRepository;
+import com._Blog.Backend.repository.PostEngagementRepository;
+import com._Blog.Backend.repository.PostRepository;
+import com._Blog.Backend.repository.UserRepository;
 
 @Service
 public class EngagementService {
+
     private final CommentEngagementRepository commentEngagementRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final PostRepository postRepository;
@@ -32,7 +42,7 @@ public class EngagementService {
             postEngagementRepository.deleteById(engagement.get().getId());
         } else {
             User user = userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            Post post =  postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+            Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
             postEngagementRepository.save(new PostEngagement(post, user));
         }
     }

@@ -1,17 +1,19 @@
 package com._Blog.Backend.services;
 
+import org.springframework.stereotype.Service;
+
 import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.model.Session;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.SessionRepository;
 import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
+
 import io.jsonwebtoken.ExpiredJwtException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Service
 public class RefreshService {
+
     private final JwtUtil jwtUtil;
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
@@ -25,7 +27,7 @@ public class RefreshService {
     public String[] refreshToken(String refreshToken) {
         try {
             if (jwtUtil.isTokenExpired(refreshToken)) {
-                System.out.println("token expired or invalid: "+refreshToken);
+                System.out.println("token expired or invalid: " + refreshToken);
                 throw new UnauthorizedException("refresh token expired");
             }
 
@@ -61,10 +63,10 @@ public class RefreshService {
             return new String[]{newAuthToken, newRefreshToken};
 
         } catch (ExpiredJwtException e) {
-            System.out.println("1 token expired or invalid: "+refreshToken);
+            System.out.println("1 token expired or invalid: " + refreshToken);
             throw new UnauthorizedException("refresh token expired");
-        } catch (Exception e) {
-            System.out.println("error: "+e.getMessage());
+        } catch (UnauthorizedException e) {
+            System.out.println("error: " + e.getMessage());
             throw new UnauthorizedException("invalid refresh token");
         }
     }

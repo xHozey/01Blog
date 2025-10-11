@@ -51,6 +51,7 @@ public class User implements UserDetails {
 
     private String iconPath = "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg";
     private Boolean isBanned = false;
+    private String bio = "Hi! I'm using 01Blog";
 
     @CreationTimestamp
     private Timestamp createAt;
@@ -87,7 +88,7 @@ public class User implements UserDetails {
 
     public User() {}
 
-    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp createAt) {
+    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp createAt, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -95,6 +96,7 @@ public class User implements UserDetails {
         this.iconPath = iconPath;
         this.isBanned = isBanned;
         this.createAt = createAt;
+        this.bio = bio;
     }
 
     public Long getId() {
@@ -268,5 +270,13 @@ public class User implements UserDetails {
 
     public void setReportedUsers(Set<ReportUser> reportedUsers) {
         this.reportedUsers = reportedUsers;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

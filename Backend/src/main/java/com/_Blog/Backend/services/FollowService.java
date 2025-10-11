@@ -1,5 +1,10 @@
 package com._Blog.Backend.services;
 
+import java.util.Optional;
+
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com._Blog.Backend.exception.ConflictException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.Follow;
@@ -7,14 +12,10 @@ import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.FollowRepository;
 import com._Blog.Backend.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.Repository;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 public class FollowService {
+
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
@@ -26,8 +27,9 @@ public class FollowService {
     public void toggleFollow(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (followedId.equals(jwtUser.getId()))
+        if (followedId.equals(jwtUser.getId())) {
             throw new ConflictException("you can't follow yourself");
+        }
 
         User followerUser = userRepository.findById(jwtUser.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("follower user not found"));
@@ -48,7 +50,9 @@ public class FollowService {
 
     public Boolean isFollowing(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (followedId.equals(jwtUser.getId())) return false;
+        if (followedId.equals(jwtUser.getId())) {
+            return false;
+        }
         return followRepository.existsByFollowerIdAndFollowedId(jwtUser.getId(), followedId);
     }
 

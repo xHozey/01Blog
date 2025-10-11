@@ -1,20 +1,31 @@
 package com._Blog.Backend.services;
 
-import com._Blog.Backend.dto.AdminPostDTO;
-import com._Blog.Backend.dto.AdminUserDTO;
-import com._Blog.Backend.dto.PostResponse;
-import com._Blog.Backend.exception.ResourceNotFoundException;
-import com._Blog.Backend.model.*;
-import com._Blog.Backend.repository.*;
+import java.util.List;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com._Blog.Backend.dto.AdminPostDTO;
+import com._Blog.Backend.dto.AdminUserDTO;
+import com._Blog.Backend.exception.ResourceNotFoundException;
+import com._Blog.Backend.model.Post;
+import com._Blog.Backend.model.ReportComment;
+import com._Blog.Backend.model.ReportPost;
+import com._Blog.Backend.model.ReportUser;
+import com._Blog.Backend.model.User;
+import com._Blog.Backend.repository.CommentRepository;
+import com._Blog.Backend.repository.PostEngagementRepository;
+import com._Blog.Backend.repository.PostRepository;
+import com._Blog.Backend.repository.ReportCommentRepository;
+import com._Blog.Backend.repository.ReportPostRepository;
+import com._Blog.Backend.repository.ReportUserRepository;
+import com._Blog.Backend.repository.UserRepository;
 
 @Service
 public class AdminService {
+
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -23,7 +34,7 @@ public class AdminService {
     private final ReportPostRepository reportPostRepository;
     private final ReportCommentRepository reportCommentRepository;
 
-    AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository,  ReportCommentRepository reportCommentRepository) {
+    public AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository, ReportCommentRepository reportCommentRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
@@ -38,7 +49,7 @@ public class AdminService {
     }
 
     public void hidePost(Long postId) {
-        Post post = postRepository.findById(postId).orElseThrow(()->new ResourceNotFoundException("Post not found"));
+        Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         post.setIsHide(true);
         postRepository.save(post);
     }
@@ -53,13 +64,13 @@ public class AdminService {
     }
 
     public void banUser(Long id) {
-        User user = this.userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setIsBanned(true);
         userRepository.save(user);
     }
 
     public void unBanUser(Long id) {
-        User user = this.userRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("User not found"));
+        User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         user.setIsBanned(false);
         userRepository.save(user);
     }
@@ -71,7 +82,7 @@ public class AdminService {
 
     public List<AdminUserDTO> getBannedUsers(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return this.userRepository.findAllByIsBanned(true,  pageable).map(AdminUserDTO::new).toList();
+        return this.userRepository.findAllByIsBanned(true, pageable).map(AdminUserDTO::new).toList();
     }
 
     public List<ReportUser> getUserReports(Integer page) {
@@ -80,7 +91,7 @@ public class AdminService {
     }
 
     public List<ReportPost> getPostReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"createAt"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createAt"));
         return this.reportPostRepository.findAll(pageable).toList();
     }
 

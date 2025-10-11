@@ -1,5 +1,15 @@
 package com._Blog.Backend.services;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+
 import com._Blog.Backend.dto.NotificationResponse;
 import com._Blog.Backend.model.Follow;
 import com._Blog.Backend.model.JwtUser;
@@ -7,24 +17,14 @@ import com._Blog.Backend.model.Notification;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.FollowRepository;
 import com._Blog.Backend.repository.NotificationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class NotificationService {
+
     private final NotificationRepository notificationRepository;
     private final FollowRepository followRepository;
 
-    public NotificationService(NotificationRepository notificationRepository,  FollowRepository followRepository) {
+    public NotificationService(NotificationRepository notificationRepository, FollowRepository followRepository) {
         this.notificationRepository = notificationRepository;
         this.followRepository = followRepository;
     }
@@ -43,7 +43,7 @@ public class NotificationService {
     }
 
     public List<NotificationResponse> getNotifications(Integer page) {
-        JwtUser  jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pageable pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
         return this.notificationRepository.findByReceiverId(jwtUser.getId(), pageable).stream().map(NotificationResponse::new).toList();
     }
@@ -64,4 +64,3 @@ public class NotificationService {
         return this.notificationRepository.countByReceiverIdAndIsReadFalse(user.getId());
     }
 }
-

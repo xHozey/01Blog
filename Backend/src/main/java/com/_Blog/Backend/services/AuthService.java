@@ -17,6 +17,7 @@ import com._Blog.Backend.utils.Role;
 
 @Service
 public class AuthService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder encoder;
     private final UserRoleService userRoleService;
@@ -49,7 +50,7 @@ public class AuthService {
     public String[] login(LoginRequest user) {
         User existingUser = userRepository.findByUsername(user.getUsername())
                 .orElseGet(() -> userRepository.findByEmail(user.getUsername())
-                        .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
 
         if (!encoder.matches(user.getPassword(), existingUser.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");

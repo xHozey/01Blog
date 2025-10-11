@@ -1,0 +1,80 @@
+<app-navbar-component />
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div class="card shadow-sm border-0">
+        <div class="card-header bg-white border-bottom-0 pb-0">
+          <ul class="nav nav-tabs card-header-tabs">
+            <li class="nav-item">
+              <button class="nav-link" 
+                      [class.active]="activeTab === 'profile'" 
+                      (click)="selectTab('profile')">
+                Profile
+              </button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" 
+                      [class.active]="activeTab === 'account'" 
+                      (click)="selectTab('account')">
+                Account
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Profile Tab -->
+          <div *ngIf="activeTab === 'profile'">
+            <div class="text-center mb-4">
+              <img [src]="user.iconPath" alt="Avatar" class="rounded-circle border" width="120" height="120">
+              <div class="mt-2">
+                <input type="file" id="avatar" class="d-none" (change)="onAvatarChange($event)">
+                <label for="avatar" class="btn btn-outline-primary btn-sm">Change Avatar</label>
+              </div>
+            </div>
+
+            <form (ngSubmit)="onSaveProfile()" #profileForm="ngForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Username</label>
+                <input type="text" class="form-control" [(ngModel)]="user.username" name="username" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Bio</label>
+                <textarea class="form-control" rows="3" [(ngModel)]="user.bio" name="bio"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+            </form>
+          </div>
+
+          <!-- Account Tab -->
+          <div *ngIf="activeTab === 'account'">
+            <form (ngSubmit)="onSaveAccount()" #accountForm="ngForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" [(ngModel)]="user.email" name="email" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Current Password</label>
+                <input type="password" class="form-control" name="currentPassword" required>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label fw-semibold">New Password</label>
+                <input type="password" class="form-control" name="newPassword" required>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Update Password</button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
