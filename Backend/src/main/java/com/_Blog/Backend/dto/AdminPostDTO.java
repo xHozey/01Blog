@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -18,7 +20,7 @@ public class AdminPostDTO {
     private Long authorId;
     private String authorName;
     private Long likes;
-
+    private Timestamp createdAt;
     public AdminPostDTO(Post post, Long likes) {
         this.id = post.getId();
         this.title = post.getTitle();
@@ -27,5 +29,6 @@ public class AdminPostDTO {
         this.authorId = post.getUser().getId();
         this.authorName = post.getUser().getUsername();
         this.likes = likes;
+        this.createdAt = post.getCreatedAt();
     }
 }

@@ -27,7 +27,9 @@ export class AdminDashboard {
     { commentId: 502, reporter: 'kate', reason: 'Offensive language', date: new Date() },
   ];
 
-  setTab(tab: 'users' | 'postReports' | 'commentReports') {
+  userReports = []
+
+  setTab(tab: 'users' | 'postReports' | 'commentReports' | 'userReports') {
     this.activeTab = tab;
   }
 }

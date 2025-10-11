@@ -18,7 +18,7 @@ public class AdminUserDTO {
     private String email;
     private String iconPath;
     private Boolean isBanned;
-    private Timestamp creation;
+    private Timestamp createdAt;
 
     public AdminUserDTO(User user) {
         this.id = user.getId();
@@ -26,6 +26,6 @@ public class AdminUserDTO {
         this.email = user.getEmail();
         this.iconPath = user.getIconPath();
         this.isBanned = user.getIsBanned();
-        this.creation = user.getCreateAt();
+        this.createdAt = user.getCreateAt();
     }
 }
