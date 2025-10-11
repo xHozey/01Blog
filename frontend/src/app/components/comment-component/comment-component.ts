@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user-service';
 import { EngagementService } from '../../service/engagement-service';
 import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-comment-component',
@@ -17,8 +18,10 @@ export class CommentComponent implements OnInit {
   @Output() delete = new EventEmitter<number>();
   @Output() report = new EventEmitter<number>();
 
-  userService = inject(UserService);
-  engagementService = inject(EngagementService);
+  private userService = inject(UserService);
+  private engagementService = inject(EngagementService);
+  private router = inject(Router)
+
   user: userResponse | null = null;
 
   readonly HeartIcon = Heart;
@@ -38,5 +41,9 @@ export class CommentComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.user$.subscribe((user) => (this.user = user));
+  }
+
+  goToProfile(): void {
+    this.router.navigate(["/profile", this.comment.authorId])
   }
 }

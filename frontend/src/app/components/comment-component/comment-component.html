@@ -2,7 +2,7 @@
   <!-- Header -->
   <header class="comment-header">
     <div class="author-section">
-      <span class="comment-author">{{ comment.author }}</span>
+      <span class="comment-author" (click)="goToProfile()">{{ comment.author }}</span>
       <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
     </div>
     

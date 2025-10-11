@@ -29,6 +29,7 @@
   font-weight: 600;
   color: #007EA7;
   font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .comment-time {
