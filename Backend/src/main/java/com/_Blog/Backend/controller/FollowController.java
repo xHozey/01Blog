@@ -1,10 +1,14 @@
 package com._Blog.Backend.controller;
 
-import com._Blog.Backend.model.Follow;
-import com._Blog.Backend.services.FollowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com._Blog.Backend.services.FollowService;
 
 @RestController
 @RequestMapping("/api/v1/users")

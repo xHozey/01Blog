@@ -4,7 +4,7 @@ import { FollowService } from '../../service/follow-service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { CommonModule } from '@angular/common';
-import { UserPosts } from "../../components/user-posts/user-posts";
+import { UserPosts } from '../../components/user-posts/user-posts';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +19,7 @@ export class Profile implements OnInit {
   private route = inject(ActivatedRoute);
   userId!: number;
 
+  currentUser: userResponse | null = null;
   user!: userResponse;
   isFollowing = false;
   followersCount = 0;
@@ -58,14 +59,16 @@ export class Profile implements OnInit {
         console.error(err);
       },
     });
+    this.userService.fetchCurrentUser();
+    this.userService.user$.subscribe((user) => (this.currentUser = user));
   }
 
   toggleFollow() {
     this.followService.followUser(this.userId).subscribe({
       next: (res) => {
-        this.isFollowing = !this.isFollowing
-        if (!this.isFollowing) this.followersCount--
-        else this.followersCount++
+        this.isFollowing = !this.isFollowing;
+        if (!this.isFollowing) this.followersCount--;
+        else this.followersCount++;
       },
       error: (err) => {
         console.error(err);

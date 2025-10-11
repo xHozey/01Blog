@@ -3,24 +3,6 @@
         <div class="card shadow-lg p-4" style="width: 28rem;">
             <h3 class="text-center mb-4">Create Account</h3>
 
-            <!-- Avatar Upload -->
-            <div class="text-center mb-3">
-                <div class="position-relative d-inline-block">
-                    <img [src]="previewUrl || 'assets/default-avatar.png'" class="rounded-circle shadow-sm" width="100"
-                        height="100" style="object-fit: cover;" />
-                    <label
-                        class="upload-btn position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2 cursor-pointer">
-                        <input type="file" accept="image/*" (change)="onFileSelected($event)" hidden />
-                        <i class="bi bi-camera"></i>
-                    </label>
-                </div>
-                @if (isUploading) {
-                <div class="small text-muted mt-2">
-                    Uploading photo...
-                </div>
-                }
-            </div>
-
             <!-- Username -->
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="floatingUsername" formControlName="username"
@@ -50,8 +32,8 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100" [disabled]="isUploading || registerForm.invalid">
-                {{ isUploading ? 'Please wait...' : 'Register' }}
+            <button type="submit" class="btn btn-primary w-100" [disabled]="registerForm.invalid">
+                Register
             </button>
 
             <p class="text-center mt-3 mb-0">

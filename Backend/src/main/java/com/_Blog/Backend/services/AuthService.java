@@ -42,7 +42,6 @@ public class AuthService {
         userEntity.setEmail(user.getEmail());
         userEntity.setUsername(user.getUsername());
         userEntity.setPassword(this.encoder.encode(user.getPassword()));
-        userEntity.setIconPath(user.getIconUrl());
         User savedUser = userRepository.save(userEntity);
         userRoleService.addRole(Role.USER, savedUser);
     }

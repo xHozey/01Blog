@@ -27,11 +27,12 @@
                         <small class="text-muted">Following</small>
                     </div>
                 </div>
-
+                @if (currentUser?.id != user.id) {
                 <button class="btn" [ngClass]="isFollowing ? 'btn-outline-primary' : 'btn-primary'"
                     (click)="toggleFollow()">
                     {{ isFollowing ? 'Unfollow' : 'Follow' }}
                 </button>
+                }
             </div>
         </div>
     </div>
