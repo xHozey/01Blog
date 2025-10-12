@@ -30,7 +30,12 @@ export class AuthService {
       responseType: 'text',
     });
   }
+
   checkAuth(): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/check`, { withCredentials: true });
+    return this.http.get<boolean>(`${this.apiUrl}/check-auth`, { withCredentials: true });
+  }
+
+  checkUnauth(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check-unauth`, { withCredentials: true });
   }
 }

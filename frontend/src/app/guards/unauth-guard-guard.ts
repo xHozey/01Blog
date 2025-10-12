@@ -8,17 +8,16 @@ export const unauthGuardGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
   const router = inject(Router);
 
-  return authService.checkAuth().pipe(
-    map((isAuthenticated) => {
-      if (isAuthenticated) {
-        // User is logged in → redirect away from login/register
-        return router.createUrlTree(['/'], { queryParams: { returnUrl: state.url } });
+  return authService.checkUnauth().pipe(
+    map((canAccess) => {
+      if (!canAccess) {
+        return router.createUrlTree(['/']);
       }
-      return true; // Allow access
+      return true; 
     }),
-    catchError(() => {
-      // If check fails (e.g., 401), treat as unauthenticated → allow access
-      return of(true);
+    catchError((err) => {
+      console.error('Error in unauthGuard', err);
+      return of(true); 
     })
   );
 };

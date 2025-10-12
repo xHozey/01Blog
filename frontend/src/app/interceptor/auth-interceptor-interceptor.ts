@@ -30,7 +30,8 @@ export const authInterceptor: HttpInterceptorFn = (
         const isLoginOrRefresh =
           req.url.includes('/refresh') ||
           req.url.includes('/login') ||
-          req.url.includes('/register');
+          req.url.includes('/register') ||
+          req.url.includes('/check-unauth');
 
         if (err.status === 401 && !isLoginOrRefresh) {
           if (!isRefreshing) {

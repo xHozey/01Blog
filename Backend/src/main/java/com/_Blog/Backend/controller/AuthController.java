@@ -56,11 +56,26 @@ public class AuthController {
         return ResponseEntity.ok("logout succesfuly");
     }
 
-    @GetMapping("/check")
+    @GetMapping("/check-auth")
     public ResponseEntity<Boolean> checkAuth(@CookieValue(name = "auth_token", required = false) String authToken) {
         if (authToken == null || !this.authService.isAuth(authToken)) {
             return ResponseEntity.status(401).body(false);
         }
         return ResponseEntity.ok(true);
     }
+
+    @GetMapping("/check-unauth")
+    public ResponseEntity<Boolean> checkUnauth(
+            @CookieValue(name = "auth_token", required = false) String authToken,
+            @CookieValue(name = "refresh_token", required = false) String refreshToken) {
+
+        if (refreshToken != null) {
+            return ResponseEntity.ok(false);
+        }
+        if (authToken != null && this.authService.isAuth(authToken)) {
+            return ResponseEntity.ok(false);
+        }
+        return ResponseEntity.ok(true);
+    }
+
 }
