@@ -75,10 +75,4 @@ export class AdminService {
       withCredentials: true,
     });
   }
-
-  getPostReports(page: number): Observable<reportPost[]> {
-    return this.http.get<reportPost[]>(`${this.apiUrl}/report/post?page=${page}`, {
-      withCredentials: true,
-    });
-  }
 }

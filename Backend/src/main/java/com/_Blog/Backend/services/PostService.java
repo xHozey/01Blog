@@ -13,17 +13,14 @@ import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
-import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.Post;
-import com._Blog.Backend.model.ReportPost;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.FollowRepository;
 import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
-import com._Blog.Backend.repository.ReportPostRepository;
 import com._Blog.Backend.repository.UserRepository;
 
 @Service
@@ -33,15 +30,13 @@ public class PostService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final PostEngagementRepository postEngagementRepository;
-    private final ReportPostRepository reportPostRepository;
     private final NotificationService notificationService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, ReportPostRepository reportPostRepository, NotificationService notificationService) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
         this.postEngagementRepository = postEngagementRepository;
-        this.reportPostRepository = reportPostRepository;
         this.notificationService = notificationService;
     }
 
@@ -125,14 +120,6 @@ public class PostService {
         }
 
         postRepository.delete(post);
-    }
-
-    public void reportPost(ReportRequest reportRequest) {
-        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Post post = this.postRepository.findById(reportRequest.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", reportRequest.getId())));
-        User user = this.userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", jwtUser.getId())));
-        ReportPost reportPost = new ReportPost(user, post, reportRequest.getDescription());
-        this.reportPostRepository.save(reportPost);
     }
 
 }

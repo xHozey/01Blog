@@ -5,10 +5,17 @@ import { CommonModule } from '@angular/common';
 import { PostComponent } from '../post-component/post-component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 
 @Component({
   selector: 'app-user-posts',
-  imports: [CommonModule, PostComponent, FormsModule, InfiniteScrollDirective],
+  imports: [
+    CommonModule,
+    PostComponent,
+    FormsModule,
+    InfiniteScrollDirective,
+    ReportModalComponent,
+  ],
   templateUrl: './user-posts.html',
   styleUrl: './user-posts.css',
 })
@@ -19,9 +26,8 @@ export class UserPosts implements OnInit {
   page: number = 0;
 
   //Post report form
-  selectedReportPostId?: number;
+  selectedReportId?: number;
   showReportModal = false;
-  reportDescription: string = '';
 
   private postService = inject(PostService);
   private router = inject(Router);
@@ -32,6 +38,7 @@ export class UserPosts implements OnInit {
       error: (err) => console.error(err),
     });
   }
+
   onDeletePost(postId: number) {
     this.postService.deletePost(postId).subscribe({
       next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
@@ -39,33 +46,9 @@ export class UserPosts implements OnInit {
     });
   }
 
-  onReportPost(postId: number) {
+  onReportPost(id: number) {
     this.showReportModal = true;
-    this.selectedReportPostId = postId;
-    this.reportDescription = '';
-  }
-
-  saveReport() {
-    if (!this.selectedReportPostId || !this.reportDescription.trim()) return;
-    const payload: reportRequest = {
-      id: this.selectedReportPostId,
-      description: this.reportDescription,
-    };
-
-    this.postService.reportPost(payload).subscribe({
-      next: (res) => {
-        this.resetReportForm();
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
-  }
-
-  resetReportForm() {
-    this.showReportModal = false;
-    this.selectedReportPostId = undefined;
-    this.reportDescription = '';
+    this.selectedReportId = id;
   }
 
   loadMore() {

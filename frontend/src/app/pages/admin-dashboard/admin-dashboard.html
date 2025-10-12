@@ -59,7 +59,7 @@
         Users
       </button>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <button class="nav-link" [ngClass]="{ active: activeTab === 'postReports' }" (click)="setTab('postReports')">
         Post Reports
       </button>
@@ -68,7 +68,7 @@
       <button class="nav-link" [ngClass]="{ active: activeTab === 'commentReports' }" (click)="setTab('commentReports')">
         Comment Reports
       </button>
-    </li>
+    </li> -->
   </ul>
 
   <!-- Users Tab -->
@@ -103,7 +103,7 @@
   </div>
 
   <!-- Post Reports Tab -->
-  <div *ngIf="activeTab === 'postReports'" class="card shadow-sm border-light">
+  <!-- <div *ngIf="activeTab === 'postReports'" class="card shadow-sm border-light">
     <div class="card-body">
       <h5 class="mb-3">Post Reports</h5>
       <table class="table align-middle">
@@ -130,10 +130,10 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 
   <!-- Comment Reports Tab -->
-  <div *ngIf="activeTab === 'commentReports'" class="card shadow-sm border-light">
+  <!-- <div *ngIf="activeTab === 'commentReports'" class="card shadow-sm border-light">
     <div class="card-body">
       <h5 class="mb-3">Comment Reports</h5>
       <table class="table align-middle">
@@ -160,5 +160,5 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 </div>

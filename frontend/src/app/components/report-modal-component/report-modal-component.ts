@@ -1,20 +1,21 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UserService } from '../../service/user-service';
 
 @Component({
   selector: 'app-report-modal-component',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './report-modal-component.html',
-  styleUrl: './report-modal-component.css'
+  styleUrl: './report-modal-component.css',
 })
 export class ReportModalComponent {
   @Input() show = false;
-  @Input() type: 'post' | 'comment' | 'user' = 'post';
-  @Input() targetId?: number ;
+  @Input() targetId?: number;
   @Output() closed = new EventEmitter<void>();
-  @Output() submitted = new EventEmitter<{ type: string; targetId?: number; description: string }>();
+
+  private userService = inject(UserService);
 
   description = '';
 
@@ -24,12 +25,18 @@ export class ReportModalComponent {
   }
 
   submit() {
-    if (!this.description.trim()) return;
-    this.submitted.emit({
-      type: this.type,
-      targetId: this.targetId,
-      description: this.description.trim()
+    if (!this.description.trim() || !this.targetId) return;
+
+    const payload: reportRequest = {
+      id: this.targetId,
+      description: this.description,
+    };
+    this.userService.reportUser(payload).subscribe({
+      next: (res) => {
+        console.log('hello world');
+        this.close();
+      },
+      error: (err) => console.error(err),
     });
-    this.close();
   }
 }

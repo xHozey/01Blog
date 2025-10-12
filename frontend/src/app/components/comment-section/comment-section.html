@@ -47,8 +47,8 @@
     }
   </div>
   @if (showReportModal) {
-  <app-report-modal-component [show]="showReportModal" [type]="reportType" [targetId]="targetId"
-    (closed)="showReportModal = false" (submitted)="handleReportSubmit($event)"></app-report-modal-component>
+  <app-report-modal-component [show]="showReportModal"[targetId]="targetId"
+    (closed)="showReportModal = false"></app-report-modal-component>
   }
 
 </section>

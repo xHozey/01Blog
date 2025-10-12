@@ -11,15 +11,11 @@ import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.Post;
-import com._Blog.Backend.model.ReportComment;
-import com._Blog.Backend.model.ReportPost;
 import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.CommentRepository;
 import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
-import com._Blog.Backend.repository.ReportCommentRepository;
-import com._Blog.Backend.repository.ReportPostRepository;
 import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.UserRepository;
 
@@ -31,17 +27,13 @@ public class AdminService {
     private final UserRepository userRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final ReportUserRepository reportUserRepository;
-    private final ReportPostRepository reportPostRepository;
-    private final ReportCommentRepository reportCommentRepository;
 
-    public AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository, ReportPostRepository reportPostRepository, ReportCommentRepository reportCommentRepository) {
+    public AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
         this.postEngagementRepository = postEngagementRepository;
         this.reportUserRepository = reportUserRepository;
-        this.reportPostRepository = reportPostRepository;
-        this.reportCommentRepository = reportCommentRepository;
     }
 
     public void deletePost(Long postId) {
@@ -88,16 +80,6 @@ public class AdminService {
     public List<ReportUser> getUserReports(Integer page) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by("username").descending());
         return this.reportUserRepository.findAll(pageable).toList();
-    }
-
-    public List<ReportPost> getPostReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createAt"));
-        return this.reportPostRepository.findAll(pageable).toList();
-    }
-
-    public List<ReportComment> getCommentReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
-        return this.reportCommentRepository.findAll(pageable).toList();
     }
 
     public void deleteUser(Long userId) {

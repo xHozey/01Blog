@@ -2,8 +2,6 @@ package com._Blog.Backend.controller;
 
 import java.util.List;
 
-import com._Blog.Backend.dto.ReportRequest;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,11 +52,5 @@ public class CommentController {
     public ResponseEntity<CommentResponse> updateComment(@RequestBody CommentRequest commentRequest, @PathVariable Long id) {
         CommentResponse savedComment = commentService.updateComment(commentRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedComment);
-    }
-
-    @PostMapping("/report")
-    public ResponseEntity<String> reportComment(@Valid @RequestBody ReportRequest reportRequest) {
-        this.commentService.reportComment(reportRequest);
-        return ResponseEntity.status(HttpStatus.OK).body("Report comment successfully");
     }
 }

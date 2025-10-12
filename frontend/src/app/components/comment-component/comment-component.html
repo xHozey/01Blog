@@ -26,7 +26,7 @@
           <li><hr class="dropdown-divider"></li>
         }
         <li>
-          <button class="dropdown-item" (click)="report.emit(comment.id)">
+          <button class="dropdown-item" (click)="report.emit(comment.authorId)">
             <i class="fa fa-flag me-2"></i>Report
           </button>
         </li>
@@ -36,27 +36,6 @@
 
   <!-- Content -->
   <p class="comment-content">{{ comment.content }}</p>
-
-  <!-- Media
-  @if (comment.filePath) {
-    <div class="comment-media">
-      @if (comment.filePath.toLowerCase().endsWith('.jpg') ||
-            comment.filePath.toLowerCase().endsWith('.jpeg') ||
-            comment.filePath.toLowerCase().endsWith('.png') ||
-            comment.filePath.toLowerCase().endsWith('.gif') ||
-            comment.filePath.toLowerCase().endsWith('.webp')) {
-        <img [src]="comment.filePath" alt="Comment attachment" />
-      }
-      @if (comment.filePath.toLowerCase().endsWith('.mp4') ||
-            comment.filePath.toLowerCase().endsWith('.webm') ||
-            comment.filePath.toLowerCase().endsWith('.ogg')) {
-        <video controls class="comment-media">
-          <source [src]="comment.filePath" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      }
-    </div>
-  } -->
 
   <!-- Like Button -->
   <div class="like-action">

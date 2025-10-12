@@ -43,9 +43,6 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CommentEngagement> engagements = new HashSet<>();
 
-    @OneToMany(mappedBy = "reportedComment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ReportComment> reportComments = new HashSet<>();
-
     public Comment() {}
 
     public Comment(Long id, String content, String filePath, Timestamp createTime, Post post, User user) {
@@ -111,13 +108,5 @@ public class Comment {
 
     public void setEngagements(Set<CommentEngagement> engagements) {
         this.engagements = engagements;
-    }
-
-    public Set<ReportComment> getReportComments() {
-        return reportComments;
-    }
-
-    public void setReportComments(Set<ReportComment> reportComments) {
-        this.reportComments = reportComments;
     }
 }

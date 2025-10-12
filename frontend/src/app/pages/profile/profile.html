@@ -40,7 +40,7 @@
                         {{ isFollowing ? 'Unfollow' : 'Follow' }}
                     </button>
 
-                    <button class="btn btn-outline-danger px-4" (click)="onReport(); reportType='user'">
+                    <button class="btn btn-outline-danger px-4" (click)="onReport()">
                         Report User
                     </button>
                     }
@@ -57,7 +57,7 @@
 
     <app-user-posts [userId]="userId"></app-user-posts>
     @if (showReportModal) {
-    <app-report-modal-component [show]="showReportModal" [type]="reportType" [targetId]="targetId"
-        (closed)="showReportModal = false" (submitted)="handleReportSubmit($event)"></app-report-modal-component>
+    <app-report-modal-component [show]="showReportModal" [targetId]="targetId"
+        (closed)="showReportModal = false"></app-report-modal-component>
     }
 </div>

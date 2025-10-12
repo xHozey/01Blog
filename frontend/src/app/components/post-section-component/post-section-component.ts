@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Router } from '@angular/router';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
+import { UserService } from '../../service/user-service';
 
 @Component({
   selector: 'app-post-section',
@@ -25,6 +26,7 @@ export class PostSectionComponent implements OnInit {
 
   private postService = inject(PostService);
   private router = inject(Router);
+  private userService = inject(UserService);
 
   ngOnInit(): void {
     this.postService.getPosts(this.page).subscribe({
@@ -41,25 +43,11 @@ export class PostSectionComponent implements OnInit {
 
   showReportModal = false;
   reportDescription = '';
-  reportType: 'post' | 'comment' | 'user' = 'post';
   targetId = 0;
+  
   onReport(id: number) {
     this.targetId = id;
     this.showReportModal = true;
-  }
-
-  handleReportSubmit(event: { type: string; targetId?: number; description: string }) {
-    if (!event.targetId) return;
-    const payload: reportRequest = {
-      id: event.targetId,
-      description: event.description,
-    };
-    this.postService.reportPost(payload).subscribe({
-      next: (res) => {},
-      error: (err) => {
-        console.error(err);
-      },
-    });
   }
 
   loadMore() {

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NavbarComponent } from "../../components/navbar-component/navbar-component";
+import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -9,7 +9,7 @@ import { NavbarComponent } from "../../components/navbar-component/navbar-compon
   styleUrls: ['./admin-dashboard.css'],
 })
 export class AdminDashboard {
-  activeTab: 'users' | 'postReports' | 'commentReports' = 'users';
+  activeTab: 'users' | 'userReports' = 'users';
 
   users = [
     { username: 'sarahj', email: 'sarah@example.com', role: 'user', status: 'active' },
@@ -17,19 +17,9 @@ export class AdminDashboard {
     { username: 'emilyd', email: 'emily@example.com', role: 'moderator', status: 'active' },
   ];
 
-  postReports = [
-    { postId: 101, reporter: 'john', reason: 'Inappropriate content', date: new Date() },
-    { postId: 102, reporter: 'anna', reason: 'Spam', date: new Date() },
-  ];
+  userReports = [];
 
-  commentReports = [
-    { commentId: 501, reporter: 'lucas', reason: 'Harassment', date: new Date() },
-    { commentId: 502, reporter: 'kate', reason: 'Offensive language', date: new Date() },
-  ];
-
-  userReports = []
-
-  setTab(tab: 'users' | 'postReports' | 'commentReports' | 'userReports') {
+  setTab(tab: 'users' | 'userReports') {
     this.activeTab = tab;
   }
 }

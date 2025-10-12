@@ -2,7 +2,6 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
-import com._Blog.Backend.model.ReportPost;
 import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.services.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -78,9 +77,4 @@ public class AdminController {
         return ResponseEntity.ok(reports);
     }
 
-    @GetMapping("/report/post")
-    public ResponseEntity<List<ReportPost>> getPostReports(@RequestParam(defaultValue = "0") Integer page) {
-        List<ReportPost> reports = this.adminService.getPostReports(page);
-        return ResponseEntity.ok(reports);
-    }
 }

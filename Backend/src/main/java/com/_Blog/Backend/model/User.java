@@ -65,9 +65,6 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    @OneToMany(mappedBy = "reporter", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ReportPost> reportPosts = new HashSet<>();
-
     @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Notification> receivedNotifications = new HashSet<>();
 
@@ -214,14 +211,6 @@ public class User implements UserDetails {
 
     public void setComments(Set<Comment> comments) {
         this.comments = comments;
-    }
-
-    public Set<ReportPost> getReportPosts() {
-        return reportPosts;
-    }
-
-    public void setReportPosts(Set<ReportPost> reportPosts) {
-        this.reportPosts = reportPosts;
     }
 
     public Set<Notification> getReceivedNotifications() {

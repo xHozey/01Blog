@@ -96,25 +96,9 @@ export class CommentSection implements OnInit {
   }
 
   showReportModal = false;
-  reportDescription = '';
-  reportType: 'post' | 'comment' | 'user' = 'comment';
   targetId = 0;
   onReport(id: number) {
     this.targetId = id;
     this.showReportModal = true;
-  }
-
-  handleReportSubmit(event: { type: string; targetId?: number; description: string }) {
-    if (!event.targetId) return;
-    const payload: reportRequest = {
-      id: event.targetId,
-      description: event.description,
-    };
-    this.commentService.reportComment(payload).subscribe({
-      next: (res) => {},
-      error: (err) => {
-        console.error(err);
-      },
-    });
   }
 }

@@ -39,13 +39,6 @@ export class PostService {
     return this.http.put<postResponse>(`${this.apiUrl}/${id}`, payload, { withCredentials: true });
   }
 
-  reportPost(payload: reportRequest): Observable<string> {
-    return this.http.post(`${this.apiUrl}/report`, payload, {
-      withCredentials: true,
-      responseType: 'text',
-    });
-  }
-
   getUserPosts(userId: number, page: number): Observable<postResponse[]> {
     return this.http.get<postResponse[]>(`${this.apiUrl}/users/${userId}?page=${page}`, {
       withCredentials: true,

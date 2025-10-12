@@ -75,27 +75,9 @@ export class Profile implements OnInit {
     });
   }
   showReportModal = false;
-  reportType: 'post' | 'comment' | 'user' = 'user';
   targetId = 0;
   onReport() {
     this.showReportModal = true;
     this.targetId = this.userId;
-  }
-
-  handleReportSubmit($event: { type: string; targetId?: number; description: string }) {
-    if ($event.targetId == null) return;
-    const payload: reportRequest = {
-      id: $event.targetId,
-      description: $event.description,
-    };
-
-    this.userService.reportUser(payload).subscribe({
-      next: (res) => {
-        console.log(res);
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
   }
 }

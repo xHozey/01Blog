@@ -2,8 +2,6 @@ package com._Blog.Backend.dto;
 
 import com._Blog.Backend.model.Notification;
 
-import java.sql.Timestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
