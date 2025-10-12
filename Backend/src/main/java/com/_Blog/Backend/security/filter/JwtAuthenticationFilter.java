@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,8 +28,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             "/api/v1/auth/register",
             "/api/v1/auth/login",
             "/api/v1/refresh",
-            "/api/v1/users/me"
-    );
+            "/api/v1/auth/logout",
+            "/api/v1/users/me");
 
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
@@ -52,13 +51,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token = CookiesUtil.AuthToken(request);
 
         if (token == null) {
-            System.out.println(path);
-            throw new AuthenticationServiceException("No auth_token provided");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Authentication token is missing");
+            return;
         }
 
         try {
             if (jwtUtil.isTokenExpired(token)) {
-                throw new AuthenticationServiceException("Token is expired");
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Authentication token is expired");
+                return;
             }
 
             String username = jwtUtil.extractUsername(token);
@@ -66,21 +68,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Long userId = jwtUtil.extractId(token);
             JwtUser user = new JwtUser(userId, username);
 
-        UsernamePasswordAuthenticationToken authentication
-                = new UsernamePasswordAuthenticationToken(
-                        user,
-                        null,
-                        authorities
-                );
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    user,
+                    null,
+                    authorities);
 
-        authentication.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );
+            authentication.setDetails(
+                    new WebAuthenticationDetailsSource().buildDetails(request));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch(AuthenticationServiceException e) {
-            throw new AuthenticationServiceException("Invalid token: " + e.getMessage());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+            chain.doFilter(request, response);
+
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid authentication token");
+            return;
         }
-        chain.doFilter(request, response);
     }
 }

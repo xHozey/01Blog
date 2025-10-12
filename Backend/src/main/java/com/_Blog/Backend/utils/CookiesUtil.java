@@ -21,26 +21,45 @@ public class CookiesUtil {
 
     public static void SetAuthToken(HttpServletResponse response, String authToken) {
         ResponseCookie cookie = ResponseCookie.from("auth_token", authToken)
-            .httpOnly(true)
-            .secure(true)        // true in production
-            .path("/")
-            .sameSite("None")     // critical for cross-origin
-            .maxAge( 2*60*60)       // 5 minutes
-            .build();
+                .httpOnly(true)
+                .secure(true) // true in production
+                .path("/")
+                .sameSite("None") // critical for cross-origin
+                .maxAge(10) // 5 minutes
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
-
 
     public static void SetRefreshToken(HttpServletResponse response, String refreshToken) {
         ResponseCookie cookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
-                .secure(true)       // true in production
+                .secure(true) // true in production
                 .path("/")
-                .sameSite("None")    // critical for cross-origin requests
+                .sameSite("None") // critical for cross-origin requests
                 .maxAge(24 * 60 * 60) // 1 day
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
     }
 
+    public static void deleteCookies(HttpServletResponse response) {
+        ResponseCookie deleteAuth = ResponseCookie.from("auth_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .build();
+
+        ResponseCookie deleteRefresh = ResponseCookie.from("refresh_token", "")
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .sameSite("None")
+                .maxAge(0)
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, deleteAuth.toString());
+        response.addHeader(HttpHeaders.SET_COOKIE, deleteRefresh.toString());
+    }
 
 }

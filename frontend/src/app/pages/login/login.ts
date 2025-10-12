@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth-service';
 import { Router, RouterLink } from '@angular/router';
@@ -11,8 +11,11 @@ import { Router, RouterLink } from '@angular/router';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  private fb = inject(FormBuilder);
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
-  constructor(private fb: FormBuilder, private auth: AuthService, private route: Router) {
+  constructor() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(64)]],
@@ -36,7 +39,7 @@ export class LoginComponent {
 
     this.auth.login(payload).subscribe({
       next: (res) => {
-        console.log(res)
+        this.router.navigate(['/']);
       },
       error: (err) => {
         console.error(err);

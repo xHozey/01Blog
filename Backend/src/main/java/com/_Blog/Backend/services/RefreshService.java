@@ -24,6 +24,14 @@ public class RefreshService {
         this.userRepository = userRepository;
     }
 
+    public void revokeSession(String refreshToken) {
+        sessionRepository.findByToken(refreshToken)
+                .ifPresent(session -> {
+                    session.setRevoked(true);
+                    sessionRepository.save(session);
+                });
+    }
+
     public String[] refreshToken(String refreshToken) {
         try {
             if (jwtUtil.isTokenExpired(refreshToken)) {
@@ -60,7 +68,7 @@ public class RefreshService {
             newSession.setToken(newRefreshToken);
             sessionRepository.save(newSession);
 
-            return new String[]{newAuthToken, newRefreshToken};
+            return new String[] { newAuthToken, newRefreshToken };
 
         } catch (ExpiredJwtException e) {
             System.out.println("1 token expired or invalid: " + refreshToken);

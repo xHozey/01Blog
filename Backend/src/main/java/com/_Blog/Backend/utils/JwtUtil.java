@@ -24,9 +24,9 @@ public class JwtUtil {
     public String generateAuthToken(com._Blog.Backend.model.User user) {
         List<String> roles = user.getRoles()
                 .stream()
-                .map(r -> "ROLE_"+r.getRole().name())
+                .map(r -> "ROLE_" + r.getRole().name())
                 .toList();
-        long expirationMs = 2*60 * 60 * 1000;
+        long expirationMs = 10 * 1000;
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .claim("roles", roles)
@@ -42,7 +42,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .setSubject(user.getId().toString())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() +expirationMs))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMs))
                 .signWith(secretKey)
                 .compact();
     }
@@ -55,17 +55,16 @@ public class JwtUtil {
                 .getBody()
                 .get("username", String.class);
     }
-    
+
     public Long extractId(String token) {
         String subject = Jwts.parserBuilder()
-            .setSigningKey(secretKey)
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getSubject();
+                .setSigningKey(secretKey)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
         return Long.valueOf(subject);
     }
-
 
     public List<SimpleGrantedAuthority> extractRoles(String token) {
         List<String> roles = (List<String>) Jwts.parserBuilder()

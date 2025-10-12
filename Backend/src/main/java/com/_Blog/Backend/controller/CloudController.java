@@ -48,7 +48,6 @@ public class CloudController {
     @PostMapping("/user/icon")
     public ResponseEntity<String> saveIconImage(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        System.out.println(fileName);
         if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".")+1))) {
             throw new BadRequestException("Invalid file type");
         }

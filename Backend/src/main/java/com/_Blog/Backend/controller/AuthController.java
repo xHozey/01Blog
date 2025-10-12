@@ -2,6 +2,7 @@ package com._Blog.Backend.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com._Blog.Backend.dto.LoginRequest;
 import com._Blog.Backend.dto.RegisterRequest;
 import com._Blog.Backend.services.AuthService;
+import com._Blog.Backend.services.RefreshService;
 import com._Blog.Backend.utils.CookiesUtil;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,10 +21,12 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
     private final AuthService authService;
+    private final RefreshService refreshService;
 
     @Autowired
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, RefreshService refreshService) {
         this.authService = authService;
+        this.refreshService = refreshService;
     }
 
     @PostMapping("/register")
@@ -39,5 +43,15 @@ public class AuthController {
         CookiesUtil.SetAuthToken(response, tokens[0]);
         CookiesUtil.SetRefreshToken(response, tokens[1]);
         return ResponseEntity.ok("Logged in successfully, cookie set!");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response,
+            @CookieValue(name = "refresh_token", required = false) String refreshToken) {
+        if (refreshToken != null) {
+            this.refreshService.revokeSession(refreshToken);
+        }
+        CookiesUtil.deleteCookies(response);
+        return ResponseEntity.ok("logout succesfuly");
     }
 }

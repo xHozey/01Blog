@@ -73,14 +73,8 @@ public class AdminController {
 
     @GetMapping("/report/user")
     public ResponseEntity<List<UserReportDTO>> getUserReports(@RequestParam(defaultValue = "0") Integer page) {
-        try {
-
-            List<UserReportDTO> reports = this.adminService.getUserReports(page);
-            return ResponseEntity.ok(reports);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return ResponseEntity.ok(null);
+        List<UserReportDTO> reports = this.adminService.getUserReports(page);
+        return ResponseEntity.ok(reports);
     }
 
     @GetMapping("/stats/post")
