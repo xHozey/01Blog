@@ -1,17 +1,17 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { UserService } from './service/user-service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
-
 export class App implements OnInit {
-
+  private userSerivce = inject(UserService);
   ngOnInit(): void {
-
+    this.userSerivce.fetchCurrentUser();
   }
 
   protected readonly title = signal('01Blog');

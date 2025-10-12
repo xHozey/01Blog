@@ -11,6 +11,7 @@ import { Settings } from './pages/settings/settings';
 import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
 import { authGuard } from './guards/auth-guard-guard';
 import { unauthGuardGuard } from './guards/unauth-guard-guard';
+import { adminGuard } from './guards/admin-guard';
 
 export const routes: Routes = [
   {
@@ -56,6 +57,6 @@ export const routes: Routes = [
   {
     path: 'admin/dashboard',
     component: AdminDashboard,
-    canActivate: [authGuard],
+    canActivate: [authGuard, adminGuard],
   },
 ];
