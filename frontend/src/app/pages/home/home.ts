@@ -13,7 +13,6 @@ export class Home implements OnInit {
   user: userResponse | null = null;
   private userService: UserService = inject(UserService);
   ngOnInit() {
-    this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));
   }
 }

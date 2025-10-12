@@ -23,7 +23,6 @@ export class Settings implements OnInit {
   profilePayload: userProfileUpdateRequest = { username: null, bio: null, iconProfile: null };
 
   ngOnInit(): void {
-    this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => {
       this.user = user;
       this.profilePayload.bio = this.user?.bio || null;

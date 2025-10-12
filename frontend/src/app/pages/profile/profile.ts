@@ -58,7 +58,6 @@ export class Profile implements OnInit {
         console.error(err);
       },
     });
-    this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.currentUser = user));
   }
 
