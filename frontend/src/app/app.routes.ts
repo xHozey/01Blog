@@ -9,43 +9,53 @@ import { postEditGuard } from './guards/post-edit-guard-guard';
 import { Profile } from './pages/profile/profile';
 import { Settings } from './pages/settings/settings';
 import { AdminDashboard } from './pages/admin-dashboard/admin-dashboard';
+import { authGuard } from './guards/auth-guard-guard';
+import { unauthGuardGuard } from './guards/unauth-guard-guard';
 
 export const routes: Routes = [
   {
     path: '',
     component: Home,
+    canActivate: [authGuard],
   },
   {
     path: 'login',
     component: LoginComponent,
+    canActivate: [unauthGuardGuard],
   },
   {
     path: 'register',
     component: RegisterComponent,
+    canActivate: [unauthGuardGuard],
   },
   {
     path: 'create-post',
     component: CreatePost,
+    canActivate: [authGuard],
   },
   {
     path: 'post/:id',
     component: Post,
+    canActivate: [authGuard],
   },
   {
     path: 'edit/:id',
     component: UpdatePost,
-    canActivate: [postEditGuard],
+    canActivate: [postEditGuard, authGuard],
   },
   {
     path: 'profile/:id',
     component: Profile,
+    canActivate: [authGuard],
   },
   {
-    path: "settings",
-    component: Settings
+    path: 'settings',
+    component: Settings,
+    canActivate: [authGuard],
   },
   {
-    path: "admin/dashboard",
-    component: AdminDashboard
-  }
+    path: 'admin/dashboard',
+    component: AdminDashboard,
+    canActivate: [authGuard],
+  },
 ];

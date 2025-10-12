@@ -27,7 +27,10 @@ export const authInterceptor: HttpInterceptorFn = (
   const handleRequest = (): Observable<HttpEvent<unknown>> =>
     next(clonedReq).pipe(
       catchError((err: HttpErrorResponse) => {
-        const isLoginOrRefresh = req.url.includes('/refresh') || req.url.includes('/login');
+        const isLoginOrRefresh =
+          req.url.includes('/refresh') ||
+          req.url.includes('/login') ||
+          req.url.includes('/register');
 
         if (err.status === 401 && !isLoginOrRefresh) {
           if (!isRefreshing) {

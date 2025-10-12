@@ -24,7 +24,8 @@ public class AuthService {
     private final SessionRepository sessionRepository;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder encoder, UserRoleService userRoleService, SessionRepository sessionRepository, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, PasswordEncoder encoder, UserRoleService userRoleService,
+            SessionRepository sessionRepository, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.userRoleService = userRoleService;
@@ -50,7 +51,7 @@ public class AuthService {
     public String[] login(LoginRequest user) {
         User existingUser = userRepository.findByUsername(user.getUsername())
                 .orElseGet(() -> userRepository.findByEmail(user.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("User not found")));
+                        .orElseThrow(() -> new ResourceNotFoundException("User not found")));
 
         if (!encoder.matches(user.getPassword(), existingUser.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");
@@ -64,6 +65,10 @@ public class AuthService {
         session.setUser(existingUser);
         sessionRepository.save(session);
 
-        return new String[]{authToken, refreshToken};
+        return new String[] { authToken, refreshToken };
+    }
+
+    public Boolean isAuth(String token) {
+        return !jwtUtil.isTokenExpired(token);
     }
 }

@@ -3,6 +3,7 @@ package com._Blog.Backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,5 +54,13 @@ public class AuthController {
         }
         CookiesUtil.deleteCookies(response);
         return ResponseEntity.ok("logout succesfuly");
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkAuth(@CookieValue(name = "auth_token", required = false) String authToken) {
+        if (authToken == null || !this.authService.isAuth(authToken)) {
+            return ResponseEntity.status(401).body(false);
+        }
+        return ResponseEntity.ok(true);
     }
 }

@@ -15,26 +15,23 @@ import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.UserRepository;
-import com._Blog.Backend.utils.JwtUtil;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
     private final ReportUserRepository reportUserRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, JwtUtil jwtUtil, ReportUserRepository reportUserRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, ReportUserRepository reportUserRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.reportUserRepository = reportUserRepository;
-        this.jwtUtil = jwtUtil;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserResponse GetUser(String token) {
-        Long userId = jwtUtil.extractId(token);
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    public UserResponse GetUser() {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(jwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return new UserResponse(user);
     }
 

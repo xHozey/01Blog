@@ -27,8 +27,10 @@ export class AuthService {
   logout(): Observable<string> {
     return this.http.post(`${this.apiUrl}/logout`, null, {
       withCredentials: true,
-      responseType: 'text'
+      responseType: 'text',
     });
   }
-
+  checkAuth(): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/check`, { withCredentials: true });
+  }
 }
