@@ -1,164 +1,181 @@
 <app-navbar-component />
 
 <div class="container my-4">
-  <!-- Dashboard Summary Cards -->
+  <!-- Dashboard Summary -->
   <div class="row g-3 mb-4">
-    <div class="col-md-3">
+    @for (card of [
+    { title: 'Total Users', value: totalUsers, icon: 'bi-people', color: 'success' },
+    { title: 'User Reports', value: totalReports, icon: 'bi-flag', color: 'warning' },
+    { title: 'Total Posts', value: totalPosts, icon: 'bi-file-earmark-text', color: 'primary' }
+    ]; track card.title) {
+    <div class="col-md-4">
       <div class="card shadow-sm border-light h-100">
         <div class="card-body">
           <h6 class="text-muted d-flex align-items-center">
-            <i class="bi bi-people me-2"></i> Total Users
+            <i class="bi {{ card.icon }} me-2 text-{{ card.color }}"></i> {{ card.title }}
           </h6>
-          <h3 class="fw-bold">1,234</h3>
-          <small class="text-success">+12% from last month</small>
+          <h3 class="fw-bold">{{ card.value }}</h3>
         </div>
       </div>
     </div>
-
-    <div class="col-md-3">
-      <div class="card shadow-sm border-light h-100">
-        <div class="card-body">
-          <h6 class="text-muted d-flex align-items-center">
-            <i class="bi bi-file-earmark-text me-2"></i> Total Posts
-          </h6>
-          <h3 class="fw-bold">5,678</h3>
-          <small class="text-success">+8% from last month</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card shadow-sm border-light h-100">
-        <div class="card-body">
-          <h6 class="text-muted d-flex align-items-center">
-            <i class="bi bi-flag me-2"></i> Pending Reports
-          </h6>
-          <h3 class="fw-bold">12</h3>
-          <small class="text-warning">Requires attention</small>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card shadow-sm border-light h-100">
-        <div class="card-body">
-          <h6 class="text-muted d-flex align-items-center">
-            <i class="bi bi-activity me-2"></i> Active Users
-          </h6>
-          <h3 class="fw-bold">892</h3>
-          <small class="text-muted">Currently online</small>
-        </div>
-      </div>
-    </div>
+    }
   </div>
 
   <!-- Tabs -->
   <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
-      <button class="nav-link" [ngClass]="{ active: activeTab === 'users' }" (click)="setTab('users')">
-        Users
-      </button>
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'users' }" (click)="setTab('users')">Users</button>
     </li>
-    <!-- <li class="nav-item">
-      <button class="nav-link" [ngClass]="{ active: activeTab === 'postReports' }" (click)="setTab('postReports')">
-        Post Reports
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'userReports' }" (click)="setTab('userReports')">
+        Reports
       </button>
     </li>
     <li class="nav-item">
-      <button class="nav-link" [ngClass]="{ active: activeTab === 'commentReports' }" (click)="setTab('commentReports')">
-        Comment Reports
-      </button>
-    </li> -->
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'posts' }" (click)="setTab('posts')">Posts</button>
+    </li>
   </ul>
 
-  <!-- Users Tab -->
-  <div *ngIf="activeTab === 'users'" class="card shadow-sm border-light">
+  <!-- Loading -->
+  @if (isLoading) {
+  <div class="text-center my-4">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+  }
+
+  <!-- USERS TAB -->
+  @if (!isLoading && activeTab === 'users') {
+  <div class="card shadow-sm border-light">
     <div class="card-body">
       <h5 class="mb-3">User Management</h5>
-      <table class="table align-middle">
+      <table class="table table-hover align-middle">
         <thead class="table-light">
           <tr>
+            <th>Avatar</th>
             <th>Username</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>Status</th>
+            <th>Joined</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+          <tr>
+            <td><img [src]="user.iconPath || 'assets/default-avatar.png'" width="40" height="40"
+                class="rounded-circle" /></td>
+            <td><strong>@{{ user.username }}</strong></td>
+            <td>{{ user.email }}</td>
+            <td><span class="badge" [ngClass]="user.isBanned ? 'bg-danger' : 'bg-success'">{{ user.isBanned ? 'Banned' :
+                'Active' }}</span></td>
+            <td>{{ user.createdAt | date }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-warning me-2" (click)="toggleBan(user)">
+                {{ user.isBanned ? 'Unban' : 'Ban' }}
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteUser(user)">Delete</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-primary btn-sm" (click)="prevUsersPage()"
+          [disabled]="pageUsers === 0">Previous</button>
+        <span>Page {{ pageUsers + 1 }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="nextUsersPage()"
+          [disabled]="!hasMoreUsers">Next</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- REPORTS TAB -->
+  @if (!isLoading && activeTab === 'userReports') {
+  <div class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">User Reports</h5>
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Reporter</th>
+            <th>Reported</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (report of userReports; track report.id) {
+          <tr>
+            <td>@{{ report.reporterName }}</td>
+            <td>@{{ report.reportedName }}</td>
+            <td>{{ report.description }}</td>
+            <td>{{ report.createAt| date }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (click)="deleteReport(report)">Delete Report</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-primary btn-sm" (click)="prevReportsPage()"
+          [disabled]="pageReports === 0">Previous</button>
+        <span>Page {{ pageReports + 1 }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="nextReportsPage()"
+          [disabled]="!hasMoreReports">Next</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  <!-- POSTS TAB -->
+  @if (!isLoading && activeTab === 'posts') {
+  <div class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">Posts</h5>
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Likes</th>
+            <th>Created</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let user of users">
-            <td><strong>@{{ user.username }}</strong></td>
-            <td>{{ user.email }}</td>
-            <td><span class="badge bg-secondary">{{ user.role }}</span></td>
-            <td><span class="badge bg-primary">{{ user.status }}</span></td>
+          @for (post of posts; track post.id) {
+          <tr>
+            <td>{{ post.title }}</td>
+            <td>@{{ post.authorName }}</td>
+            <td>{{ post.likes }}</td>
+            <td>{{ post.createdAt | date }}</td>
+            <td><span class="badge" [ngClass]="post.isHide ? 'bg-secondary' : 'bg-success'">{{ post.isHide ? 'Hidden' :
+                'Visible' }}</span></td>
             <td>
-              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
-              <i class="bi bi-slash-circle me-2 text-danger" role="button"></i>
-              <i class="bi bi-trash text-danger" role="button"></i>
+              <button class="btn btn-sm btn-outline-secondary me-2" (click)="hidePost(post)">
+                {{ post.isHide ? 'Unhide' : 'Hide' }}
+              </button>
+              <button class="btn btn-sm btn-outline-danger" (click)="deletePost(post)">Delete</button>
             </td>
           </tr>
+          }
         </tbody>
       </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-primary btn-sm" (click)="prevPostsPage()"
+          [disabled]="pagePosts === 0">Previous</button>
+        <span>Page {{ pagePosts + 1 }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="nextPostsPage()"
+          [disabled]="!hasMorePosts">Next</button>
+      </div>
     </div>
   </div>
-
-  <!-- Post Reports Tab -->
-  <!-- <div *ngIf="activeTab === 'postReports'" class="card shadow-sm border-light">
-    <div class="card-body">
-      <h5 class="mb-3">Post Reports</h5>
-      <table class="table align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Post ID</th>
-            <th>Reporter</th>
-            <th>Reason</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let report of postReports">
-            <td>#{{ report.postId }}</td>
-            <td>@{{ report.reporter }}</td>
-            <td>{{ report.reason }}</td>
-            <td>{{ report.date | date }}</td>
-            <td>
-              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
-              <i class="bi bi-trash text-danger" role="button"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div> -->
-
-  <!-- Comment Reports Tab -->
-  <!-- <div *ngIf="activeTab === 'commentReports'" class="card shadow-sm border-light">
-    <div class="card-body">
-      <h5 class="mb-3">Comment Reports</h5>
-      <table class="table align-middle">
-        <thead class="table-light">
-          <tr>
-            <th>Comment ID</th>
-            <th>Reporter</th>
-            <th>Reason</th>
-            <th>Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let report of commentReports">
-            <td>#{{ report.commentId }}</td>
-            <td>@{{ report.reporter }}</td>
-            <td>{{ report.reason }}</td>
-            <td>{{ report.date | date }}</td>
-            <td>
-              <i class="bi bi-eye me-2 text-secondary" role="button"></i>
-              <i class="bi bi-trash text-danger" role="button"></i>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div> -->
+  }
 </div>

@@ -1,10 +1,10 @@
 interface adminPostDTO {
   id: number;
-  ptitle: string;
-  pcontent: string;
+  title: string;
+  content: string;
   isHide: boolean;
   authorId: number;
-  pauthorName: string;
+  authorName: string;
   likes: number;
   createdAt: string;
 }

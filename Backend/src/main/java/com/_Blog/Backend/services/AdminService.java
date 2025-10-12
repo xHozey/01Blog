@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
+import com._Blog.Backend.dto.UserReportDTO;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.Post;
-import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.CommentRepository;
 import com._Blog.Backend.repository.PostEngagementRepository;
@@ -28,7 +28,9 @@ public class AdminService {
     private final PostEngagementRepository postEngagementRepository;
     private final ReportUserRepository reportUserRepository;
 
-    public AdminService(PostRepository postRepository, CommentRepository commentRepository, UserRepository userRepository, PostEngagementRepository postEngagementRepository, ReportUserRepository reportUserRepository) {
+    public AdminService(PostRepository postRepository, CommentRepository commentRepository,
+            UserRepository userRepository, PostEngagementRepository postEngagementRepository,
+            ReportUserRepository reportUserRepository) {
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.userRepository = userRepository;
@@ -52,7 +54,9 @@ public class AdminService {
 
     public List<AdminPostDTO> getPosts(Integer page) {
         Pageable pageable = PageRequest.of(page, 10);
-        return this.postRepository.findAll(pageable).map(post -> new AdminPostDTO(post, this.postEngagementRepository.countByPostId(post.getId()))).toList();
+        return this.postRepository.findAll(pageable)
+                .map(post -> new AdminPostDTO(post, this.postEngagementRepository.countByPostId(post.getId())))
+                .toList();
     }
 
     public void banUser(Long id) {
@@ -77,12 +81,24 @@ public class AdminService {
         return this.userRepository.findAllByIsBanned(true, pageable).map(AdminUserDTO::new).toList();
     }
 
-    public List<ReportUser> getUserReports(Integer page) {
-        Pageable pageable = PageRequest.of(page, 10, Sort.by("username").descending());
-        return this.reportUserRepository.findAll(pageable).toList();
+    public List<UserReportDTO> getUserReports(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10, Sort.by("createAt").descending());
+        return this.reportUserRepository.findAll(pageable).stream().map(UserReportDTO::new).toList();
     }
 
     public void deleteUser(Long userId) {
         this.userRepository.deleteById(userId);
+    }
+
+    public Long countUsers() {
+        return this.userRepository.count();
+    }
+
+    public Long countPosts() {
+        return this.postRepository.count();
+    }
+
+    public Long countReports() {
+        return this.reportUserRepository.count();
     }
 }

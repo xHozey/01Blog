@@ -75,4 +75,22 @@ export class AdminService {
       withCredentials: true,
     });
   }
+
+  getTotalUsers(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/stats/user`, {
+      withCredentials: true,
+    });
+  }
+
+  getTotalPosts(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/stats/post`, {
+      withCredentials: true,
+    });
+  }
+
+  getTotalReports(): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/stats/report`, {
+      withCredentials: true,
+    });
+  }
 }
