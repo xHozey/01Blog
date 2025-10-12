@@ -44,7 +44,11 @@ public class AdminService {
 
     public void hidePost(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-        post.setIsHide(true);
+        if (post.getIsHide()) {
+            post.setIsHide(false);
+        } else {
+            post.setIsHide(true);
+        }
         postRepository.save(post);
     }
 
@@ -61,13 +65,11 @@ public class AdminService {
 
     public void banUser(Long id) {
         User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setIsBanned(true);
-        userRepository.save(user);
-    }
-
-    public void unBanUser(Long id) {
-        User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        user.setIsBanned(false);
+        if (user.getIsBanned()) {
+            user.setIsBanned(false);
+        } else {
+            user.setIsBanned(true);
+        }
         userRepository.save(user);
     }
 

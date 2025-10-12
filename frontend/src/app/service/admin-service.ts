@@ -17,7 +17,7 @@ export class AdminService {
     });
   }
 
-  hidePost(id: number): Observable<string> {
+  toggleHidePost(id: number): Observable<string> {
     return this.http.post(`${this.apiUrl}/post/${id}/hide`, null, {
       withCredentials: true,
       responseType: 'text',
@@ -26,13 +26,6 @@ export class AdminService {
 
   deleteComment(id: number): Observable<string> {
     return this.http.delete(`${this.apiUrl}/comment/${id}/delete`, {
-      withCredentials: true,
-      responseType: 'text',
-    });
-  }
-
-  hideComment(id: number): Observable<string> {
-    return this.http.post(`${this.apiUrl}/comment/${id}/hide`, null, {
       withCredentials: true,
       responseType: 'text',
     });

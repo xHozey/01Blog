@@ -128,7 +128,7 @@ export class AdminDashboard implements OnInit {
   }
 
   hidePost(post: adminPostDTO) {
-    this.adminService.hidePost(post.id).subscribe({
+    this.adminService.toggleHidePost(post.id).subscribe({
       next: () => (post.isHide = !post.isHide),
     });
   }

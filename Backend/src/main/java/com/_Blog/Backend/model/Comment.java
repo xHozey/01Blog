@@ -27,7 +27,6 @@ public class Comment {
     private Long id;
 
     private String content;
-    private String filePath;
 
     @CreationTimestamp
     private Timestamp createTime;
@@ -45,10 +44,9 @@ public class Comment {
 
     public Comment() {}
 
-    public Comment(Long id, String content, String filePath, Timestamp createTime, Post post, User user) {
+    public Comment(Long id, String content, Timestamp createTime, Post post, User user) {
         this.id = id;
         this.content = content;
-        this.filePath = filePath;
         this.createTime = createTime;
         this.post = post;
         this.user = user;
@@ -92,14 +90,6 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 
     public Set<CommentEngagement> getEngagements() {

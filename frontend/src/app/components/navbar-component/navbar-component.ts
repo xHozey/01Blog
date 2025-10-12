@@ -13,6 +13,8 @@ import { filter } from 'rxjs/operators';
 import { NotificationsService } from '../../service/notifications-service';
 import { UserService } from '../../service/user-service';
 import { CommonModule } from '@angular/common';
+import { Observable } from 'rxjs';
+import { AuthService } from '../../service/auth-service';
 
 interface notificationDTO {
   id: number;
@@ -29,7 +31,6 @@ interface notificationDTO {
   styleUrls: ['./navbar-component.css'],
 })
 export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
-
   isCreatePostPage = false;
   readonly BellIcon = Bell;
   totalNotifications = 0;
@@ -44,6 +45,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   private router = inject(Router);
   private notificationsService = inject(NotificationsService);
   private userService: UserService = inject(UserService);
+  private authService: AuthService = inject(AuthService);
   user: userResponse | null = null;
 
   ngOnInit(): void {
@@ -105,20 +107,32 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
             this.observer?.observe(this.notificationsEnd.nativeElement);
           }
         });
-        console.log(res, res[0]?.isRead)
+        console.log(res, res[0]?.isRead);
         const unreadIds = res.filter((n) => !n.isRead).map((n) => n.id);
-        if (unreadIds.length > 0) this.notificationsService.readNotification(unreadIds).subscribe({
-          next: (res) => {
-            console.log(res)
-          },
-          error: (err) => {
-            console.error(err)
-          }
-        });
+        if (unreadIds.length > 0)
+          this.notificationsService.readNotification(unreadIds).subscribe({
+            next: (res) => {
+              console.log(res);
+            },
+            error: (err) => {
+              console.error(err);
+            },
+          });
       },
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+      },
+    });
+  }
+
+  onLogout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        this.router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error(err);
       },
     });
   }

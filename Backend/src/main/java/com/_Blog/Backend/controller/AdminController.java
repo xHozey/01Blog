@@ -59,12 +59,6 @@ public class AdminController {
         return ResponseEntity.ok("user has banned");
     }
 
-    @PostMapping("/user/{id}/unban")
-    public ResponseEntity<String> unbanUser(@PathVariable Long id) {
-        this.adminService.unBanUser(id);
-        return ResponseEntity.ok("user has unbanned");
-    }
-
     @DeleteMapping("/user/{id}/delete")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         this.adminService.deleteUser(id);

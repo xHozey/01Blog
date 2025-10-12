@@ -68,10 +68,13 @@
           <ul class="dropdown-menu dropdown-menu-end shadow-sm">
             <li><a class="dropdown-item" [routerLink]="[`/profile/${user?.id}`]">Profile</a></li>
             <li><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
+            @if (user?.roles?.includes("ADMIN")) {
+            <li><a class="dropdown-item" [routerLink]="['/admin/dashboard']">Admin</a></li>
+            }
             <li>
               <hr class="dropdown-divider" />
             </li>
-            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+            <li><a class="dropdown-item text-danger" (click)="onLogout()">Logout</a></li>
           </ul>
         </li>
       </ul>

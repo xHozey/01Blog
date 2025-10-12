@@ -56,7 +56,10 @@ public class AuthService {
         if (!encoder.matches(user.getPassword(), existingUser.getPassword())) {
             throw new UnauthorizedException("Invalid credentials");
         }
-
+        if (existingUser.getIsBanned()) {
+            throw new UnauthorizedException("You are Banned from the platfor");
+        }
+        
         String authToken = jwtUtil.generateAuthToken(existingUser);
 
         Session session = new Session();

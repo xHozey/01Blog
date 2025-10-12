@@ -36,7 +36,6 @@ public class CommentService {
         Comment newComment = new Comment();
         newComment.setContent(comment.getContent());
         newComment.setUser(user);
-        newComment.setFilePath(comment.getFilePath());
         newComment.setPost(this.postRepository.findById(comment.getPostId()).orElseThrow(() -> new ResourceNotFoundException("Post not found")));
         Comment savedComment = this.commentRepository.save(newComment);
         return new CommentResponse(savedComment, this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), JwtUser.getId()));
@@ -49,20 +48,6 @@ public class CommentService {
         return comments.stream()
                 .map(comment -> new CommentResponse(comment, this.commentEngagementRepository.countByCommentId(comment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(comment.getId(), jwtUser.getId())))
                 .toList();
-    }
-
-    public CommentResponse updateComment(CommentRequest comment, Long commentId) {
-        JwtUser user = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Comment oldComment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException("Comment not found"));
-        if (!user.getId().equals(oldComment.getUser().getId())) {
-            throw new UnauthorizedException("You are not allowed to update this comment");
-        }
-        if (comment.getFilePath() != null) {
-            oldComment.setFilePath(comment.getFilePath());
-        }
-        oldComment.setContent(comment.getContent());
-        Comment savedComment = commentRepository.save(oldComment);
-        return new CommentResponse(savedComment, this.commentEngagementRepository.countByCommentId(savedComment.getId()), this.commentEngagementRepository.existsByCommentIdAndUserId(savedComment.getId(), user.getId()));
     }
 
     public void deleteComment(Long commentId) {
