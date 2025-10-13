@@ -1,18 +1,25 @@
 .modal-backdrop.fade.show {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: var(--modal-backdrop-bg);
   z-index: 1040;
 }
 
+/* Modal container */
 .modal.fade.show.d-block {
   z-index: 1050;
 }
 
+/* Modal content */
 .modal-content {
-  border-radius: 10px;
+  border-radius: var(--modal-content-border-radius);
+  background-color: var(--modal-content-bg);
 }
 
+/* Textarea inside modal */
 textarea.form-control {
   resize: none;
+  background-color: var(--textarea-bg);
+  color: var(--textarea-color);
+  border: 1px solid var(--textarea-border);
 }

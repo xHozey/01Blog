@@ -17,6 +17,7 @@ import { Observable } from 'rxjs';
 import { AuthService } from '../../service/auth-service';
 import { parseApiError } from '../../utils/errorHelper';
 import { ToastService } from '../../service/toast-service';
+import { ThemeToggleComponent } from "../theme-toggle-component/theme-toggle-component";
 
 interface notificationDTO {
   id: number;
@@ -28,7 +29,7 @@ interface notificationDTO {
 @Component({
   selector: 'app-navbar-component',
   standalone: true,
-  imports: [RouterLink, LucideAngularModule, CommonModule],
+  imports: [RouterLink, LucideAngularModule, CommonModule, ThemeToggleComponent],
   templateUrl: './navbar-component.html',
   styleUrls: ['./navbar-component.css'],
 })

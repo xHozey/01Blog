@@ -1,15 +1,23 @@
 .post-page .post-container {
+  background: var(--post-bg-color);
   max-width: 800px;
   margin: 2rem auto;
   padding: 1.5rem;
-  background: #fff;
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .post-page .post-title {
   font-size: 2rem;
   margin-bottom: 1rem;
+}
+
+.post-title {
+  color: var(--post-title-color);
+}
+
+.post-body {
+  color: var(--post-text-color);
 }
 
 .post-page .post-body {
@@ -18,7 +26,6 @@
   margin-bottom: 2rem;
 }
 
-/* Header */
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -26,24 +33,20 @@
   margin-bottom: .75rem;
 }
 
-
-
-
 .author-info {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--post-author-color);
 }
 
 .author-name {
   font-weight: 600;
-  color: #007EA7;
+  color: var(--post-author-name-color);
 }
 
 .post-time {
   margin-left: 6px;
 }
 
-/* Actions */
 .post-actions {
   display: flex;
   align-items: center;
@@ -51,6 +54,7 @@
 }
 
 .action-btn {
+  color: var(--post-action-color);
   border: none;
   background: none;
   cursor: pointer;
@@ -63,25 +67,23 @@
 }
 
 .action-btn:hover {
-  color: #000;
+  color: var(--post-action-hover-color);
 }
 
 .like-btn.liked {
-  color: #e63946;
+  color: var(--like-color);
 }
 
 .comment-btn.active {
-  color: #007EA7;
+  color: var(--comment-active-color);
 }
 
-/* Comments */
 .comments-section {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--post-border-color);
   margin-top: 1rem;
   padding-top: 1rem;
 }
 
-/* Dropdown styling */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 8px;
@@ -93,12 +95,5 @@
 }
 
 .dropdown-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--dropdown-hover-bg);
 }
-
-/* Subtle animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.post-container { animation: fadeIn 0.3s ease; }

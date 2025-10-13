@@ -1,17 +1,16 @@
 .post-container {
-  background: #fff;
+  background: var(--post-bg-color);
   border-radius: 12px;
   padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
   box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, color 0.3s;
 }
 
 .post-container:hover {
   box-shadow: 0 4px 14px rgba(0,0,0,0.08);
 }
 
-/* Header */
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -21,12 +20,12 @@
 
 .author-info {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--post-author-color);
 }
 
 .author-name {
   font-weight: 600;
-  color: #007EA7;
+  color: var(--post-author-name-color);
   cursor: pointer;
 }
 
@@ -34,27 +33,23 @@
   margin-left: 6px;
 }
 
-/* Title + Body */
 .post-title {
   font-family: 'Merriweather', serif;
-  color: #003459;
+  color: var(--post-title-color);
   font-size: 1.4rem;
   margin: 0.25rem 0 0.75rem 0;
   cursor: pointer;
-
 }
 
 .post-body {
-  color: #333;
+  color: var(--post-text-color);
   line-height: 1.6;
   font-size: 1rem;
   margin-bottom: 1rem;
   white-space: pre-line;
   cursor: pointer;
-
 }
 
-/* Media */
 .post-media img, 
 .post-media video {
   border-radius: 10px;
@@ -65,7 +60,6 @@
   margin-bottom: 1rem;
 }
 
-/* Actions */
 .post-actions {
   display: flex;
   align-items: center;
@@ -80,30 +74,28 @@
   align-items: center;
   gap: .4rem;
   font-size: 0.9rem;
-  color: #555;
+  color: var(--post-action-color);
   transition: color 0.2s;
 }
 
 .action-btn:hover {
-  color: #000;
+  color: var(--post-action-hover-color);
 }
 
 .like-btn.liked {
-  color: #e63946;
+  color: var(--like-color);
 }
 
 .comment-btn.active {
-  color: #007EA7;
+  color: var(--comment-active-color);
 }
 
-/* Comments */
 .comments-section {
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--post-border-color);
   margin-top: 1rem;
   padding-top: 1rem;
 }
 
-/* Dropdown styling */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 8px;
@@ -115,12 +107,5 @@
 }
 
 .dropdown-item:hover {
-  background-color: #f5f5f5;
+  background-color: var(--dropdown-hover-bg);
 }
-
-/* Subtle animation */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.post-container { animation: fadeIn 0.3s ease; }

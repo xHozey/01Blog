@@ -1,22 +1,44 @@
 <div class="container my-5">
+  <div class="row">
 
-  <!-- Posts List -->
-  <div class="d-flex flex-column gap-4">
-    @if (posts.length > 0) {
-    <div class="scroll-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
-      (scrolled)="loadMore()">
+    <!-- Posts List -->
+    <div class="d-flex flex-column gap-4 col">
+      @if (posts.length > 0) {
+      <div class="scroll-container" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="150"
+        (scrolled)="loadMore()">
 
-      @for (post of posts; track post.id) {
-      <app-post-component [post]="post" (delete)="onDeletePost($event)" (update)="onUpdatePost($event)"
-        (report)="onReport($event)">
-      </app-post-component>
+        @for (post of posts; track post.id) {
+        <app-post-component [post]="post" (delete)="onDeletePost($event)" (update)="onUpdatePost($event)"
+          (report)="onReport($event)">
+        </app-post-component>
+        }
+      </div>
+      } @else {
+      <div class="text-center py-5 text-secondary">
+        <p>No posts yet.</p>
+      </div>
       }
     </div>
-    } @else {
-    <div class="text-center py-5 text-secondary">
-      <p>No posts yet.</p>
+    <!-- Users List -->
+    <div class="col-3">
+      <div class="users-sidebar sticky-top">
+        <h5 class="mb-3">Users</h5>
+        @for (user of users; track user.id) {
+        <div class="d-flex align-items-center justify-content-between p-2 mb-2 border rounded shadow-sm">
+          <div class="d-flex align-items-center">
+            <img [src]="user.iconPath || '/assets/default-avatar.png'" alt="avatar" class="rounded-circle me-3"
+              width="50" height="50">
+            <div>
+              <div class="fw-bold">{{ user.username }}</div>
+              <small class="text-muted">{{ user.bio }}</small>
+            </div>
+          </div>
+          <!-- Follow Button -->
+          <button class="btn btn-outline-primary btn-sm">Follow</button>
+        </div>
+        }
+      </div>
     </div>
-    }
   </div>
 
 

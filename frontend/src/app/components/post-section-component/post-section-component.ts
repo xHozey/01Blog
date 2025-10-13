@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Router } from '@angular/router';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
-import { UserService } from '../../service/user-service';
 import { parseApiError } from '../../utils/errorHelper';
 import { ToastService } from '../../service/toast-service';
 
@@ -24,11 +23,36 @@ import { ToastService } from '../../service/toast-service';
 })
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
+  users: userResponse[] = [
+    {
+      username: 'test1',
+      id: 0,
+      iconPath: '',
+      creation: '3000',
+      roles: [],
+      bio: 'hmmmmm',
+    },
+    {
+      username: 'test2',
+      id: 1,
+      iconPath: '',
+      creation: '2005',
+      roles: [],
+      bio: 'hmmmmm',
+    },
+    {
+      username: 'test3',
+      id: 2,
+      iconPath: '',
+      creation: '2005',
+      roles: [],
+      bio: 'hmmmmm',
+    },
+  ];
   page: number = 0;
   private toastService = inject(ToastService);
   private postService = inject(PostService);
   private router = inject(Router);
-  private userService = inject(UserService);
 
   ngOnInit(): void {
     this.postService.getPosts(this.page).subscribe({
