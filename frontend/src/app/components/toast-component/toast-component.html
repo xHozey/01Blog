@@ -1,6 +1,4 @@
 <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
-
-
     @for (toast of toastService.toasts; track toast.id) {
     <div class="toast align-items-center border mb-2 show shadow-sm rounded-3" [ngClass]="getToastClasses(toast.type)" role="alert"
         aria-live="assertive" aria-atomic="true">

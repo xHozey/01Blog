@@ -260,13 +260,6 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--post-title-color);
 }
 
-/* Toasts */
-[data-theme='dark'] .toast {
-  background-color: var(--surface-bg) !important;
-  color: var(--text-color) !important;
-  border-color: var(--post-border-color) !important;
-}
-
 /* Quill editor (create post) */
 [data-theme='dark'] .ql-container {
   background-color: var(--surface-bg);
