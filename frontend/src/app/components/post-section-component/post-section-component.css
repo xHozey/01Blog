@@ -1,0 +1,23 @@
+/* Container spacing harmony with navbar */
+.container.my-5 {
+  margin-top: 2rem !important;
+}
+
+/* Scroll container spacing */
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding-bottom: 1rem;
+}
+
+/* Sidebar users panel */
+.users-sidebar {
+  top: 88px;
+}
+
+@media (max-width: 992px) {
+  .col-3 {
+    display: none;
+  }
+}

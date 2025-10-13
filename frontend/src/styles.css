@@ -4,135 +4,136 @@
 
 /* Light mode */
 :root {
-  --bg-color: #f8f9fa;                   /* main page background */
-  --surface-bg: #fff;                    /* cards, modals, panels */
-  --text-color: #212529;                 /* general text */
+  --bg-color: #f5f6f7;                   /* main page background */
+  --surface-bg: #ffffff;                 /* cards, modals, panels */
+  --text-color: #1f2328;                 /* general text */
+
   --post-bg-color: var(--surface-bg);
   --post-text-color: var(--text-color);
-  --post-title-color: #003459;
-  --post-author-color: #666;
-  --post-author-name-color: #007EA7;
-  --post-action-color: #555;
-  --post-action-hover-color: #000;
-  --post-border-color: #eee;
+  --post-title-color: #111827;           /* neutral dark heading */
+  --post-author-color: #6b7280;          /* gray-500 */
+  --post-author-name-color: #374151;     /* gray-700 */
+  --post-action-color: #4b5563;          /* gray-600 */
+  --post-action-hover-color: #111827;    /* gray-900 */
+  --post-border-color: #e5e7eb;          /* gray-200 */
 
-  --like-color: #e63946;
-  --comment-active-color: #007EA7;
+  --like-color: #dc2626;                 /* red-600, subtle */
+  --comment-active-color: #0d6efd;       /* bootstrap primary */
 
-  --dropdown-border: #e0e0e0;
-  --dropdown-hover-bg: #f5f5f5;
-  --dropdown-danger-hover-bg: #fee;
-  --dropdown-divider-color: #f0f0f0;
+  --dropdown-border: #e5e7eb;
+  --dropdown-hover-bg: #f3f4f6;          /* gray-100 */
+  --dropdown-danger-hover-bg: #fee2e2;   /* red-100 */
+  --dropdown-divider-color: #eef2f7;
 
   --comment-bg: var(--surface-bg);
   --comment-text: var(--text-color);
-  --comment-border: #eee;
-  --comment-input-border: #ccc;
-  --comment-input-focus: #007ea7;
-  --comment-input-focus-shadow: rgba(0, 126, 167, 0.2);
-  --comment-avatar-border: #ddd;
-  --comment-file-color: #555;
-  --comment-file-hover-color: #000;
-  --scrollbar-thumb: #ccc;
-  --scrollbar-thumb-hover: #aaa;
+  --comment-border: #e5e7eb;
+  --comment-input-border: #d1d5db;       /* gray-300 */
+  --comment-input-focus: #0d6efd;
+  --comment-input-focus-shadow: rgba(13, 110, 253, 0.18);
+  --comment-avatar-border: #e5e7eb;
+  --comment-file-color: #4b5563;
+  --comment-file-hover-color: #111827;
+  --scrollbar-thumb: #d1d5db;
+  --scrollbar-thumb-hover: #9ca3af;
 
   --comment-card-bg: var(--surface-bg);
-  --comment-card-hover-bg: #fafafa;
-  --comment-card-border: #f0f0f0;
-  --comment-card-shadow: rgba(0, 0, 0, 0.04);
-  --comment-author-color: #007EA7;
-  --comment-time-color: #999;
-  --comment-time-separator: #ccc;
-  --comment-menu-color: #999;
-  --comment-menu-hover-bg: #f0f0f0;
-  --comment-menu-hover-color: #333;
-  --comment-media-border: #e0e0e0;
+  --comment-card-hover-bg: #f9fafb;
+  --comment-card-border: #e5e7eb;
+  --comment-card-shadow: rgba(17, 24, 39, 0.05);
+  --comment-author-color: #374151;
+  --comment-time-color: #9ca3af;
+  --comment-time-separator: #d1d5db;
+  --comment-menu-color: #9ca3af;
+  --comment-menu-hover-bg: #f3f4f6;
+  --comment-menu-hover-color: #111827;
+  --comment-media-border: #e5e7eb;
 
-  --like-btn-color: #666;
-  --like-btn-hover-bg: #f5f5f5;
-  --like-btn-hover-color: #333;
-  --like-btn-liked-color: #e63946;
-  --like-btn-liked-hover-bg: #fee;
+  --like-btn-color: #6b7280;
+  --like-btn-hover-bg: #f3f4f6;
+  --like-btn-hover-color: #374151;
+  --like-btn-liked-color: var(--like-color);
+  --like-btn-liked-hover-bg: #fee2e2;
 
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.5);
+  --modal-backdrop-bg: rgba(15, 23, 42, 0.55);
   --modal-content-bg: var(--surface-bg);
-  --modal-content-border-radius: 10px;
+  --modal-content-border-radius: 12px;
 
   --textarea-bg: var(--surface-bg);
   --textarea-color: var(--text-color);
-  --textarea-border: #ccc;
+  --textarea-border: #d1d5db;
 
   --card-border-radius: 12px;
-  --nav-link-color: #555;
-  --nav-link-active-color: #0d6efd;
+  --nav-link-color: #4b5563;
+  --nav-link-active-color: #0d6efd;      /* keep bootstrap primary */
   --nav-link-active-border: #0d6efd;
-  --avatar-border-color: #ddd;
+  --avatar-border-color: #e5e7eb;
 }
 
 /* Dark mode */
 [data-theme='dark'] {
-  --bg-color: #1c1c1c;                /* main page background */
-  --surface-bg: #242424;              /* cards, modals, panels slightly lighter */
-  --text-color: #e0e0e0;              /* general text */
-  
+  --bg-color: #0f172a;                /* slate-900 */
+  --surface-bg: #111827;              /* slate-800 */
+  --text-color: #e5e7eb;              /* gray-200 */
+
   --post-bg-color: var(--surface-bg);
   --post-text-color: var(--text-color);
-  --post-title-color: #caf0f8;
-  --post-author-color: #aaa;
-  --post-author-name-color: #48cae4;
-  --post-action-color: #ccc;
-  --post-action-hover-color: #fff;
-  --post-border-color: #3a3a3a;
+  --post-title-color: #f3f4f6;        /* gray-100 */
+  --post-author-color: #9ca3af;
+  --post-author-name-color: #e5e7eb;
+  --post-action-color: #cbd5e1;       /* slate-300 */
+  --post-action-hover-color: #ffffff;
+  --post-border-color: #1f2937;       /* gray-800 */
 
-  --like-color: #f07167;
-  --comment-active-color: #48cae4;
+  --like-color: #ef4444;              /* red-500 */
+  --comment-active-color: #93c5fd;    /* blue-300 subtle */
 
-  --dropdown-border: #444;
-  --dropdown-hover-bg: #2a2a2a;
-  --dropdown-danger-hover-bg: #822c2c;
-  --dropdown-divider-color: #555;
+  --dropdown-border: #374151;
+  --dropdown-hover-bg: #1f2937;
+  --dropdown-danger-hover-bg: #3f2d2d;
+  --dropdown-divider-color: #374151;
 
   --comment-bg: var(--surface-bg);
   --comment-text: var(--text-color);
-  --comment-border: #333;
-  --comment-input-border: #555;
-  --comment-input-focus: #48cae4;
-  --comment-input-focus-shadow: rgba(72, 202, 228, 0.25);
-  --comment-avatar-border: #555;
-  --comment-file-color: #ccc;
-  --comment-file-hover-color: #fff;
-  --scrollbar-thumb: #555;
-  --scrollbar-thumb-hover: #777;
+  --comment-border: #374151;
+  --comment-input-border: #4b5563;
+  --comment-input-focus: #93c5fd;
+  --comment-input-focus-shadow: rgba(147, 197, 253, 0.25);
+  --comment-avatar-border: #4b5563;
+  --comment-file-color: #cbd5e1;
+  --comment-file-hover-color: #ffffff;
+  --scrollbar-thumb: #475569;
+  --scrollbar-thumb-hover: #64748b;
 
   --comment-card-bg: var(--surface-bg);
-  --comment-card-hover-bg: #2a2a2a;
-  --comment-card-border: #3a3a3a;
-  --comment-card-shadow: rgba(0, 0, 0, 0.3);
-  --comment-author-color: #48cae4;
-  --comment-time-color: #aaa;
-  --comment-time-separator: #666;
-  --comment-menu-color: #aaa;
-  --comment-menu-hover-bg: #2a2a2a;
-  --comment-menu-hover-color: #fff;
-  --comment-media-border: #555;
+  --comment-card-hover-bg: #1f2937;
+  --comment-card-border: #2b3441;
+  --comment-card-shadow: rgba(0, 0, 0, 0.35);
+  --comment-author-color: #e5e7eb;
+  --comment-time-color: #9ca3af;
+  --comment-time-separator: #6b7280;
+  --comment-menu-color: #9ca3af;
+  --comment-menu-hover-bg: #1f2937;
+  --comment-menu-hover-color: #ffffff;
+  --comment-media-border: #374151;
 
-  --like-btn-color: #ccc;
-  --like-btn-hover-bg: #333;
-  --like-btn-hover-color: #fff;
-  --like-btn-liked-color: #f07167;
-  --like-btn-liked-hover-bg: #822c2c;
+  --like-btn-color: #cbd5e1;
+  --like-btn-hover-bg: #1f2937;
+  --like-btn-hover-color: #ffffff;
+  --like-btn-liked-color: #ef4444;
+  --like-btn-liked-hover-bg: #3f2d2d;
 
-  --modal-backdrop-bg: rgba(0, 0, 0, 0.7);
+  --modal-backdrop-bg: rgba(2, 6, 23, 0.7);
   --modal-content-bg: var(--surface-bg);
 
   --textarea-bg: var(--surface-bg);
   --textarea-color: var(--text-color);
-  --textarea-border: #555;
+  --textarea-border: #4b5563;
 
-  --nav-link-color: #ccc;
-  --nav-link-active-color: #48cae4;
-  --nav-link-active-border: #48cae4;
-  --avatar-border-color: #555;
+  --nav-link-color: #e5e7eb;
+  --nav-link-active-color: #93c5fd;
+  --nav-link-active-border: #93c5fd;
+  --avatar-border-color: #4b5563;
 }
 
 /* Global body */
@@ -140,4 +141,154 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   transition: background-color 0.2s ease, color 0.2s ease;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.6;
+}
+
+/* Generic focus style for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--nav-link-active-color);
+  outline-offset: 2px;
+}
+
+/* ============================
+   Harmonize Bootstrap utilities in Dark Mode
+============================ */
+[data-theme='dark'] .text-dark {
+  color: var(--text-color) !important;
+}
+
+[data-theme='dark'] .text-secondary,
+[data-theme='dark'] .text-muted {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+[data-theme='dark'] .bg-white,
+[data-theme='dark'] .bg-light {
+  background-color: var(--surface-bg) !important;
+}
+
+/* Bootstrap cards */
+[data-theme='dark'] .card {
+  background-color: var(--surface-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .border,
+[data-theme='dark'] .border-top,
+[data-theme='dark'] .border-end,
+[data-theme='dark'] .border-bottom,
+[data-theme='dark'] .border-start,
+[data-theme='dark'] hr,
+[data-theme='dark'] .dropdown-divider {
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .btn-link {
+  color: var(--nav-link-color) !important;
+}
+
+[data-theme='dark'] .btn-link:hover {
+  color: var(--nav-link-active-color) !important;
+}
+
+/* Borders that are too light in dark mode */
+[data-theme='dark'] .border-light {
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .navbar-toggler {
+  border-color: var(--post-border-color);
+}
+
+[data-theme='dark'] .navbar-toggler-icon {
+  filter: invert(1) grayscale(1);
+}
+
+/* Form controls global adjustments in dark mode */
+[data-theme='dark'] .form-control,
+[data-theme='dark'] .form-select {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--textarea-border);
+}
+
+[data-theme='dark'] .form-control::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+
+/* Links contrast in dark mode */
+[data-theme='dark'] a {
+  color: #93c5fd;
+}
+
+[data-theme='dark'] a:hover {
+  color: #bfdbfe;
+}
+
+/* Tables */
+[data-theme='dark'] .table {
+  color: var(--text-color);
+}
+
+[data-theme='dark'] .table > :not(caption) > * > * {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color);
+}
+
+[data-theme='dark'] .table-hover > tbody > tr:hover > * {
+  background-color: #1f2937; /* dark hover */
+}
+
+[data-theme='dark'] .table-light {
+  --bs-table-bg: #1f2937; /* header background */
+  --bs-table-color: var(--text-color);
+  --bs-table-border-color: var(--post-border-color);
+}
+
+/* List groups */
+[data-theme='dark'] .list-group-item {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color);
+}
+
+/* Headings harmonization */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--post-title-color);
+}
+
+/* Toasts */
+[data-theme='dark'] .toast {
+  background-color: var(--surface-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--post-border-color) !important;
+}
+
+/* Quill editor (create post) */
+[data-theme='dark'] .ql-container {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .ql-toolbar {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .ql-snow .ql-stroke {
+  stroke: #e5e7eb; /* icons visible on dark */
+}
+
+[data-theme='dark'] .ql-snow .ql-fill {
+  fill: #e5e7eb;
+}
+
+/* Selection */
+::selection {
+  background: rgba(13, 110, 253, 0.2);
 }

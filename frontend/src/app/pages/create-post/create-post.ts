@@ -58,7 +58,7 @@ export class CreatePost {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) =>         parseApiError(err).forEach((msg) => this.toastService.error(msg)),
+        error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -84,7 +84,7 @@ export class CreatePost {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) =>         parseApiError(err).forEach((msg) => this.toastService.error(msg)),
+        error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -93,6 +93,7 @@ export class CreatePost {
   onEditorCreated(quill: Quill) {
     this.quill = quill;
     this.quill.root.style.height = '200px';
+    (this.quill.container as HTMLElement).classList.add('custom-quill');
     this.quill.on('text-change', () => {
       this.content = this.quill.root.innerHTML;
     });
@@ -113,7 +114,7 @@ export class CreatePost {
         this.router.navigate(['/']);
       },
       error: (err) => {
-                parseApiError(err).forEach((msg) => this.toastService.error(msg));
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

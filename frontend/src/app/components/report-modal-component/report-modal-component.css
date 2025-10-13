@@ -14,6 +14,8 @@
 .modal-content {
   border-radius: var(--modal-content-border-radius);
   background-color: var(--modal-content-bg);
+  border: 1px solid var(--dropdown-border);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
 }
 
 /* Textarea inside modal */
@@ -22,4 +24,9 @@ textarea.form-control {
   background-color: var(--textarea-bg);
   color: var(--textarea-color);
   border: 1px solid var(--textarea-border);
+}
+
+textarea.form-control:focus {
+  border-color: var(--comment-input-focus);
+  box-shadow: 0 0 0 0.15rem var(--comment-input-focus-shadow);
 }

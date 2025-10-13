@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 import { parseApiError } from '../../utils/errorHelper';
 import { ToastService } from '../../service/toast-service';
+import { AdminService } from '../../service/admin-service';
 
 @Component({
   selector: 'app-post-section',
@@ -53,6 +54,7 @@ export class PostSectionComponent implements OnInit {
   private toastService = inject(ToastService);
   private postService = inject(PostService);
   private router = inject(Router);
+  private adminService = inject(AdminService);
 
   ngOnInit(): void {
     this.postService.getPosts(this.page).subscribe({
@@ -78,6 +80,17 @@ export class PostSectionComponent implements OnInit {
   onReport(id: number) {
     this.targetId = id;
     this.showReportModal = true;
+  }
+
+  onHide(id: number) {
+    this.adminService.toggleHidePost(id).subscribe({
+      next: () => {
+        this.posts = this.posts.filter((p) => p.id != id);
+      },
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
+    });
   }
 
   loadMore() {
