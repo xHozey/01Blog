@@ -2,12 +2,10 @@
   min-height: 300px;
 }
 
-/* Target Angular Quill editor without renaming classes */
 quill-editor {
   display: block;
 }
 
-/* Quill container height for better writing space */
 .ql-container {
   min-height: 300px;
   border-radius: 12px !important;
@@ -16,4 +14,10 @@ quill-editor {
 .ql-toolbar {
   border-top-left-radius: 12px !important;
   border-top-right-radius: 12px !important;
+}
+
+::ng-deep .custom-quill .ql-editor.ql-blank::before {
+  color: var(--text-color) !important;
+  opacity: 1 !important;
+  font-style: italic;
 }

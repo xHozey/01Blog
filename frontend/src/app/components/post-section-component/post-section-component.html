@@ -9,7 +9,7 @@
 
         @for (post of posts; track post.id) {
         <app-post-component [post]="post" (delete)="onDeletePost($event)" (update)="onUpdatePost($event)"
-          (report)="onReport($event)">
+          (report)="onReport($event)" (hide)="onHide($event)">
         </app-post-component>
         }
       </div>
