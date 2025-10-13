@@ -7,6 +7,8 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { commentRequest } from '../../models/commentRequest';
 import { UserService } from '../../service/user-service';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
+import { parseApiError } from '../../utils/errorHelper';
+import { ToastService } from '../../service/toast-service';
 
 @Component({
   selector: 'app-comment-section',
@@ -16,8 +18,8 @@ import { ReportModalComponent } from '../report-modal-component/report-modal-com
 })
 export class CommentSection implements OnInit {
   commentService = inject(CommentService);
-  userService = inject(UserService);
-
+  private userService = inject(UserService);
+  private toastService = inject(ToastService);
   @Input() postId!: number;
   comments: commentResponse[] = [];
   page: number = 0;
@@ -51,7 +53,7 @@ export class CommentSection implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
         this.loading = false;
       },
     });
@@ -79,7 +81,7 @@ export class CommentSection implements OnInit {
         this.selectedFile = null;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
@@ -90,7 +92,7 @@ export class CommentSection implements OnInit {
         this.comments = this.comments.filter((comment) => comment.id != id);
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

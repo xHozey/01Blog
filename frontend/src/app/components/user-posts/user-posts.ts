@@ -6,6 +6,8 @@ import { PostComponent } from '../post-component/post-component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-user-posts',
@@ -28,21 +30,21 @@ export class UserPosts implements OnInit {
   //Post report form
   selectedReportId?: number;
   showReportModal = false;
-
+  private toastService = inject(ToastService);
   private postService = inject(PostService);
   private router = inject(Router);
 
   ngOnInit(): void {
     this.postService.getUserPosts(this.userId, this.page).subscribe({
       next: (data) => (this.posts = data),
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 
   onDeletePost(postId: number) {
     this.postService.deletePost(postId).subscribe({
       next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 
@@ -62,7 +64,7 @@ export class UserPosts implements OnInit {
         }
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

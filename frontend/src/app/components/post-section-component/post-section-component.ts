@@ -7,6 +7,8 @@ import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { Router } from '@angular/router';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 import { UserService } from '../../service/user-service';
+import { parseApiError } from '../../utils/errorHelper';
+import { ToastService } from '../../service/toast-service';
 
 @Component({
   selector: 'app-post-section',
@@ -23,7 +25,7 @@ import { UserService } from '../../service/user-service';
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
   page: number = 0;
-
+  private toastService = inject(ToastService);
   private postService = inject(PostService);
   private router = inject(Router);
   private userService = inject(UserService);
@@ -31,20 +33,24 @@ export class PostSectionComponent implements OnInit {
   ngOnInit(): void {
     this.postService.getPosts(this.page).subscribe({
       next: (data) => (this.posts = data),
-      error: (err) => console.error(err),
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
     });
   }
   onDeletePost(postId: number) {
     this.postService.deletePost(postId).subscribe({
       next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
-      error: (err) => console.error(err),
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
     });
   }
 
   showReportModal = false;
   reportDescription = '';
   targetId = 0;
-  
+
   onReport(id: number) {
     this.targetId = id;
     this.showReportModal = true;
@@ -61,7 +67,7 @@ export class PostSectionComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
