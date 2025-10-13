@@ -2,10 +2,8 @@
   max-width: 320px;
   font-family: 'Inter', sans-serif;
   max-height: 400px;
-  /* adjust height to fit your layout */
   overflow-y: auto;
   scrollbar-width: thin;
-  /* Firefox */
   scrollbar-color: #ccc transparent;
 }
 

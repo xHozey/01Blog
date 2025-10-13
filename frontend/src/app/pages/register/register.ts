@@ -35,8 +35,38 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.registerForm.invalid) return;
-
+    if (this.registerForm.invalid) {
+      Object.keys(this.registerForm.controls).forEach((key) => {
+        const control = this.registerForm.get(key);
+        if (control && control.errors) {
+          for (const errorKey in control.errors) {
+            switch (errorKey) {
+              case 'required':
+                this.toastService.error(`${key} is required`);
+                break;
+              case 'minlength':
+                this.toastService.error(
+                  `${key} must be at least ${control.errors['minlength'].requiredLength} characters`
+                );
+                break;
+              case 'maxlength':
+                this.toastService.error(
+                  `${key} cannot exceed ${control.errors['maxlength'].requiredLength} characters`
+                );
+                break;
+              case 'email':
+                this.toastService.error(`Invalid email format`);
+                break;
+            }
+          }
+        }
+      });
+      return;
+    }
+    if (this.registerForm.value.password != this.registerForm.value.confirmPassword) {
+      this.toastService.error('mismatched password');
+      return;
+    }
     const payload: userRequest = {
       username: this.registerForm.value.username,
       email: this.registerForm.value.email,
