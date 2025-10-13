@@ -86,14 +86,22 @@
   padding-top: 1rem;
 }
 
+/* Dropdown harmonization for post page */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 8px;
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  padding: 6px;
+  overflow: hidden;
+  border: 1px solid var(--dropdown-border);
 }
 
 .dropdown-item {
-  padding: .5rem 1rem;
+  padding: .5rem .75rem;
   border-radius: 6px;
+  margin: 2px 0;
+  color: var(--text-color);
 }
 
 .dropdown-item:hover {

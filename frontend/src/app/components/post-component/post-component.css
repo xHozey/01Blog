@@ -100,16 +100,24 @@
   padding-top: 1rem;
 }
 
+/* Dropdown harmonization */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 10px;
   border: 1px solid var(--dropdown-border);
   box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  padding: 6px;
+  overflow: hidden; /* clip hover background at edges */
+  min-width: 160px;
 }
 
 .dropdown-item {
-  padding: .5rem 1rem;
+  padding: .5rem .75rem;
   border-radius: 6px;
+  margin: 2px 0; /* avoid horizontal overflow */
+  color: var(--text-color);
 }
 
 .dropdown-item:hover {

@@ -9,10 +9,11 @@
 
     <!-- Dropdown -->
     <div class="dropdown">
-      <button class="btn btn-link text-muted p-0" id="postMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
+      <button class="btn btn-link p-0" id="postMenuBtn" data-bs-toggle="dropdown" aria-expanded="false"
+        style="color: var(--nav-link-color);">
         <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
       </button>
-      <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm">
         @if (user?.id === post.authorId) {
         <li><button class="dropdown-item" (click)="update.emit(post.id)">
             <i class="fa fa-edit me-2"></i>Edit Post
