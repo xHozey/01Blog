@@ -16,7 +16,7 @@ public class CommentResponse {
     private String content;
     private String author;
     private Long authorId;
-    private Timestamp createTime;
+    private Timestamp createdAt;
     private Long likes;
     private Boolean isLiked;
 
@@ -25,7 +25,7 @@ public class CommentResponse {
         this.content = comment.getContent();
         this.author = comment.getUser().getUsername();
         this.authorId = comment.getUser().getId();
-        this.createTime = comment.getCreateTime();
+        this.createdAt = comment.getCreateTime();
         this.likes = likes;
         this.isLiked = isLiked;
     }
