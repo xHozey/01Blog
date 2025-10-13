@@ -1,32 +1,27 @@
 @if (show) {
-  <div class="modal-backdrop fade show" (click)="close()"></div>
+<div class="modal-backdrop fade show" (click)="close()"></div>
 
-  <div class="modal fade show d-block" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content shadow">
-        <div class="modal-header">
-          <h5 class="modal-title">Report User</h5>
-          <button type="button" class="btn-close" (click)="close()"></button>
-        </div>
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content shadow">
+      <div class="modal-header">
+        <h5 class="modal-title">Report User</h5>
+        <button type="button" class="btn-close" (click)="close()" [attr.data-bs-theme]="theme"></button>
+      </div>
 
-        <div class="modal-body">
-          <label for="reportDescription" class="form-label">
-            Describe why you're reporting this user:
-          </label>
-          <textarea
-            id="reportDescription"
-            class="form-control"
-            placeholder="Enter details..."
-            rows="4"
-            [(ngModel)]="description"
-          ></textarea>
-        </div>
+      <div class="modal-body">
+        <label for="reportDescription" class="form-label">
+          Describe why you're reporting this user:
+        </label>
+        <textarea id="reportDescription" class="form-control" placeholder="Enter details..." rows="4"
+          [(ngModel)]="description"></textarea>
+      </div>
 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
-          <button type="button" class="btn btn-primary" (click)="submit()">Send</button>
-        </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="submit()">Send</button>
       </div>
     </div>
   </div>
+</div>
 }

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user-service';
 import { ToastService } from '../../service/toast-service';
 import { parseApiError } from '../../utils/errorHelper';
+import { ThemeService } from '../../service/theme-service';
 
 @Component({
   selector: 'app-report-modal-component',
@@ -16,11 +17,10 @@ export class ReportModalComponent {
   @Input() show = false;
   @Input() targetId?: number;
   @Output() closed = new EventEmitter<void>();
-
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   description = '';
-
+  theme = localStorage.getItem("theme")
   close() {
     this.description = '';
     this.closed.emit();

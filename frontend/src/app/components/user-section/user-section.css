@@ -28,7 +28,7 @@
 }
 
 .user-item:hover {
-  background-color: #f9f9f9;
+  background-color: var(--dropdown-hover-bg);
 }
 
 .btn {

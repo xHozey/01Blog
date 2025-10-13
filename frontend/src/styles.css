@@ -1,34 +1,55 @@
-/* ============================
-   Global theme variables
-============================ */
-
-/* Light mode */
 :root {
-  --bg-color: #f5f6f7;                   /* main page background */
-  --surface-bg: #ffffff;                 /* cards, modals, panels */
-  --text-color: #1f2328;                 /* general text */
+  --bs-box-shadow-light:
+    0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
+
+  /* Dark mode */
+  --bs-box-shadow-dark:
+    0 2px 4px rgba(0, 0, 0, 0.5),
+    0 6px 12px rgba(0, 0, 0, 0.3),
+    0 12px 24px rgba(0, 0, 0, 0.2);
+
+  /* Default to light mode */
+  --bs-box-shadow: var(--bs-box-shadow-light);
+  --bg-color: #f5f6f7;
+  /* main page background */
+  --surface-bg: #ffffff;
+  /* cards, modals, panels */
+  --text-color: #1f2328;
+  /* general text */
 
   --post-bg-color: var(--surface-bg);
   --post-text-color: var(--text-color);
-  --post-title-color: #111827;           /* neutral dark heading */
-  --post-author-color: #6b7280;          /* gray-500 */
-  --post-author-name-color: #374151;     /* gray-700 */
-  --post-action-color: #4b5563;          /* gray-600 */
-  --post-action-hover-color: #111827;    /* gray-900 */
-  --post-border-color: #e5e7eb;          /* gray-200 */
+  --post-title-color: #111827;
+  /* neutral dark heading */
+  --post-author-color: #6b7280;
+  /* gray-500 */
+  --post-author-name-color: #374151;
+  /* gray-700 */
+  --post-action-color: #4b5563;
+  /* gray-600 */
+  --post-action-hover-color: #111827;
+  /* gray-900 */
+  --post-border-color: #e5e7eb;
+  /* gray-200 */
 
-  --like-color: #dc2626;                 /* red-600, subtle */
-  --comment-active-color: #0d6efd;       /* bootstrap primary */
+  --like-color: #dc2626;
+  /* red-600, subtle */
+  --comment-active-color: #0d6efd;
+  /* bootstrap primary */
 
   --dropdown-border: #e5e7eb;
-  --dropdown-hover-bg: #f3f4f6;          /* gray-100 */
-  --dropdown-danger-hover-bg: #fee2e2;   /* red-100 */
+  --dropdown-hover-bg: #f3f4f6;
+  /* gray-100 */
+  --dropdown-danger-hover-bg: #fee2e2;
+  /* red-100 */
   --dropdown-divider-color: #eef2f7;
 
   --comment-bg: var(--surface-bg);
   --comment-text: var(--text-color);
   --comment-border: #e5e7eb;
-  --comment-input-border: #d1d5db;       /* gray-300 */
+  --comment-input-border: #d1d5db;
+  /* gray-300 */
   --comment-input-focus: #0d6efd;
   --comment-input-focus-shadow: rgba(13, 110, 253, 0.18);
   --comment-avatar-border: #e5e7eb;
@@ -65,28 +86,39 @@
 
   --card-border-radius: 12px;
   --nav-link-color: #4b5563;
-  --nav-link-active-color: #0d6efd;      /* keep bootstrap primary */
+  --nav-link-active-color: #0d6efd;
+  /* keep bootstrap primary */
   --nav-link-active-border: #0d6efd;
   --avatar-border-color: #e5e7eb;
 }
 
 /* Dark mode */
 [data-theme='dark'] {
-  --bg-color: #0f172a;                /* slate-900 */
-  --surface-bg: #111827;              /* slate-800 */
-  --text-color: #e5e7eb;              /* gray-200 */
+    --bs-box-shadow: var(--bs-box-shadow-dark);
+
+  --bg-color: #0f172a;
+  /* slate-900 */
+  --surface-bg: #111827;
+  /* slate-800 */
+  --text-color: #e5e7eb;
+  /* gray-200 */
 
   --post-bg-color: var(--surface-bg);
   --post-text-color: var(--text-color);
-  --post-title-color: #f3f4f6;        /* gray-100 */
+  --post-title-color: #f3f4f6;
+  /* gray-100 */
   --post-author-color: #9ca3af;
   --post-author-name-color: #e5e7eb;
-  --post-action-color: #cbd5e1;       /* slate-300 */
+  --post-action-color: #cbd5e1;
+  /* slate-300 */
   --post-action-hover-color: #ffffff;
-  --post-border-color: #1f2937;       /* gray-800 */
+  --post-border-color: #1f2937;
+  /* gray-800 */
 
-  --like-color: #ef4444;              /* red-500 */
-  --comment-active-color: #93c5fd;    /* blue-300 subtle */
+  --like-color: #ef4444;
+  /* red-500 */
+  --comment-active-color: #93c5fd;
+  /* blue-300 subtle */
 
   --dropdown-border: #374151;
   --dropdown-hover-bg: #1f2937;
@@ -136,7 +168,6 @@
   --avatar-border-color: #4b5563;
 }
 
-/* Global body */
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -145,22 +176,18 @@ body {
   line-height: 1.6;
 }
 
-/* Generic focus style for keyboard users */
 :focus-visible {
   outline: 2px solid var(--nav-link-active-color);
   outline-offset: 2px;
 }
 
-/* ============================
-   Harmonize Bootstrap utilities in Dark Mode
-============================ */
 [data-theme='dark'] .text-dark {
   color: var(--text-color) !important;
 }
 
 [data-theme='dark'] .text-secondary,
 [data-theme='dark'] .text-muted {
-  color: #cbd5e1 !important; /* slate-300 */
+  color: #cbd5e1 !important;
 }
 
 [data-theme='dark'] .bg-white,
@@ -168,7 +195,6 @@ body {
   background-color: var(--surface-bg) !important;
 }
 
-/* Bootstrap cards */
 [data-theme='dark'] .card {
   background-color: var(--surface-bg) !important;
   color: var(--text-color) !important;
@@ -193,7 +219,6 @@ body {
   color: var(--nav-link-active-color) !important;
 }
 
-/* Borders that are too light in dark mode */
 [data-theme='dark'] .border-light {
   border-color: var(--post-border-color) !important;
 }
@@ -206,7 +231,6 @@ body {
   filter: invert(1) grayscale(1);
 }
 
-/* Form controls global adjustments in dark mode */
 [data-theme='dark'] .form-control,
 [data-theme='dark'] .form-select {
   background-color: var(--surface-bg);
@@ -215,10 +239,9 @@ body {
 }
 
 [data-theme='dark'] .form-control::placeholder {
-  color: #94a3b8; /* slate-400 */
+  color: #94a3b8;
 }
 
-/* Links contrast in dark mode */
 [data-theme='dark'] a {
   color: #93c5fd;
 }
@@ -227,40 +250,41 @@ body {
   color: #bfdbfe;
 }
 
-/* Tables */
 [data-theme='dark'] .table {
   color: var(--text-color);
 }
 
-[data-theme='dark'] .table > :not(caption) > * > * {
+[data-theme='dark'] .table> :not(caption)>*>* {
   background-color: var(--surface-bg);
   color: var(--text-color);
   border-color: var(--post-border-color);
 }
 
-[data-theme='dark'] .table-hover > tbody > tr:hover > * {
-  background-color: #1f2937; /* dark hover */
+[data-theme='dark'] .table-hover>tbody>tr:hover>* {
+  background-color: #1f2937;
 }
 
 [data-theme='dark'] .table-light {
-  --bs-table-bg: #1f2937; /* header background */
+  --bs-table-bg: #1f2937;
   --bs-table-color: var(--text-color);
   --bs-table-border-color: var(--post-border-color);
 }
 
-/* List groups */
 [data-theme='dark'] .list-group-item {
   background-color: var(--surface-bg);
   color: var(--text-color);
   border-color: var(--post-border-color);
 }
 
-/* Headings harmonization */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: var(--post-title-color);
 }
 
-/* Quill editor (create post) */
 [data-theme='dark'] .ql-container {
   background-color: var(--surface-bg);
   color: var(--text-color);
@@ -274,14 +298,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 [data-theme='dark'] .ql-snow .ql-stroke {
-  stroke: #e5e7eb; /* icons visible on dark */
+  stroke: #e5e7eb;
 }
 
 [data-theme='dark'] .ql-snow .ql-fill {
   fill: #e5e7eb;
 }
 
-/* Selection */
 ::selection {
   background: rgba(13, 110, 253, 0.2);
 }

@@ -5,12 +5,10 @@
   z-index: 1040;
 }
 
-/* Modal container */
 .modal.fade.show.d-block {
   z-index: 1050;
 }
 
-/* Modal content */
 .modal-content {
   border-radius: var(--modal-content-border-radius);
   background-color: var(--modal-content-bg);
@@ -18,7 +16,6 @@
   box-shadow: 0 20px 40px rgba(0,0,0,0.18);
 }
 
-/* Textarea inside modal */
 textarea.form-control {
   resize: none;
   background-color: var(--textarea-bg);
@@ -29,4 +26,8 @@ textarea.form-control {
 textarea.form-control:focus {
   border-color: var(--comment-input-focus);
   box-shadow: 0 0 0 0.15rem var(--comment-input-focus-shadow);
+}
+
+.form-label {
+  color: var(--textarea-color);
 }
