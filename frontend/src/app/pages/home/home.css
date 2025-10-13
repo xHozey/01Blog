@@ -3,7 +3,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 
-/* Sidebar styling */
 .sidebar-nav a {
   text-decoration: none;
   color: #333;
@@ -18,7 +17,6 @@ body {
   font-size: 1rem;
 }
 
-/* Scroll behavior for right sidebar if content exceeds height */
 app-user-section {
   display: block;
   max-height: 80vh;
@@ -38,6 +36,11 @@ app-user-section::-webkit-scrollbar-thumb {
 
 app-user-section::-webkit-scrollbar-thumb:hover {
   background-color: #a9a9a9;
+}
+
+.custom-shadow {
+  box-shadow: var(--bs-box-shadow);
+
 }
 
 @media (max-width: 992px) {

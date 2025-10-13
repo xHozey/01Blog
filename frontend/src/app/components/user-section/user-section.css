@@ -1,13 +1,14 @@
 .user-section {
   max-width: 320px;
   font-family: 'Inter', sans-serif;
-  max-height: 400px; /* adjust height to fit your layout */
+  max-height: 400px;
+  /* adjust height to fit your layout */
   overflow-y: auto;
-  scrollbar-width: thin; /* Firefox */
+  scrollbar-width: thin;
+  /* Firefox */
   scrollbar-color: #ccc transparent;
 }
 
-/* Modern Chrome/Edge scrollbar styling */
 .user-section::-webkit-scrollbar {
   width: 6px;
 }
@@ -44,4 +45,8 @@ h6 {
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.custom-shadow {
+  box-shadow: var(--bs-box-shadow);
 }
