@@ -3,12 +3,13 @@
   border-radius: 12px;
   padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, color 0.3s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid var(--post-border-color);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, color 0.3s, border-color 0.2s ease;
 }
 
 .post-container:hover {
-  box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 }
 
 .post-header {
@@ -34,7 +35,7 @@
 }
 
 .post-title {
-  font-family: 'Merriweather', serif;
+  font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
   color: var(--post-title-color);
   font-size: 1.4rem;
   margin: 0.25rem 0 0.75rem 0;
@@ -43,7 +44,7 @@
 
 .post-body {
   color: var(--post-text-color);
-  line-height: 1.6;
+  line-height: 1.75;
   font-size: 1rem;
   margin-bottom: 1rem;
   white-space: pre-line;
@@ -75,11 +76,14 @@
   gap: .4rem;
   font-size: 0.9rem;
   color: var(--post-action-color);
-  transition: color 0.2s;
+  padding: 0.35rem 0.6rem;
+  border-radius: 999px;
+  transition: color 0.2s, background-color 0.2s;
 }
 
 .action-btn:hover {
   color: var(--post-action-hover-color);
+  background-color: var(--dropdown-hover-bg);
 }
 
 .like-btn.liked {
@@ -98,7 +102,9 @@
 
 .dropdown-menu {
   font-size: 0.9rem;
-  border-radius: 8px;
+  border-radius: 10px;
+  border: 1px solid var(--dropdown-border);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
 }
 
 .dropdown-item {

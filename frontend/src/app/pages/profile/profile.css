@@ -2,3 +2,17 @@
 img {
   object-fit: cover;
 }
+
+.card {
+  border: 1px solid var(--post-border-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+}
+
+.rounded-circle.border {
+  border-color: var(--avatar-border-color) !important;
+}
+
+.btn {
+  border-radius: 999px;
+}

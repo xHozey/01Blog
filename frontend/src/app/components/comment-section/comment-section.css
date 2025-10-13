@@ -54,6 +54,11 @@
   outline: none;
 }
 
+/* Buttons inside form (inherit rounded pill style) */
+.comment-form .btn {
+  border-radius: 999px;
+}
+
 /* Input actions */
 .input-actions {
   display: flex;
