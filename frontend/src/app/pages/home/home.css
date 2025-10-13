@@ -20,9 +20,6 @@ body {
 app-user-section {
   display: block;
   max-height: 80vh;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: #ccc transparent;
 }
 
 app-user-section::-webkit-scrollbar {
