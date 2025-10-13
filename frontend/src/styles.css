@@ -193,6 +193,11 @@ body {
   color: var(--nav-link-active-color) !important;
 }
 
+/* Borders that are too light in dark mode */
+[data-theme='dark'] .border-light {
+  border-color: var(--post-border-color) !important;
+}
+
 [data-theme='dark'] .navbar-toggler {
   border-color: var(--post-border-color);
 }
@@ -220,6 +225,34 @@ body {
 
 [data-theme='dark'] a:hover {
   color: #bfdbfe;
+}
+
+/* Tables */
+[data-theme='dark'] .table {
+  color: var(--text-color);
+}
+
+[data-theme='dark'] .table > :not(caption) > * > * {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color);
+}
+
+[data-theme='dark'] .table-hover > tbody > tr:hover > * {
+  background-color: #1f2937; /* dark hover */
+}
+
+[data-theme='dark'] .table-light {
+  --bs-table-bg: #1f2937; /* header background */
+  --bs-table-color: var(--text-color);
+  --bs-table-border-color: var(--post-border-color);
+}
+
+/* List groups */
+[data-theme='dark'] .list-group-item {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color);
 }
 
 /* Headings harmonization */
