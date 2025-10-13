@@ -24,32 +24,6 @@ import { AdminService } from '../../service/admin-service';
 })
 export class PostSectionComponent implements OnInit {
   posts: postResponse[] = [];
-  users: userResponse[] = [
-    {
-      username: 'test1',
-      id: 0,
-      iconPath: '',
-      creation: '3000',
-      roles: [],
-      bio: 'hmmmmm',
-    },
-    {
-      username: 'test2',
-      id: 1,
-      iconPath: '',
-      creation: '2005',
-      roles: [],
-      bio: 'hmmmmm',
-    },
-    {
-      username: 'test3',
-      id: 2,
-      iconPath: '',
-      creation: '2005',
-      roles: [],
-      bio: 'hmmmmm',
-    },
-  ];
   page: number = 0;
   private toastService = inject(ToastService);
   private postService = inject(PostService);

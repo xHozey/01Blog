@@ -1,6 +1,9 @@
 package com._Blog.Backend.controller;
 
+import java.util.List;
+
 import com._Blog.Backend.dto.UserAccountUpdateRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,11 +12,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.dto.UserProfileUpdateRequest;
 import com._Blog.Backend.dto.UserResponse;
+import com._Blog.Backend.dto.UserSuggetion;
 import com._Blog.Backend.services.UserService;
 
 import jakarta.validation.Valid;
@@ -58,5 +63,10 @@ public class UserController {
             @RequestBody @Valid UserAccountUpdateRequest userAccountUpdateRequest) {
         UserResponse user = this.userService.updateAccount(userAccountUpdateRequest);
         return ResponseEntity.ok(user);
+    }
+
+    @GetMapping("/suggetion")
+    public ResponseEntity<List<UserSuggetion>> getSuggetion(@RequestParam(defaultValue = "0") Integer page) {
+        return ResponseEntity.ok(this.userService.getUsersSuggetion(page));
     }
 }

@@ -1,9 +1,7 @@
-/* Container spacing harmony with navbar */
 .container.my-5 {
   margin-top: 2rem !important;
 }
 
-/* Scroll container spacing */
 .scroll-container {
   display: flex;
   flex-direction: column;
@@ -11,7 +9,6 @@
   padding-bottom: 1rem;
 }
 
-/* Sidebar users panel */
 .users-sidebar {
   top: 88px;
 }

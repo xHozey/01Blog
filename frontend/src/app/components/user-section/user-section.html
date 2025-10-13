@@ -1,0 +1,41 @@
+<div class="user-section p-3 rounded shadow-sm bg-white">
+  <h6 class="fw-semibold mb-3 text-secondary">Suggested Users</h6>
+
+  <ul class="list-unstyled m-0 scroll-container" 
+      infiniteScroll 
+      [infiniteScrollDistance]="2" 
+      [infiniteScrollThrottle]="150"
+      (scrolled)="loadMore()">
+    @for (suggestion of users; track suggestion.userResponse.id) {
+      <li class="d-flex align-items-center justify-content-between mb-3 user-item">
+        <div class="d-flex align-items-center">
+          <img
+            [src]="suggestion.userResponse.iconPath"
+            alt="Avatar"
+            class="rounded-circle me-3"
+            width="40"
+            height="40"
+          />
+          <div>
+            <div class="fw-semibold">{{ suggestion.userResponse.username }}</div>
+            <small class="text-muted">{{ suggestion.userResponse.bio }}</small>
+          </div>
+        </div>
+
+        <button
+            (click)="onFollow(suggestion.userResponse.id)"
+          class="btn btn-sm rounded-pill px-3"
+          [ngClass]="suggestion.isFollowing ? 'btn-outline-secondary' : 'btn-primary'">
+          {{ suggestion.isFollowing ? 'Following' : 'Follow' }}
+        </button>
+      </li>
+    }
+  </ul>
+
+  <div *ngIf="isLoading" class="text-center py-3 text-secondary">
+    Loading more users...
+  </div>
+  <div *ngIf="allLoaded && users.length === 0" class="text-center py-3 text-secondary">
+    No suggestions available.
+  </div>
+</div>

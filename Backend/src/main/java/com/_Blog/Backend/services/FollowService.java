@@ -13,16 +13,14 @@ import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.FollowRepository;
 import com._Blog.Backend.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class FollowService {
 
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
-
-    public FollowService(FollowRepository followRepository, UserRepository userRepository) {
-        this.followRepository = followRepository;
-        this.userRepository = userRepository;
-    }
 
     public void toggleFollow(Long followedId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

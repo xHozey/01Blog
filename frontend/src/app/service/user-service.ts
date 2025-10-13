@@ -47,4 +47,10 @@ export class UserService {
       withCredentials: true,
     });
   }
+
+  getUserSuggestions(page: number): Observable<userSuggetion[]> {
+    return this.http.get<userSuggetion[]>(`${this.apiUrl}/suggetion?page=${page}`, {
+      withCredentials: true,
+    });
+  }
 }

@@ -1,0 +1,47 @@
+.user-section {
+  max-width: 320px;
+  font-family: 'Inter', sans-serif;
+  max-height: 400px; /* adjust height to fit your layout */
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #ccc transparent;
+}
+
+/* Modern Chrome/Edge scrollbar styling */
+.user-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.user-section::-webkit-scrollbar-thumb {
+  background-color: #c4c4c4;
+  border-radius: 10px;
+}
+
+.user-section::-webkit-scrollbar-thumb:hover {
+  background-color: #a9a9a9;
+}
+
+.user-item {
+  transition: background-color 0.2s ease;
+  padding: 6px 4px;
+  border-radius: 8px;
+}
+
+.user-item:hover {
+  background-color: #f9f9f9;
+}
+
+.btn {
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  transform: scale(1.03);
+}
+
+h6 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
