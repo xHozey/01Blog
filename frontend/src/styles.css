@@ -150,3 +150,77 @@ body {
   outline: 2px solid var(--nav-link-active-color);
   outline-offset: 2px;
 }
+
+/* ============================
+   Harmonize Bootstrap utilities in Dark Mode
+============================ */
+[data-theme='dark'] .text-dark {
+  color: var(--text-color) !important;
+}
+
+[data-theme='dark'] .text-secondary,
+[data-theme='dark'] .text-muted {
+  color: #cbd5e1 !important; /* slate-300 */
+}
+
+[data-theme='dark'] .bg-white,
+[data-theme='dark'] .bg-light {
+  background-color: var(--surface-bg) !important;
+}
+
+[data-theme='dark'] .border,
+[data-theme='dark'] .border-top,
+[data-theme='dark'] .border-end,
+[data-theme='dark'] .border-bottom,
+[data-theme='dark'] .border-start,
+[data-theme='dark'] hr,
+[data-theme='dark'] .dropdown-divider {
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .btn-link {
+  color: var(--nav-link-color) !important;
+}
+
+[data-theme='dark'] .btn-link:hover {
+  color: var(--nav-link-active-color) !important;
+}
+
+[data-theme='dark'] .navbar-toggler {
+  border-color: var(--post-border-color);
+}
+
+[data-theme='dark'] .navbar-toggler-icon {
+  filter: invert(1) grayscale(1);
+}
+
+/* Form controls global adjustments in dark mode */
+[data-theme='dark'] .form-control,
+[data-theme='dark'] .form-select {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--textarea-border);
+}
+
+[data-theme='dark'] .form-control::placeholder {
+  color: #94a3b8; /* slate-400 */
+}
+
+/* Links contrast in dark mode */
+[data-theme='dark'] a {
+  color: #93c5fd;
+}
+
+[data-theme='dark'] a:hover {
+  color: #bfdbfe;
+}
+
+/* Headings harmonization */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--post-title-color);
+}
+
+/* Selection */
+::selection {
+  background: rgba(13, 110, 253, 0.2);
+}

@@ -1,0 +1,33 @@
+/* App-wide base tweaks for consistent spacing and readability */
+
+/* Ensure page top spacing below sticky navbar */
+main, .container, .container-fluid {
+  padding-top: 0.5rem;
+}
+
+/* Card defaults harmonized */
+.card {
+  border-radius: var(--card-border-radius);
+}
+
+/* Buttons rounded for consistency with design */
+.btn {
+  border-radius: 999px;
+}
+
+/* Ensure headings use title color */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--post-title-color);
+}
+
+/* Dropdown menus global polish */
+.dropdown-menu {
+  border-radius: 10px;
+}
+
+/* Dark mode dropdown bg */
+[data-theme='dark'] .dropdown-menu {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+}
+
