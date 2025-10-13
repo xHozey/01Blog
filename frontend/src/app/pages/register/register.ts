@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { RouterLink, Router } from '@angular/router';
 import { AuthService } from '../../service/auth-service';
 import { CommonModule } from '@angular/common';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-register',
@@ -15,6 +17,7 @@ export class RegisterComponent implements OnInit {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   registerForm!: FormGroup;
 
@@ -42,7 +45,7 @@ export class RegisterComponent implements OnInit {
 
     this.authService.register(payload).subscribe({
       next: () => this.router.navigate(['/login']),
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 }

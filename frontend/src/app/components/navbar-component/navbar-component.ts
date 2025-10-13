@@ -15,6 +15,8 @@ import { UserService } from '../../service/user-service';
 import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../service/auth-service';
+import { parseApiError } from '../../utils/errorHelper';
+import { ToastService } from '../../service/toast-service';
 
 interface notificationDTO {
   id: number;
@@ -46,6 +48,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   private notificationsService = inject(NotificationsService);
   private userService: UserService = inject(UserService);
   private authService: AuthService = inject(AuthService);
+  private toastService = inject(ToastService);
   user: userResponse | null = null;
 
   ngOnInit(): void {
@@ -57,7 +60,9 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.notificationsService.getNotificationCount().subscribe({
       next: (res) => (this.totalNotifications = res),
-      error: (err) => console.error(err),
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
     });
     this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));
@@ -115,12 +120,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
               console.log(res);
             },
             error: (err) => {
-              console.error(err);
+              parseApiError(err).forEach((msg) => this.toastService.error(msg));
             },
           });
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+
         this.isLoading = false;
       },
     });
@@ -132,7 +138,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

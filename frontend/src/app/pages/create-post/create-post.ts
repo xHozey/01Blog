@@ -8,6 +8,8 @@ import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { Router } from '@angular/router';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-create-post',
@@ -20,6 +22,8 @@ export class CreatePost {
   private mediaService = inject(MediaService);
   private postService = inject(PostService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
+
   quill!: Quill;
   modules = {
     toolbar: {
@@ -54,7 +58,7 @@ export class CreatePost {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) => console.error(err),
+        error: (err) =>         parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -80,7 +84,7 @@ export class CreatePost {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) => console.error(err),
+        error: (err) =>         parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -109,7 +113,7 @@ export class CreatePost {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error(err);
+                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

@@ -2,6 +2,8 @@ import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user-service';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-report-modal-component',
@@ -16,7 +18,7 @@ export class ReportModalComponent {
   @Output() closed = new EventEmitter<void>();
 
   private userService = inject(UserService);
-
+  private toastService = inject(ToastService);
   description = '';
 
   close() {
@@ -33,10 +35,9 @@ export class ReportModalComponent {
     };
     this.userService.reportUser(payload).subscribe({
       next: (res) => {
-        console.log('hello world');
         this.close();
       },
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 }

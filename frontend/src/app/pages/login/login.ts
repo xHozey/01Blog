@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { FormGroup, ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../service/auth-service';
 import { Router, RouterLink } from '@angular/router';
-
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 @Component({
   selector: 'app-login-component',
   imports: [ReactiveFormsModule, RouterLink],
@@ -14,7 +15,7 @@ export class LoginComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthService);
   private router = inject(Router);
-
+  private toastService = inject(ToastService);
   constructor() {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
@@ -38,11 +39,12 @@ export class LoginComponent {
     };
 
     this.auth.login(payload).subscribe({
-      next: (res) => {
+      next: (msg) => {
+        this.toastService.success(msg);
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { UserService } from '../../service/user-service';
 import { MediaService } from '../../service/media-service';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-settings',
@@ -15,6 +17,7 @@ import { MediaService } from '../../service/media-service';
 export class Settings implements OnInit {
   private userService = inject(UserService);
   private mediaService = inject(MediaService);
+  private toastService = inject(ToastService);
 
   activeTab: 'profile' | 'account' = 'profile';
 
@@ -39,7 +42,7 @@ export class Settings implements OnInit {
     this.userService.updateUserProfile(this.profilePayload).subscribe({
       next: (res) => {},
       error: (err) => {
-        console.error(err);
+                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
@@ -48,7 +51,7 @@ export class Settings implements OnInit {
     this.userService.updateUserAccount(this.accountPayload).subscribe({
       next: (res) => {},
       error: (err) => {
-        console.error(err);
+                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
@@ -63,7 +66,7 @@ export class Settings implements OnInit {
           this.profilePayload.iconProfile = res;
         },
         error: (err) => {
-          console.error(err);
+                  parseApiError(err).forEach((msg) => this.toastService.error(msg));
         },
       });
     }

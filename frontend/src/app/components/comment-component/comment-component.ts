@@ -5,6 +5,8 @@ import { UserService } from '../../service/user-service';
 import { EngagementService } from '../../service/engagement-service';
 import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular';
 import { Router } from '@angular/router';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-comment-component',
@@ -17,10 +19,10 @@ export class CommentComponent implements OnInit {
 
   @Output() delete = new EventEmitter<number>();
   @Output() report = new EventEmitter<number>();
-
+  private toastService = inject(ToastService);
   private userService = inject(UserService);
   private engagementService = inject(EngagementService);
-  private router = inject(Router)
+  private router = inject(Router);
 
   user: userResponse | null = null;
 
@@ -34,7 +36,8 @@ export class CommentComponent implements OnInit {
         this.comment.likes += this.comment.isLiked ? 1 : -1;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
@@ -44,6 +47,6 @@ export class CommentComponent implements OnInit {
   }
 
   goToProfile(): void {
-    this.router.navigate(["/profile", this.comment.authorId])
+    this.router.navigate(['/profile', this.comment.authorId]);
   }
 }

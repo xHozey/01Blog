@@ -7,6 +7,8 @@ import { CommentSection } from '../comment-section/comment-section';
 import { Router } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import DOMPurify from 'dompurify';
+import { parseApiError } from '../../utils/errorHelper';
+import { ToastService } from '../../service/toast-service';
 
 @Component({
   selector: 'app-post-component',
@@ -20,6 +22,7 @@ export class PostComponent implements OnInit {
   private userService: UserService = inject(UserService);
   private sanitizer: DomSanitizer = inject(DomSanitizer);
   private router: Router = inject(Router);
+  private toastService = inject(ToastService)
   @Input() post!: postResponse;
 
   @Output() delete = new EventEmitter<number>();
@@ -63,7 +66,7 @@ export class PostComponent implements OnInit {
         }
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

@@ -6,6 +6,8 @@ import { NavbarComponent } from '../../components/navbar-component/navbar-compon
 import { CommonModule } from '@angular/common';
 import { UserPosts } from '../../components/user-posts/user-posts';
 import { ReportModalComponent } from '../../components/report-modal-component/report-modal-component';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-profile',
@@ -17,6 +19,7 @@ export class Profile implements OnInit {
   private userService = inject(UserService);
   private followService = inject(FollowService);
   private route = inject(ActivatedRoute);
+  private toastService = inject(ToastService);
   userId!: number;
 
   currentUser: userResponse | null = null;
@@ -33,21 +36,21 @@ export class Profile implements OnInit {
         this.user = res;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
     this.followService.getFollowersCount(this.userId).subscribe({
       next: (res) => {
         this.followersCount = res;
       },
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
     this.followService.getFollowedCount(this.userId).subscribe({
       next: (res) => {
         this.followingCount = res;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
     this.followService.checkAlreadyFollowed(this.userId).subscribe({
@@ -55,7 +58,7 @@ export class Profile implements OnInit {
         this.isFollowing = res;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
     this.userService.user$.subscribe((user) => (this.currentUser = user));
@@ -69,7 +72,7 @@ export class Profile implements OnInit {
         else this.followersCount++;
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

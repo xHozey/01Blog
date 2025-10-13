@@ -8,6 +8,8 @@ import { QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 @Component({
   selector: 'app-update-post',
@@ -21,7 +23,7 @@ export class UpdatePost implements OnInit {
   private mediaService = inject(MediaService);
   private postService = inject(PostService);
   private router = inject(Router);
-
+  private toastService = inject(ToastService);
   postId!: number;
   post!: postResponse;
   title = '';
@@ -57,7 +59,7 @@ export class UpdatePost implements OnInit {
           this.content = this.post.content;
         }
       },
-      error: (err) => console.error(err),
+      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 
@@ -78,7 +80,7 @@ export class UpdatePost implements OnInit {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) => console.error(err),
+        error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -104,7 +106,7 @@ export class UpdatePost implements OnInit {
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
-        error: (err) => console.error(err),
+        error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
       });
     };
     input.click();
@@ -134,11 +136,11 @@ export class UpdatePost implements OnInit {
 
     this.postService.updatePost(payload, this.post.id).subscribe({
       next: (res) => {
-        console.log(res)
+        console.log(res);
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error(err);
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

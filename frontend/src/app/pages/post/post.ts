@@ -8,6 +8,8 @@ import { EngagementService } from '../../service/engagement-service';
 import { CommonModule } from '@angular/common';
 import { CommentSection } from '../../components/comment-section/comment-section';
 import { Heart, LucideAngularModule, LucideIconProvider } from 'lucide-angular';
+import { ToastService } from '../../service/toast-service';
+import { parseApiError } from '../../utils/errorHelper';
 
 interface postResponse {
   id: number;
@@ -33,6 +35,7 @@ export class Post implements OnInit {
   private postService = inject(PostService);
   private sanitizer = inject(DomSanitizer);
   private engagementSerivce = inject(EngagementService);
+  private toastService = inject(ToastService);
   postId!: number;
   post!: postResponse;
   safeContent!: SafeHtml;
@@ -50,7 +53,7 @@ export class Post implements OnInit {
         this.safeContent = this.sanitizeContent(this.post.content);
       },
       error: (err) => {
-        console.error(err);
+                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }
@@ -67,7 +70,7 @@ export class Post implements OnInit {
         if (this.isLiked) this.post.likes++;
         else this.post.likes--;
       },
-      error: (err) => console.error(err),
+      error: (err) =>         parseApiError(err).forEach((msg) => this.toastService.error(msg)),
     });
   }
 
