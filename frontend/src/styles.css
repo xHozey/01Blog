@@ -168,6 +168,13 @@ body {
   background-color: var(--surface-bg) !important;
 }
 
+/* Bootstrap cards */
+[data-theme='dark'] .card {
+  background-color: var(--surface-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--post-border-color) !important;
+}
+
 [data-theme='dark'] .border,
 [data-theme='dark'] .border-top,
 [data-theme='dark'] .border-end,
@@ -218,6 +225,34 @@ body {
 /* Headings harmonization */
 h1, h2, h3, h4, h5, h6 {
   color: var(--post-title-color);
+}
+
+/* Toasts */
+[data-theme='dark'] .toast {
+  background-color: var(--surface-bg) !important;
+  color: var(--text-color) !important;
+  border-color: var(--post-border-color) !important;
+}
+
+/* Quill editor (create post) */
+[data-theme='dark'] .ql-container {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .ql-toolbar {
+  background-color: var(--surface-bg);
+  color: var(--text-color);
+  border-color: var(--post-border-color) !important;
+}
+
+[data-theme='dark'] .ql-snow .ql-stroke {
+  stroke: #e5e7eb; /* icons visible on dark */
+}
+
+[data-theme='dark'] .ql-snow .ql-fill {
+  fill: #e5e7eb;
 }
 
 /* Selection */
