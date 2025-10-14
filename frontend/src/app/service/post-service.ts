@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL, API_VERSION } from '../../config';
 
@@ -8,8 +8,7 @@ import { API_URL, API_VERSION } from '../../config';
 })
 export class PostService {
   private apiUrl = `${API_URL}${API_VERSION}/posts`;
-  constructor(private http: HttpClient) {}
-
+  http = inject(HttpClient);
   getPosts(page: number): Observable<postResponse[]> {
     return this.http.get<postResponse[]>(`${this.apiUrl}?page=${page}`, {
       withCredentials: true,
@@ -42,6 +41,13 @@ export class PostService {
   getUserPosts(userId: number, page: number): Observable<postResponse[]> {
     return this.http.get<postResponse[]>(`${this.apiUrl}/users/${userId}?page=${page}`, {
       withCredentials: true,
+    });
+  }
+
+  reportPost(payload: reportRequest, id: number): Observable<string> {
+    return this.http.post(`${this.apiUrl}/${id}/report`, payload, {
+      withCredentials: true,
+      responseType: 'text',
     });
   }
 }

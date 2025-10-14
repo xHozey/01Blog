@@ -76,7 +76,7 @@
 
     }
     @if (showReportModal) {
-    <app-report-modal-component [show]="showReportModal" [targetId]="targetId"
-        (closed)="showReportModal = false"></app-report-modal-component>
+    <app-report-modal-component [show]="showReportModal" [targetId]="targetId" (closed)="showReportModal = false"
+        [type]="'post'" [postId]="post.id"></app-report-modal-component>
     }
 </main>

@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../../service/user-service';
 import { ToastService } from '../../service/toast-service';
 import { parseApiError } from '../../utils/errorHelper';
-import { ThemeService } from '../../service/theme-service';
+import { PostService } from '../../service/post-service';
 
 @Component({
   selector: 'app-report-modal-component',
@@ -16,11 +16,16 @@ import { ThemeService } from '../../service/theme-service';
 export class ReportModalComponent {
   @Input() show = false;
   @Input() targetId?: number;
+  @Input() type: 'post' | 'user' = 'user';
+  @Input() postId?: number;
   @Output() closed = new EventEmitter<void>();
+
   private userService = inject(UserService);
   private toastService = inject(ToastService);
+  private postService = inject(PostService);
+
   description = '';
-  theme = localStorage.getItem("theme")
+  theme = localStorage.getItem('theme');
   close() {
     this.description = '';
     this.closed.emit();
@@ -33,11 +38,29 @@ export class ReportModalComponent {
       id: this.targetId,
       description: this.description,
     };
-    this.userService.reportUser(payload).subscribe({
-      next: (res) => {
-        this.close();
-      },
-      error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
-    });
+    
+    switch (this.type) {
+      case 'user':
+        this.userService.reportUser(payload).subscribe({
+          next: (msg) => {
+            this.toastService.success(msg);
+            this.close();
+          },
+          error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
+        });
+        break;
+      case 'post':
+        if (!this.postId) return;
+        this.postService.reportPost(payload, this.postId).subscribe({
+          next: (msg) => {
+            this.toastService.success(msg);
+            this.close();
+          },
+          error: (err) => {
+            parseApiError(err).forEach((msg) => this.toastService.error(msg));
+          },
+        });
+        break;
+    }
   }
 }

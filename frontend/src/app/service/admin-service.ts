@@ -68,7 +68,11 @@ export class AdminService {
       withCredentials: true,
     });
   }
-
+  getPostReports(page: number): Observable<postReportDTO[]> {
+    return this.http.get<postReportDTO[]>(`${this.apiUrl}/report/post?page=${page}`, {
+      withCredentials: true,
+    });
+  }
   getTotalUsers(): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/stats/user`, {
       withCredentials: true,

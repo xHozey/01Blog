@@ -5,7 +5,7 @@
   <div class="row g-3 mb-4">
     @for (card of [
     { title: 'Total Users', value: totalUsers, icon: 'bi-people', color: 'success' },
-    { title: 'User Reports', value: totalReports, icon: 'bi-flag', color: 'warning' },
+    { title: 'User Reports', value: totalUserReports, icon: 'bi-flag', color: 'warning' },
     { title: 'Total Posts', value: totalPosts, icon: 'bi-file-earmark-text', color: 'primary' }
     ]; track card.title) {
     <div class="col-md-4">
@@ -28,11 +28,15 @@
     </li>
     <li class="nav-item">
       <button class="nav-link" [ngClass]="{ active: activeTab === 'userReports' }" (click)="setTab('userReports')">
-        Reports
+        User Reports
       </button>
     </li>
     <li class="nav-item">
       <button class="nav-link" [ngClass]="{ active: activeTab === 'posts' }" (click)="setTab('posts')">Posts</button>
+    </li>
+    <li class="nav-item">
+      <button class="nav-link" [ngClass]="{ active: activeTab === 'postReports' }" (click)="setTab('postReports')">Post
+        Reports</button>
     </li>
   </ul>
 
@@ -122,11 +126,11 @@
       </table>
 
       <div class="d-flex justify-content-between align-items-center">
-        <button class="btn btn-outline-primary btn-sm" (click)="prevReportsPage()"
-          [disabled]="pageReports === 0">Previous</button>
-        <span>Page {{ pageReports + 1 }}</span>
-        <button class="btn btn-outline-primary btn-sm" (click)="nextReportsPage()"
-          [disabled]="!hasMoreReports">Next</button>
+        <button class="btn btn-outline-primary btn-sm" (click)="prevUserReportsPage()"
+          [disabled]="userReportsPage === 0">Previous</button>
+        <span>Page {{ userReportsPage + 1 }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="nextUserReportsPage()"
+          [disabled]="!hasMoreUserReports">Next</button>
       </div>
     </div>
   </div>
@@ -174,6 +178,48 @@
         <span>Page {{ pagePosts + 1 }}</span>
         <button class="btn btn-outline-primary btn-sm" (click)="nextPostsPage()"
           [disabled]="!hasMorePosts">Next</button>
+      </div>
+    </div>
+  </div>
+  }
+
+  @if (!isLoading && activeTab === 'postReports') {
+  <div class="card shadow-sm border-light">
+    <div class="card-body">
+      <h5 class="mb-3">Post Reports</h5>
+      <table class="table table-hover align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Reporter</th>
+            <th>Reported</th>
+            <th>Description</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (report of postReports; track report.id) {
+          <tr>
+            <td>@{{ report.reporterName }}</td>
+            <td>@{{ report.reportedName }}</td>
+            <td>{{ report.description }}</td>
+            <td>{{ report.createAt| date }}</td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger me-2" (click)="deleteReport(report)">Delete
+                Report</button>
+              <button class="btn btn-sm btn-outline-primary" (click)="goToPost(report.postId)">Visit Post</button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center">
+        <button class="btn btn-outline-primary btn-sm" (click)="prevPostReportsPage()"
+          [disabled]="postReportsPage === 0">Previous</button>
+        <span>Page {{ postReportsPage + 1 }}</span>
+        <button class="btn btn-outline-primary btn-sm" (click)="nextPostReportsPage()"
+          [disabled]="!hasMorePostReports">Next</button>
       </div>
     </div>
   </div>

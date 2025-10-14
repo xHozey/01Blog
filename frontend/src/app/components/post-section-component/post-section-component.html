@@ -20,8 +20,8 @@
   <!-- Users List -->
 
   @if (showReportModal) {
-  <app-report-modal-component [show]="showReportModal" [targetId]="targetId"
-    (closed)="showReportModal = false"></app-report-modal-component>
+  <app-report-modal-component [show]="showReportModal" [targetId]="targetId" (closed)="showReportModal = false"
+    [type]="'post'" [postId]="targetId"></app-report-modal-component>
   }
 
 

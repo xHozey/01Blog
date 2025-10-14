@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { AdminService } from '../../service/admin-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -12,26 +13,30 @@ import { AdminService } from '../../service/admin-service';
 })
 export class AdminDashboard implements OnInit {
   private adminService = inject(AdminService);
+  private router = inject(Router);
 
-  activeTab: 'users' | 'userReports' | 'posts' = 'users';
+  activeTab: 'users' | 'userReports' | 'posts' | 'postReports' = 'users';
   isLoading = false;
 
   users: adminUserDTO[] = [];
   userReports: reportUser[] = [];
   posts: adminPostDTO[] = [];
+  postReports: postReportDTO[] = [];
 
   pageUsers = 0;
-  pageReports = 0;
+  userReportsPage = 0;
   pagePosts = 0;
+  postReportsPage = 0;
 
   hasMoreUsers = true;
-  hasMoreReports = true;
+  hasMoreUserReports = true;
   hasMorePosts = true;
+  hasMorePostReports = true;
 
   pageSize = 10;
 
   totalUsers = 0;
-  totalReports = 0;
+  totalUserReports = 0;
   totalPosts = 0;
 
   ngOnInit() {
@@ -41,15 +46,16 @@ export class AdminDashboard implements OnInit {
 
   refreshStats() {
     this.adminService.getTotalUsers().subscribe((n) => (this.totalUsers = n));
-    this.adminService.getTotalReports().subscribe((n) => (this.totalReports = n));
+    this.adminService.getTotalReports().subscribe((n) => (this.totalUserReports = n));
     this.adminService.getTotalPosts().subscribe((n) => (this.totalPosts = n));
   }
 
-  setTab(tab: 'users' | 'userReports' | 'posts') {
+  setTab(tab: 'users' | 'userReports' | 'posts' | 'postReports') {
     this.activeTab = tab;
     if (tab === 'users' && this.users.length === 0) this.loadUsers();
     if (tab === 'userReports' && this.userReports.length === 0) this.loadUserReports();
     if (tab === 'posts' && this.posts.length === 0) this.loadPosts();
+    if (tab === 'postReports' && this.postReports.length === 0) this.loadPostReports();
   }
 
   loadUsers() {
@@ -67,11 +73,11 @@ export class AdminDashboard implements OnInit {
 
   loadUserReports() {
     this.isLoading = true;
-    this.adminService.getUserReports(this.pageReports).subscribe({
+    this.adminService.getUserReports(this.userReportsPage).subscribe({
       next: (res) => {
         this.userReports = res;
         if (this.pageSize === 0 && res.length > 0) this.pageSize = res.length;
-        this.hasMoreReports = res.length === this.pageSize;
+        this.hasMoreUserReports = res.length === this.pageSize;
         this.isLoading = false;
       },
       error: () => (this.isLoading = false),
@@ -87,7 +93,24 @@ export class AdminDashboard implements OnInit {
         this.hasMorePosts = res.length === this.pageSize;
         this.isLoading = false;
       },
-      error: () => (this.isLoading = false),
+      error: (err) => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  loadPostReports() {
+    this.isLoading = true;
+    this.adminService.getPostReports(this.postReportsPage).subscribe({
+      next: (res) => {
+        this.postReports = res;
+        if (this.pageSize === 0 && res.length > 0) this.pageSize == res.length;
+        this.hasMorePostReports = res.length === this.pageSize;
+        this.isLoading = false;
+      },
+      error: (err) => {
+        this.isLoading = false;
+      },
     });
   }
 
@@ -112,7 +135,7 @@ export class AdminDashboard implements OnInit {
     // this.adminService.deleteReport(report.id).subscribe({
     //   next: () => {
     //     this.userReports = this.userReports.filter((r) => r.id !== report.id);
-    //     this.totalReports--;
+    //     this.totalUserReports--;
     //   },
     // });
   }
@@ -133,6 +156,20 @@ export class AdminDashboard implements OnInit {
     });
   }
 
+  nextPostReportsPage() {
+    if (this.hasMorePostReports) {
+      this.postReportsPage++;
+      this.loadPostReports();
+    }
+  }
+
+  prevPostReportsPage() {
+    if (this.postReportsPage > 0) {
+      this.postReportsPage--;
+      this.loadPostReports();
+    }
+  }
+
   nextUsersPage() {
     if (this.hasMoreUsers) {
       this.pageUsers++;
@@ -147,16 +184,16 @@ export class AdminDashboard implements OnInit {
     }
   }
 
-  nextReportsPage() {
-    if (this.hasMoreReports) {
-      this.pageReports++;
+  nextUserReportsPage() {
+    if (this.hasMoreUserReports) {
+      this.userReportsPage++;
       this.loadUserReports();
     }
   }
 
-  prevReportsPage() {
-    if (this.pageReports > 0) {
-      this.pageReports--;
+  prevUserReportsPage() {
+    if (this.userReportsPage > 0) {
+      this.userReportsPage--;
       this.loadUserReports();
     }
   }
@@ -173,5 +210,9 @@ export class AdminDashboard implements OnInit {
       this.pagePosts--;
       this.loadPosts();
     }
+  }
+
+  goToPost(id: number) {
+    this.router.navigate(["/post", id])
   }
 }
