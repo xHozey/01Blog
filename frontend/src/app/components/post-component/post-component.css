@@ -3,13 +3,13 @@
   border-radius: 12px;
   padding: 1.5rem 2rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--post-border-color);
   transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.3s, color 0.3s, border-color 0.2s ease;
 }
 
 .post-container:hover {
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 .post-header {
@@ -39,19 +39,11 @@
   color: var(--post-title-color);
   font-size: 1.4rem;
   margin: 0.25rem 0 0.75rem 0;
+  word-break: break-word;
   cursor: pointer;
 }
 
-.post-body {
-  color: var(--post-text-color);
-  line-height: 1.75;
-  font-size: 1rem;
-  margin-bottom: 1rem;
-  white-space: pre-line;
-  cursor: pointer;
-}
-
-.post-media img, 
+.post-media img,
 .post-media video {
   border-radius: 10px;
   width: 100%;
@@ -105,18 +97,20 @@
   font-size: 0.9rem;
   border-radius: 10px;
   border: 1px solid var(--dropdown-border);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   background-color: var(--surface-bg);
   color: var(--text-color);
   padding: 6px;
-  overflow: hidden; /* clip hover background at edges */
+  overflow: hidden;
+  /* clip hover background at edges */
   min-width: 160px;
 }
 
 .dropdown-item {
   padding: .5rem .75rem;
   border-radius: 6px;
-  margin: 2px 0; /* avoid horizontal overflow */
+  margin: 2px 0;
+  /* avoid horizontal overflow */
   color: var(--text-color);
 }
 

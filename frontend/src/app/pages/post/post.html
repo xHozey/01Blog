@@ -3,42 +3,75 @@
 <main class="post-page container">
     @if (post) {
 
-        <article class="post-container">
-            
-            <!-- Header -->
-            <header class="post-header">
-                <div class="author-info">
-                    <span class="author-name">{{ post.author }}</span>
-                    <span class="post-time">· {{ post.createdAt | date:'medium' }}</span>
-                </div>
-            </header>
-            
-            <!-- Title -->
-            <h1 class="post-title">{{ post.title }}</h1>
-            
-            <!-- Content -->
-            <div class="post-body" [innerHTML]="safeContent"></div>
-            
-            <!-- Actions -->
-            <div class="post-actions">
-                <button (click)="toggleLike()" [ngClass]="isLiked ? 'liked' : ''" class="action-btn like-btn">
-                    <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
-                    <span>{{ post.likes }}</span>
-                </button>
-                
-                <button (click)="toggleComments()" [class.active]="showComments" class="action-btn comment-btn">
-                    <i class="fa fa-comment"></i>
-                    <span>{{ showComments ? 'Hide' : 'Comments' }}</span>
-                </button>
+    <article class="post-container">
+
+        <!-- Header -->
+        <header class="post-header">
+            <div class="author-info">
+                <span class="author-name">{{ post.author }}</span>
+                <span class="post-time">· {{ post.createdAt | date:'medium' }}</span>
             </div>
-            <!-- Comments -->
-            @if (showComments) {
-                <div class="comments-section">
-                    <app-comment-section [postId]="post.id"></app-comment-section>
-                </div>
-            }
-            
-        </article>
-        
+            <!-- <div class="dropdown">
+                <button class="btn btn-link p-0" id="postMenuBtn" data-bs-toggle="dropdown" aria-expanded="false"
+                    style="color: var(--nav-link-color);">
+                    <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                    @if (user?.id === post.authorId) {
+                    <li><button class="dropdown-item" (click)="update.emit(post.id)">
+                            <i class="fa fa-edit me-2"></i>Edit Post
+                        </button></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    }
+                    @if (user?.id === post.authorId || user?.roles?.includes('ADMIN')) {
+                    <li><button class="dropdown-item text-danger" (click)="delete.emit(post.id)">
+                            <i class="fa fa-trash me-2"></i>Delete
+                        </button></li>
+                    }
+                    @if (user?.roles?.includes('ADMIN')) {
+                    @if (!(user?.id === post.authorId)) { <li>
+                        <hr class="dropdown-divider">
+                    </li> }
+                    <li><button class="dropdown-item" (click)="hide.emit(post.id)">
+                            <i class="fa fa-eye-slash me-2"></i>Hide
+                        </button></li>
+                    }
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><button class="dropdown-item" (click)="report.emit(post.authorId)">
+                            <i class="fa fa-flag me-2"></i>Report
+                        </button></li>
+                </ul>
+            </div> -->
+        </header>
+
+        <!-- Title -->
+        <h1 class="post-title">{{ post.title }}</h1>
+        <div class="post-body" [innerHTML]="safeContent"></div>
+
+        <!-- Actions -->
+        <div class="post-actions">
+            <button (click)="toggleLike()" [ngClass]="isLiked ? 'liked' : ''" class="action-btn like-btn">
+                <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
+                <span>{{ post.likes }}</span>
+            </button>
+
+            <button (click)="toggleComments()" [class.active]="showComments" class="action-btn comment-btn">
+                <i class="fa fa-comment"></i>
+                <span>{{ showComments ? 'Hide' : 'Comments' }}</span>
+            </button>
+        </div>
+        <!-- Comments -->
+        @if (showComments) {
+        <div class="comments-section">
+            <app-comment-section [postId]="post.id"></app-comment-section>
+        </div>
+        }
+
+    </article>
+
     }
-    </main>
+</main>
