@@ -38,17 +38,8 @@ export class PostSectionComponent implements OnInit {
       },
     });
   }
-  onDeletePost(postId: number) {
-    this.postService.deletePost(postId).subscribe({
-      next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
-      error: (err) => {
-        parseApiError(err).forEach((msg) => this.toastService.error(msg));
-      },
-    });
-  }
 
   showReportModal = false;
-  reportDescription = '';
   targetId = 0;
 
   onReport(id: number) {
@@ -67,6 +58,19 @@ export class PostSectionComponent implements OnInit {
     });
   }
 
+  onDeletePost(postId: number) {
+    this.postService.deletePost(postId).subscribe({
+      next: () => (this.posts = this.posts.filter((post) => post.id !== postId)),
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
+    });
+  }
+
+  onUpdatePost(id: number) {
+    this.router.navigate(['/edit', id]);
+  }
+
   loadMore() {
     this.page++;
     this.postService.getPosts(this.page).subscribe({
@@ -81,9 +85,5 @@ export class PostSectionComponent implements OnInit {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
-  }
-
-  onUpdatePost(id: number) {
-    this.router.navigate(['/edit', id]);
   }
 }

@@ -49,6 +49,7 @@
 }
 
 .author-name {
+  cursor: pointer;
   font-weight: 600;
   color: var(--post-author-name-color);
 }
@@ -115,4 +116,12 @@
 
 .dropdown-item:hover {
   background-color: var(--dropdown-hover-bg);
+}
+
+.post-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--comment-avatar-border);
 }
