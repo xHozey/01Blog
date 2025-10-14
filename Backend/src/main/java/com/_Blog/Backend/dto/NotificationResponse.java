@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 public class NotificationResponse {
     private Long id;
+    private String senderName;
+    private String senderIcon;
     private String description;
     private java.sql.Timestamp createdTime;
     private Long postId;
@@ -21,7 +23,9 @@ public class NotificationResponse {
         this.description = notification.getDescription();
         this.createdTime = notification.getCreatedAt();
         this.isRead = notification.getIsRead();
-        this.postId = notification.get
+        this.postId = notification.getPost().getId();
+        this.senderIcon = notification.getSender().getIconPath();
+        this.senderName = notification.getSender().getUsername();
     }
 
 }

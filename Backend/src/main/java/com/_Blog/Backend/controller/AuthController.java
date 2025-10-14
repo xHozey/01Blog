@@ -38,11 +38,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@Valid @RequestBody LoginRequest user, HttpServletResponse response) {
-
-        String[] tokens = authService.login(user);
-
-        CookiesUtil.SetAuthToken(response, tokens[0]);
-        CookiesUtil.SetRefreshToken(response, tokens[1]);
+        try {
+            String[] tokens = authService.login(user);
+            CookiesUtil.SetAuthToken(response, tokens[0]);
+            CookiesUtil.SetRefreshToken(response, tokens[1]);
+        } catch(Exception e) {
+            System.out.println("test: "+e.getMessage());
+            e.printStackTrace();
+        }
         return ResponseEntity.ok("Logged in successfully, cookie set!");
     }
 

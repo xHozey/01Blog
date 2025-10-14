@@ -11,19 +11,21 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "follow",
-        uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"followerId", "followedId"})})
+@Table(name = "follow", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "followerId", "followedId" }) })
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Follow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
