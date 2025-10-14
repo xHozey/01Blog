@@ -2,6 +2,7 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
+import com._Blog.Backend.dto.PostReportDTO;
 import com._Blog.Backend.dto.UserReportDTO;
 import com._Blog.Backend.services.AdminService;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +40,12 @@ public class AdminController {
     public ResponseEntity<List<AdminPostDTO>> getPosts(@RequestParam(defaultValue = "0") Integer page) {
         List<AdminPostDTO> posts = this.adminService.getPosts(page);
         return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/report/post")
+    public ResponseEntity<List<PostReportDTO>> getPostReports(@RequestParam(defaultValue = "0") Integer page) {
+        List<PostReportDTO> postReports = this.adminService.getPostReports(page);
+        return ResponseEntity.ok(postReports);
     }
 
     @GetMapping("/user")

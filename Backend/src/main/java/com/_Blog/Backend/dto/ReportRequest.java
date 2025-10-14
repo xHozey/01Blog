@@ -16,5 +16,6 @@ public class ReportRequest {
     @NotBlank
     @Size(min = 1, max = 250)
     private String description;
+    private Long postId;
 
 }

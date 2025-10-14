@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
+import com._Blog.Backend.dto.ReportRequest;
 import com._Blog.Backend.services.PostService;
 
 import jakarta.validation.Valid;
@@ -42,7 +43,8 @@ public class PostController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<List<PostResponse>> getUserPosts(@RequestParam(defaultValue = "0") Integer page,@PathVariable Long id) {
+    public ResponseEntity<List<PostResponse>> getUserPosts(@RequestParam(defaultValue = "0") Integer page,
+            @PathVariable Long id) {
         return ResponseEntity.ok(postService.getUserPosts(id, page));
     }
 
@@ -61,6 +63,12 @@ public class PostController {
     public ResponseEntity<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id) {
         PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
+    }
+
+    @PostMapping("/{id}/report")
+    public ResponseEntity<String> reportPost(@RequestBody @Valid ReportRequest reportRequest, @PathVariable Long id) {
+        this.postService.reportPost(reportRequest, id);
+        return ResponseEntity.ok("Post reported successfully");
     }
 
 }

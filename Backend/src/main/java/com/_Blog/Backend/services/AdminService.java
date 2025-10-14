@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
+import com._Blog.Backend.dto.PostReportDTO;
 import com._Blog.Backend.dto.UserReportDTO;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.Post;
@@ -16,6 +17,7 @@ import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.CommentRepository;
 import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
+import com._Blog.Backend.repository.ReportPostRepository;
 import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.UserRepository;
 
@@ -30,6 +32,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final ReportUserRepository reportUserRepository;
+    private final ReportPostRepository reportPostRepository;
 
     public void deletePost(Long postId) {
         this.postRepository.deleteById(postId);
@@ -95,5 +98,11 @@ public class AdminService {
 
     public Long countReports() {
         return this.reportUserRepository.count();
+    }
+
+    public List<PostReportDTO> getPostReports(Integer page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.reportPostRepository.findAll(pageable).getContent().stream().map(r -> new PostReportDTO(r))
+                .toList();
     }
 }
