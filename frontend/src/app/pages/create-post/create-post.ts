@@ -24,6 +24,7 @@ export class CreatePost {
   private postService = inject(PostService);
   private router = inject(Router);
   private toastService = inject(ToastService);
+  private maxContentLength: number = 90000;
 
   quill!: Quill;
   modules = {
@@ -96,6 +97,10 @@ export class CreatePost {
     this.quill.root.style.height = '200px';
     (this.quill.container as HTMLElement).classList.add('custom-quill');
     this.quill.on('text-change', () => {
+      const text = this.quill.getText();
+      if (text.length > this.maxContentLength) {
+        this.quill.deleteText(this.maxContentLength, text.length);
+      }
       this.content = this.quill.root.innerHTML;
     });
   }
@@ -104,6 +109,15 @@ export class CreatePost {
   content = '';
 
   onSubmit() {
+    if (this.title.length > 1000) {
+      this.toastService.error('max title length is 1000');
+      return;
+    }
+    console.log(this.content.length)
+    if (this.content.length > this.maxContentLength) {
+      this.toastService.error('content is large');
+      return;
+    }
     if (!this.title.trim() || !this.content.trim()) return;
     const payload: postRequest = {
       title: this.title.trim(),

@@ -7,14 +7,15 @@
       <!-- Title Section -->
       <h3 class="text-center mb-3">Title</h3>
       <div class="mb-4">
-        <input type="text" class="form-control" placeholder="Enter your title" [(ngModel)]="title" />
+        <input type="text" class="form-control" maxlength="1000" placeholder="Enter your title" [(ngModel)]="title" />
       </div>
 
       <!-- Editor Section -->
       <h3 class="text-center mb-3">Content</h3>
       <div class="mb-4 flex-grow-1">
-        <quill-editor class="w-100 test" theme="snow" (onContentChanged)="onContentChanged($event)" [modules]="modules"
-          placeholder="Write your blog..." (onEditorCreated)="onEditorCreated($event)"></quill-editor>
+        <quill-editor class="w-100 test" theme="snow" (onContentChanged)="onContentChanged($event)"
+          [modules]="modules" placeholder="Write your blog..."
+          (onEditorCreated)="onEditorCreated($event)"></quill-editor>
       </div>
 
       <!-- Button Section -->

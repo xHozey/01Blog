@@ -18,7 +18,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Size;
 
-
 @Entity
 @Table(name = "post")
 public class Post {
@@ -26,9 +25,9 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Size(max = 1000)
     private String title;
-    @Size(max=100000)
+    @Size(max = 100000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,7 +46,8 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
-    public Post() {}
+    public Post() {
+    }
 
     public Post(Long id, String title, String content, User user, Boolean isHide, Timestamp createdAt) {
         this.id = id;

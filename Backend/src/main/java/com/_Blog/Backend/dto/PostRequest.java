@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class PostRequest {
     @NotBlank
-    @Size(max = 300)
+    @Size(max = 1000)
     private String title;
     @NotBlank
     @Size(max = 100000)
