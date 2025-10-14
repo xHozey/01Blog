@@ -18,7 +18,10 @@ import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
 import com._Blog.Backend.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class EngagementService {
 
     private final CommentEngagementRepository commentEngagementRepository;
@@ -26,14 +29,6 @@ public class EngagementService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
-
-    public EngagementService(CommentEngagementRepository commentEngagementRepository, PostEngagementRepository postEngagementRepository, PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
-        this.commentEngagementRepository = commentEngagementRepository;
-        this.postEngagementRepository = postEngagementRepository;
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-    }
 
     public void addPostLike(Long postId) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -9,14 +9,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class CloudinaryService {
 
     private final Cloudinary cloudinary;
-
-    public CloudinaryService(Cloudinary cloudinary) {
-        this.cloudinary = cloudinary;
-    }
 
     public String uploadFile(MultipartFile file, String folder) {
         try {

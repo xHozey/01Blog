@@ -15,7 +15,10 @@ import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
 import com._Blog.Backend.utils.Role;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
@@ -23,15 +26,6 @@ public class AuthService {
     private final UserRoleService userRoleService;
     private final SessionRepository sessionRepository;
     private final JwtUtil jwtUtil;
-
-    public AuthService(UserRepository userRepository, PasswordEncoder encoder, UserRoleService userRoleService,
-            SessionRepository sessionRepository, JwtUtil jwtUtil) {
-        this.userRepository = userRepository;
-        this.encoder = encoder;
-        this.userRoleService = userRoleService;
-        this.sessionRepository = sessionRepository;
-        this.jwtUtil = jwtUtil;
-    }
 
     public void register(RegisterRequest user) {
         if (userRepository.existsByEmail(user.getEmail())) {

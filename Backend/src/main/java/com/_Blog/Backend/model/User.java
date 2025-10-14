@@ -22,9 +22,15 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "users")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class User implements UserDetails {
 
     @Id
@@ -33,17 +39,17 @@ public class User implements UserDetails {
 
     @NotBlank
     @Size(max = 30, min = 3)
-    @Column(unique=true)
+    @Column(unique = true)
     private String username;
 
     @NotBlank
     @Email
-    @Size(max=255)
-    @Column(unique=true)
+    @Size(max = 255)
+    @Column(unique = true)
     private String email;
 
     @Size(max = 64, min = 8)
-    @Column(unique=true)
+    @Column(unique = true)
     private String password;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
@@ -83,9 +89,8 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReportUser> reportedUsers = new HashSet<>();
 
-    public User() {}
-
-    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned, Timestamp createAt, String bio) {
+    public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned,
+            Timestamp createAt, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -96,29 +101,9 @@ public class User implements UserDetails {
         this.bio = bio;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     @Override
     public String getUsername() {
         return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     @Override
@@ -126,146 +111,30 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public Set<UserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(Set<UserRole> roles) {
-        this.roles = roles;
-    }
-
-    public String getIconPath() {
-        return iconPath;
-    }
-
-    public void setIconPath(String iconPath) {
-        this.iconPath = iconPath;
-    }
-
-    public Boolean getIsBanned() {
-        return isBanned;
-    }
-
-    public void setIsBanned(Boolean isBanned) {
-        this.isBanned = isBanned;
-    }
-
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                    .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getRole().name()))
-                    .toList();
+                .map(r -> new SimpleGrantedAuthority("ROLE_" + r.getRole().name()))
+                .toList();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return true; 
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !Boolean.TRUE.equals(this.isBanned); 
+        return !Boolean.TRUE.equals(this.isBanned);
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true; 
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
         return !Boolean.TRUE.equals(this.isBanned);
-    }
-
-    public Set<Post> getPosts() {
-        return posts;
-    }
-
-    public void setPosts(Set<Post> posts) {
-        this.posts = posts;
-    }
-
-    public Set<PostEngagement> getEngagements() {
-        return engagements;
-    }
-
-    public void setEngagements(Set<PostEngagement> engagements) {
-        this.engagements = engagements;
-    }
-
-    public Set<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(Set<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public Set<Notification> getReceivedNotifications() {
-        return receivedNotifications;
-    }
-
-    public void setReceivedNotifications(Set<Notification> receivedNotifications) {
-        this.receivedNotifications = receivedNotifications;
-    }
-
-    public Set<Notification> getSentNotifications() {
-        return sentNotifications;
-    }
-
-    public void setSentNotifications(Set<Notification> sentNotifications) {
-        this.sentNotifications = sentNotifications;
-    }
-
-    public Set<Follow> getFollowing() {
-        return following;
-    }
-
-    public void setFollowing(Set<Follow> following) {
-        this.following = following;
-    }
-
-    public Set<Follow> getFollowers() {
-        return followers;
-    }
-
-    public void setFollowers(Set<Follow> followers) {
-        this.followers = followers;
-    }
-
-    public Set<Session> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(Set<Session> sessions) {
-        this.sessions = sessions;
-    }
-
-    public Set<ReportUser> getReportedUsers() {
-        return reportedUsers;
-    }
-
-    public void setReportedUsers(Set<ReportUser> reportedUsers) {
-        this.reportedUsers = reportedUsers;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
     }
 }

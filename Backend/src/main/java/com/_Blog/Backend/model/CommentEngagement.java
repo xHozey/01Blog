@@ -8,9 +8,15 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "comment_engagement")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class CommentEngagement {
 
     @Id
@@ -25,40 +31,8 @@ public class CommentEngagement {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    public CommentEngagement() {}
-
     public CommentEngagement(User user, Comment comment) {
         this.user = user;
-        this.comment = comment;
-    }
-
-    public CommentEngagement(Long id, User user, Comment comment) {
-        this.id = id;
-        this.user = user;
-        this.comment = comment;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Comment getComment() {
-        return comment;
-    }
-
-    public void setComment(Comment comment) {
         this.comment = comment;
     }
 

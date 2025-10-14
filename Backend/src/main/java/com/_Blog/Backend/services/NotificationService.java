@@ -14,29 +14,29 @@ import com._Blog.Backend.dto.NotificationResponse;
 import com._Blog.Backend.model.Follow;
 import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.Notification;
+import com._Blog.Backend.model.Post;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.FollowRepository;
 import com._Blog.Backend.repository.NotificationRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final FollowRepository followRepository;
-
-    public NotificationService(NotificationRepository notificationRepository, FollowRepository followRepository) {
-        this.notificationRepository = notificationRepository;
-        this.followRepository = followRepository;
-    }
-
+    
     @Async
-    public void notifyFollowers(User sender, String description) {
+    public void notifyFollowers(User sender, String description, Post post) {
         List<Follow> followers = followRepository.findByFollowedId(sender.getId());
         List<Notification> notifications = followers.stream().map(f -> {
             Notification n = new Notification();
             n.setSender(sender);
             n.setReceiver(f.getFollower());
             n.setDescription(description);
+            n.setPost(post);
             return n;
         }).toList();
         notificationRepository.saveAll(notifications);
@@ -45,7 +45,8 @@ public class NotificationService {
     public List<NotificationResponse> getNotifications(Integer page) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pageable pageable = PageRequest.of(page, 10, Sort.by("createdAt").descending());
-        return this.notificationRepository.findByReceiverId(jwtUser.getId(), pageable).stream().map(NotificationResponse::new).toList();
+        return this.notificationRepository.findByReceiverId(jwtUser.getId(), pageable).stream()
+                .map(NotificationResponse::new).toList();
     }
 
     public void readNotifications(List<Long> ids) {

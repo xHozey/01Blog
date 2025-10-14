@@ -10,19 +10,15 @@ import com._Blog.Backend.repository.UserRepository;
 import com._Blog.Backend.utils.JwtUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
+import lombok.AllArgsConstructor;
 
 @Service
+@AllArgsConstructor
 public class RefreshService {
 
     private final JwtUtil jwtUtil;
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
-
-    public RefreshService(JwtUtil jwtUtil, SessionRepository sessionRepository, UserRepository userRepository) {
-        this.jwtUtil = jwtUtil;
-        this.sessionRepository = sessionRepository;
-        this.userRepository = userRepository;
-    }
 
     public void revokeSession(String refreshToken) {
         sessionRepository.findByToken(refreshToken)

@@ -13,6 +13,7 @@ public class NotificationResponse {
     private Long id;
     private String description;
     private java.sql.Timestamp createdTime;
+    private Long postId;
     private Boolean isRead;
 
     public NotificationResponse(Notification notification) {
@@ -20,6 +21,7 @@ public class NotificationResponse {
         this.description = notification.getDescription();
         this.createdTime = notification.getCreatedAt();
         this.isRead = notification.getIsRead();
+        this.postId = notification.get
     }
 
 }

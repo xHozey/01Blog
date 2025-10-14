@@ -4,6 +4,9 @@ import java.util.List;
 
 import com._Blog.Backend.model.*;
 import com._Blog.Backend.repository.*;
+
+import lombok.AllArgsConstructor;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
@@ -16,19 +19,13 @@ import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
 
 @Service
+@AllArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final CommentEngagementRepository commentEngagementRepository;
     private final PostRepository postRepository;
-
-    public CommentService(CommentRepository commentRepository, UserRepository userRepository, CommentEngagementRepository commentEngagementRepository, PostRepository postRepository) {
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.commentEngagementRepository = commentEngagementRepository;
-        this.postRepository = postRepository;
-    }
 
     public CommentResponse addComment(CommentRequest comment) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

@@ -1,12 +1,19 @@
 package com._Blog.Backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "session")
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Session {
 
     @Id
@@ -30,45 +37,4 @@ public class Session {
         this.createAt = createAt;
     }
 
-    public Session() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public Boolean getRevoked() {
-        return revoked;
-    }
-
-    public void setRevoked(Boolean revoked) {
-        this.revoked = revoked;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Timestamp getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Timestamp createAt) {
-        this.createAt = createAt;
-    }
 }

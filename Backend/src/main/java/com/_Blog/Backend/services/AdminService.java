@@ -19,7 +19,10 @@ import com._Blog.Backend.repository.PostRepository;
 import com._Blog.Backend.repository.ReportUserRepository;
 import com._Blog.Backend.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class AdminService {
 
     private final PostRepository postRepository;
@@ -27,16 +30,6 @@ public class AdminService {
     private final UserRepository userRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final ReportUserRepository reportUserRepository;
-
-    public AdminService(PostRepository postRepository, CommentRepository commentRepository,
-            UserRepository userRepository, PostEngagementRepository postEngagementRepository,
-            ReportUserRepository reportUserRepository) {
-        this.postRepository = postRepository;
-        this.commentRepository = commentRepository;
-        this.userRepository = userRepository;
-        this.postEngagementRepository = postEngagementRepository;
-        this.reportUserRepository = reportUserRepository;
-    }
 
     public void deletePost(Long postId) {
         this.postRepository.deleteById(postId);

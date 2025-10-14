@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,8 +13,8 @@ import com._Blog.Backend.dto.UserAccountUpdateRequest;
 import com._Blog.Backend.dto.UserProfileUpdateRequest;
 import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.dto.UserSuggetion;
+import com._Blog.Backend.exception.BadRequestException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
-import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.ReportUser;
 import com._Blog.Backend.model.User;
@@ -81,10 +80,10 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (accountUpdateRequest.getOldPassword() == null ||
                 !passwordEncoder.matches(accountUpdateRequest.getOldPassword(), user.getPassword())) {
-            throw new UnauthorizedException("Wrong password");
+            throw new BadRequestException("Wrong password");
         }
         if (accountUpdateRequest.getEmail() == null || !user.getEmail().equals(accountUpdateRequest.getEmail())) {
-            throw new UnauthorizedException("Wrong email");
+            throw new BadRequestException("Wrong email");
         }
         if (accountUpdateRequest.getNewPassword() != null) {
             user.setPassword(passwordEncoder.encode(accountUpdateRequest.getNewPassword()));

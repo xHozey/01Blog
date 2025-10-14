@@ -23,7 +23,10 @@ import com._Blog.Backend.repository.PostEngagementRepository;
 import com._Blog.Backend.repository.PostRepository;
 import com._Blog.Backend.repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+
 @Service
+@AllArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
@@ -31,15 +34,6 @@ public class PostService {
     private final FollowRepository followRepository;
     private final PostEngagementRepository postEngagementRepository;
     private final NotificationService notificationService;
-
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository,
-            PostEngagementRepository postEngagementRepository, NotificationService notificationService) {
-        this.postRepository = postRepository;
-        this.userRepository = userRepository;
-        this.followRepository = followRepository;
-        this.postEngagementRepository = postEngagementRepository;
-        this.notificationService = notificationService;
-    }
 
     public PostResponse addPost(PostRequest post) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -49,7 +43,8 @@ public class PostService {
         Post newPost = new Post(post.getTitle(), post.getContent(), user);
 
         Post savedPost = this.postRepository.save(newPost);
-        this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
+        this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()),
+                savedPost);
         return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()),
                 this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
     }
