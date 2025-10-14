@@ -92,7 +92,6 @@
   padding-top: 1rem;
 }
 
-/* Dropdown harmonization */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 10px;
@@ -102,7 +101,6 @@
   color: var(--text-color);
   padding: 6px;
   overflow: hidden;
-  /* clip hover background at edges */
   min-width: 160px;
 }
 
@@ -110,7 +108,6 @@
   padding: .5rem .75rem;
   border-radius: 6px;
   margin: 2px 0;
-  /* avoid horizontal overflow */
   color: var(--text-color);
 }
 
