@@ -6,4 +6,5 @@ export interface commentResponse {
   createdAt: string;
   likes: number;
   isLiked: boolean;
+  authorAvatar: string;
 }

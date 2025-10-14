@@ -2,6 +2,7 @@
   <!-- Header -->
   <header class="comment-header">
     <div class="author-section">
+      <img [src]="comment.authorAvatar" alt="User Avatar" class="comment-avatar ms-2" />
       <span class="comment-author" (click)="goToProfile()">{{ comment.author }}</span>
       <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
     </div>

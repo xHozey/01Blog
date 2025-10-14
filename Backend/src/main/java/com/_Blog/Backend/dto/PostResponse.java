@@ -21,6 +21,7 @@ public class PostResponse {
     private Timestamp createdAt;
     private Long likes;
     private Boolean isLiked;
+    private String authorAvatar;
 
     public PostResponse(Post post, Long likes, Boolean isLiked) {
         this.id = post.getId();
@@ -31,6 +32,7 @@ public class PostResponse {
         this.createdAt = post.getCreatedAt();
         this.likes = likes;
         this.isLiked = isLiked;
+        this.authorAvatar = post.getUser().getIconPath();
     }
 
 }

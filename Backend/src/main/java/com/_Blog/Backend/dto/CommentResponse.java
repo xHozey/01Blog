@@ -19,6 +19,7 @@ public class CommentResponse {
     private Timestamp createdAt;
     private Long likes;
     private Boolean isLiked;
+    private String authorAvatar;
 
     public CommentResponse(Comment comment, Long likes, Boolean isLiked) {
         this.id = comment.getId();
@@ -28,6 +29,7 @@ public class CommentResponse {
         this.createdAt = comment.getCreateTime();
         this.likes = likes;
         this.isLiked = isLiked;
+        this.authorAvatar = comment.getUser().getIconPath();
     }
-    
+
 }

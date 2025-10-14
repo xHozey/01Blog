@@ -7,4 +7,5 @@ interface postResponse {
   createdAt: string;
   likes: number;
   isLiked: boolean;
+  authorAvatar: string;
 }

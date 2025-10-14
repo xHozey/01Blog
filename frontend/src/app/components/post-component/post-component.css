@@ -123,3 +123,11 @@
 .dropdown-item:hover {
   background-color: var(--dropdown-hover-bg);
 }
+
+.post-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--comment-avatar-border);
+}
