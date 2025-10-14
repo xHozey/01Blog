@@ -32,7 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (
           req.url.includes('/login') ||
           req.url.includes('/register') ||
           req.url.includes('/check-unauth');
-
+        console.error(err);
         if (err.status === 401 && !isLoginOrRefresh) {
           if (!isRefreshing) {
             isRefreshing = true;
@@ -45,13 +45,15 @@ export const authInterceptor: HttpInterceptorFn = (
               }),
               catchError((refreshErr) => {
                 isRefreshing = false;
-                refreshSubject.error(refreshErr);
                 requestQueue.length = 0;
-                console.log(refreshErr, refreshErr.status, err.status);
-                authService.logout().subscribe({
-                  next: () => router.navigate(['/login']),
-                  error: (logoutErr) => console.error('Logout error from interceptor:', logoutErr),
-                });
+
+                if (refreshErr.status === 401 || refreshErr.status === 403) {
+                  authService.logout().subscribe({
+                    next: () => router.navigate(['/login']),
+                    error: () => {},
+                  });
+                }
+
                 return throwError(() => refreshErr);
               })
             );
