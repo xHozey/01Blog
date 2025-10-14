@@ -32,7 +32,8 @@ public class PostService {
     private final PostEngagementRepository postEngagementRepository;
     private final NotificationService notificationService;
 
-    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository, PostEngagementRepository postEngagementRepository, NotificationService notificationService) {
+    public PostService(PostRepository postRepository, UserRepository userRepository, FollowRepository followRepository,
+            PostEngagementRepository postEngagementRepository, NotificationService notificationService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
@@ -41,14 +42,20 @@ public class PostService {
     }
 
     public PostResponse addPost(PostRequest post) {
-        JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        try {
 
-        Post newPost = new Post(post.getTitle(), post.getContent(), user);
-
-        Post savedPost = this.postRepository.save(newPost);
-        this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
-        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
+            JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+            
+            Post newPost = new Post(post.getTitle(), post.getContent(), user);
+            
+            Post savedPost = this.postRepository.save(newPost);
+            this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
+            return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 
     public List<PostResponse> getUserPosts(Long userId, Integer page) {
@@ -57,7 +64,7 @@ public class PostService {
         return this.postRepository
                 .findByUserIdAndIsHideFalse(userId, pageable)
                 .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
-                postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
+                        postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
                 .getContent();
     }
 
@@ -83,19 +90,25 @@ public class PostService {
         }
 
         return postsPage.getContent().stream()
-                .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()), postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId()))).toList();
+                .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
+                        postEngagementRepository.existsByPostIdAndUserId(p.getId(), jwtUser.getId())))
+                .toList();
     }
 
     public PostResponse getPostById(Long id) {
         JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Post post = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
-        return new PostResponse(post, this.postEngagementRepository.countByPostId(post.getId()), this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(String.format("Post not found with id %d", id)));
+        return new PostResponse(post, this.postEngagementRepository.countByPostId(post.getId()),
+                this.postEngagementRepository.existsByPostIdAndUserId(post.getId(), jwtUser.getId()));
     }
 
     public PostResponse updatePost(PostRequest post, Long postId) {
         JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
-        Post oldPost = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+        User user = userRepository.findById(JwtUser.getId()).orElseThrow(
+                () -> new ResourceNotFoundException(String.format("User not found with id %d", JwtUser.getId())));
+        Post oldPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         if (!user.getId().equals(oldPost.getUser().getId())) {
             throw new UnauthorizedException("You are not allowed to update this post");
         }
@@ -104,13 +117,14 @@ public class PostService {
         oldPost.setContent(post.getContent());
 
         Post savedPost = this.postRepository.save(oldPost);
-        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), user.getId()));
+        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()),
+                this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), user.getId()));
     }
 
     public void deletePost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                String.format("Post not found with id %d", postId)));
+                        String.format("Post not found with id %d", postId)));
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         JwtUser currentUser = (JwtUser) auth.getPrincipal();
         Long currentUserId = currentUser.getId();

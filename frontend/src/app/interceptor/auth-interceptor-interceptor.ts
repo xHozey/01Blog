@@ -47,6 +47,7 @@ export const authInterceptor: HttpInterceptorFn = (
                 isRefreshing = false;
                 refreshSubject.error(refreshErr);
                 requestQueue.length = 0;
+                console.log(refreshErr, refreshErr.status, err.status);
                 authService.logout().subscribe({
                   next: () => router.navigate(['/login']),
                   error: (logoutErr) => console.error('Logout error from interceptor:', logoutErr),

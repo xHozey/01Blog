@@ -1,12 +1,10 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular'; // <-- import this
+import { Ellipsis, Heart, LucideAngularModule } from 'lucide-angular';
 import { EngagementService } from '../../service/engagement-service';
 import { UserService } from '../../service/user-service';
 import { CommentSection } from '../comment-section/comment-section';
 import { Router } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import DOMPurify from 'dompurify';
 import { parseApiError } from '../../utils/errorHelper';
 import { ToastService } from '../../service/toast-service';
 
@@ -20,7 +18,6 @@ import { ToastService } from '../../service/toast-service';
 export class PostComponent implements OnInit {
   private engagementService: EngagementService = inject(EngagementService);
   private userService: UserService = inject(UserService);
-  private sanitizer: DomSanitizer = inject(DomSanitizer);
   private router: Router = inject(Router);
   private toastService = inject(ToastService)
   @Input() post!: postResponse;
@@ -73,15 +70,6 @@ export class PostComponent implements OnInit {
 
   toggleComments() {
     this.showComments = !this.showComments;
-  }
-
-  getSnippet(content: string) {
-    // Sanitize content
-    const cleanContent = DOMPurify.sanitize(content);
-    // Truncate safely
-    const snippet = cleanContent.length > 400 ? cleanContent.slice(0, 400) + '...' : cleanContent;
-
-    return this.sanitizer.bypassSecurityTrustHtml(snippet);
   }
 
   goToPost() {

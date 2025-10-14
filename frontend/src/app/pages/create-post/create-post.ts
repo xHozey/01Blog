@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { MediaService } from '../../service/media-service';
@@ -17,6 +17,7 @@ import { parseApiError } from '../../utils/errorHelper';
   imports: [CommonModule, FormsModule, LucideAngularModule, QuillModule, NavbarComponent],
   templateUrl: './create-post.html',
   styleUrls: ['./create-post.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreatePost {
   private mediaService = inject(MediaService);
@@ -110,12 +111,16 @@ export class CreatePost {
     };
 
     this.postService.addPost(payload).subscribe({
-      next: (res) => {
+      next: () => {
         this.router.navigate(['/']);
       },
       error: (err) => {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
+  }
+
+  onContentChanged(event: any) {
+    this.content = event.html || '';
   }
 }
