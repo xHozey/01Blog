@@ -13,18 +13,10 @@ import { filter } from 'rxjs/operators';
 import { NotificationsService } from '../../service/notifications-service';
 import { UserService } from '../../service/user-service';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 import { AuthService } from '../../service/auth-service';
 import { parseApiError } from '../../utils/errorHelper';
 import { ToastService } from '../../service/toast-service';
-import { ThemeToggleComponent } from "../theme-toggle-component/theme-toggle-component";
-
-interface notificationDTO {
-  id: number;
-  description: string;
-  createdTime: string;
-  isRead: boolean;
-}
+import { ThemeToggleComponent } from '../theme-toggle-component/theme-toggle-component';
 
 @Component({
   selector: 'app-navbar-component',
@@ -41,6 +33,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   notifications: notificationDTO[] = [];
   notificationsPage = 0;
   isLoading = false;
+  activeTab: 'all' | 'unread' = 'all';
 
   @ViewChild('notificationsEnd') notificationsEnd?: ElementRef<HTMLDivElement>;
   private observer?: IntersectionObserver;
@@ -59,12 +52,7 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.isCreatePostPage = event.urlAfterRedirects.includes('/create-post');
       });
 
-    this.notificationsService.getNotificationCount().subscribe({
-      next: (res) => (this.totalNotifications = res),
-      error: (err) => {
-        parseApiError(err).forEach((msg) => this.toastService.error(msg));
-      },
-    });
+    this.countNotifications();
     this.userService.fetchCurrentUser();
     this.userService.user$.subscribe((user) => (this.user = user));
   }
@@ -79,6 +67,12 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  get filteredNotifications(): notificationDTO[] {
+    return this.activeTab === 'all'
+      ? this.notifications
+      : this.notifications.filter((n) => !n.isRead);
+  }
+
   toggleNotifications(): void {
     this.showNotificationsModal = !this.showNotificationsModal;
 
@@ -87,13 +81,13 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       this.notificationsPage = 0;
       this.isLoading = false;
       this.getNotifications();
-      // Allow DOM to render, then start observing
       setTimeout(() => {
         if (this.notificationsEnd?.nativeElement) {
           this.observer?.observe(this.notificationsEnd.nativeElement);
         }
       });
     } else {
+      this.countNotifications();
       this.observer?.disconnect();
     }
   }
@@ -144,7 +138,24 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
+  countNotifications() {
+    this.notificationsService.getNotificationCount().subscribe({
+      next: (res) => (this.totalNotifications = res),
+      error: (err) => {
+        parseApiError(err).forEach((msg) => this.toastService.error(msg));
+      },
+    });
+  }
+
   ngOnDestroy(): void {
     this.observer?.disconnect();
+  }
+
+  goToPost(id: number) {
+    this.router.navigate(['/post', id]);
+  }
+
+  goToUser(id: number) {
+    this.router.navigate(['/profile', id]);
   }
 }

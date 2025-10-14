@@ -35,27 +35,43 @@
           </button>
 
           @if (showNotificationsModal) {
-          <div class="notifications-dropdown position-absolute end-0 mt-2 border rounded-3 shadow-sm p-2"
-            style="width: 340px; max-height: 420px; overflow-y: auto; background-color: var(--surface-bg); color: var(--text-color); border-color: var(--post-border-color);">
-            @if (notifications.length === 0) {
-            <div class="text-center py-3" style="color: var(--comment-time-color);">
-              No notifications yet.
+          <div class="notifications-dropdown position-absolute end-0 mt-2 shadow-sm rounded-3"
+            style="width: 340px; max-height: 420px;">
+            <div class="notif-header d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
+              <h6 class="m-0 fw-semibold">Notifications</h6>
+              <div class="notif-tabs">
+                <button class="notif-tab" [class.active]="activeTab === 'all'" (click)="activeTab = 'all'">
+                  All
+                </button>
+                <button class="notif-tab" [class.active]="activeTab === 'unread'" (click)="activeTab = 'unread'">
+                  Unread
+                </button>
+              </div>
             </div>
-            }
 
-            <ul class="list-unstyled mb-0">
-              @for (n of notifications; track n.id) {
-              <li class="notification-item d-flex flex-column px-3 py-2 mb-1 rounded-2" [class.unread]="!n.isRead"
-                style="background-color: transparent;">
-                <p class="mb-1 fw-medium" style="color: var(--text-color);">{{ n.description }}</p>
-                <small class="text-muted" style="color: var(--comment-time-color) !important;">{{ n.createdTime | date:"medium" }}</small>
-              </li>
+            <div class="notif-body p-2">
+              @if (filteredNotifications.length === 0) {
+              <div class="text-center py-3" style="color: var(--comment-time-color);">
+                No notifications here.
+              </div>
+              } @else {
+              <ul class="list-unstyled mb-0">
+                @for (n of filteredNotifications; track n.id) {
+                <li class="notification-item d-flex align-items-start gap-3 p-2 rounded-2 mb-1"
+                  [class.unread]="!n.isRead">
+                  <img [src]="n.senderIcon || '/assets/default-avatar.png'" alt="icon" class="notif-avatar" (click)="goToUser(n.senderId)"/>
+                  <div class="notif-content flex-grow-1">
+                    <p class="mb-1 fw-medium" (click)="goToPost(n.postId)">{{ n.description }}</p>
+                    <small class="text-muted">{{ n.createdTime | date: 'medium' }}</small>
+                  </div>
+                </li>
+                }
+              </ul>
               }
-            </ul>
-
-            <div #notificationsEnd class="invisible" style="height: 1px;"></div>
+            </div>
           </div>
           }
+
 
         </li>
         <li>
@@ -72,7 +88,7 @@
             <li><a class="dropdown-item" [routerLink]="[`/profile/${user?.id}`]">Profile</a></li>
             <li><a class="dropdown-item" [routerLink]="['/settings']">Settings</a></li>
             @if (user?.roles?.includes("ADMIN")) {
-              <li><a class="dropdown-item" [routerLink]="['/admin/dashboard']">Admin</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/admin/dashboard']">Admin</a></li>
             }
             <li>
               <hr class="dropdown-divider" />

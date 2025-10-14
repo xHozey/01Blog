@@ -21,8 +21,15 @@ public class NotificationController {
 
     @GetMapping
     public ResponseEntity<List<NotificationResponse>> getAllNotifications(@RequestParam(defaultValue = "0") Integer page) {
-        List<NotificationResponse> notifications = this.notificationService.getNotifications(page);
-        return ResponseEntity.ok(notifications);
+        try {
+
+            List<NotificationResponse> notifications = this.notificationService.getNotifications(page);
+            return ResponseEntity.ok(notifications);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+            return ResponseEntity.ok(null);
+
     }
 
     @PostMapping("/read")
