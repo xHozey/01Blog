@@ -14,7 +14,7 @@ public class PostRequest {
     @Size(max = 300)
     private String title;
     @NotBlank
-    @Size(max = 10000)
+    @Size(max = 100000)
     private String content;
 
 }

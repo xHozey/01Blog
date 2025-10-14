@@ -42,20 +42,16 @@ public class PostService {
     }
 
     public PostResponse addPost(PostRequest post) {
-        try {
+        JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.findById(JwtUser.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-            JwtUser JwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            User user = userRepository.findById(JwtUser.getId()).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            
-            Post newPost = new Post(post.getTitle(), post.getContent(), user);
-            
-            Post savedPost = this.postRepository.save(newPost);
-            this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
-            return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()), this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
-        } catch(Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
+        Post newPost = new Post(post.getTitle(), post.getContent(), user);
+
+        Post savedPost = this.postRepository.save(newPost);
+        this.notificationService.notifyFollowers(user, String.format("%s has posted new blog", user.getUsername()));
+        return new PostResponse(savedPost, this.postEngagementRepository.countByPostId(savedPost.getId()),
+                this.postEngagementRepository.existsByPostIdAndUserId(savedPost.getId(), JwtUser.getId()));
     }
 
     public List<PostResponse> getUserPosts(Long userId, Integer page) {

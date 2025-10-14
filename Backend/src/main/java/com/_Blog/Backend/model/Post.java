@@ -28,7 +28,7 @@ public class Post {
     private Long id;
 
     private String title;
-    @Size(max=10000)
+    @Size(max=100000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
