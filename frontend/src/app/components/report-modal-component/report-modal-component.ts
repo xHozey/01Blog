@@ -24,8 +24,10 @@ export class ReportModalComponent {
   private toastService = inject(ToastService);
   private postService = inject(PostService);
 
+  confirming = false;
   description = '';
   theme = localStorage.getItem('theme');
+
   close() {
     this.description = '';
     this.closed.emit();
@@ -33,17 +35,22 @@ export class ReportModalComponent {
 
   submit() {
     if (!this.description.trim() || !this.targetId) return;
+    this.show = false;
+    this.confirming = true;
+  }
 
+  confirmReport() {
     const payload: reportRequest = {
-      id: this.targetId,
+      id: this.targetId!,
       description: this.description,
     };
-    
+
     switch (this.type) {
       case 'user':
         this.userService.reportUser(payload).subscribe({
           next: (msg) => {
             this.toastService.success(msg);
+            this.closeConfirmation();
             this.close();
           },
           error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
@@ -54,13 +61,17 @@ export class ReportModalComponent {
         this.postService.reportPost(payload, this.postId).subscribe({
           next: (msg) => {
             this.toastService.success(msg);
+            this.closeConfirmation();
             this.close();
           },
-          error: (err) => {
-            parseApiError(err).forEach((msg) => this.toastService.error(msg));
-          },
+          error: (err) => parseApiError(err).forEach((msg) => this.toastService.error(msg)),
         });
         break;
     }
+  }
+
+  closeConfirmation() {
+    this.confirming = false;
+    this.show = true;
   }
 }

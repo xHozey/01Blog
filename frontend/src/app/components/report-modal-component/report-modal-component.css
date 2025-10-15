@@ -13,7 +13,18 @@
   border-radius: var(--modal-content-border-radius);
   background-color: var(--modal-content-bg);
   border: 1px solid var(--dropdown-border);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+}
+
+/* Remove the white lines from header and footer */
+.modal-header {
+  border-bottom: none;
+  background-color: var(--modal-content-bg);
+}
+
+.modal-footer {
+  border-top: none;
+  background-color: var(--modal-content-bg);
 }
 
 textarea.form-control {
@@ -26,8 +37,20 @@ textarea.form-control {
 textarea.form-control:focus {
   border-color: var(--comment-input-focus);
   box-shadow: 0 0 0 0.15rem var(--comment-input-focus-shadow);
+  outline: none;
 }
 
 .form-label {
   color: var(--textarea-color);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.modal-title {
+  font-weight: 600;
+  color: var(--textarea-color);
+}
+
+.modal-body {
+  color: var(--text-color);
 }
