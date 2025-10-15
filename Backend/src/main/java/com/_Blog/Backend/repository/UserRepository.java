@@ -16,5 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
     Optional<User> findByUsername(String username);
     Page<User> findAllByIsBanned(Boolean isBanned, Pageable pageable);
+    Long countByIsBanned(Boolean isBanned);
     Page<User> findAllByIsBannedAndIdNot(Boolean isBanned, Long id, Pageable pageable);
 }

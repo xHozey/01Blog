@@ -3,7 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { AdminService } from '../../service/admin-service';
 import { Router } from '@angular/router';
-import { File, FileText, Flag, LucideAngularModule, User } from 'lucide-angular';
+import { File, FileText, Flag, LucideAngularModule, User, UserX } from 'lucide-angular';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -16,33 +16,39 @@ export class AdminDashboard implements OnInit {
   private adminService = inject(AdminService);
   private router = inject(Router);
 
-  activeTab: 'users' | 'userReports' | 'posts' | 'postReports' = 'users';
+  activeTab: 'users' | 'userReports' | 'posts' | 'postReports' | 'bannedUsers' = 'users';
   isLoading = false;
-  
+
   readonly UserIcon = User;
   readonly FlagIcon = Flag;
   readonly FileTextIcon = FileText;
+  readonly BannedIcon = UserX;
 
-  users: adminUserDTO[] = [];
   userReports: reportUser[] = [];
   posts: adminPostDTO[] = [];
   postReports: postReportDTO[] = [];
+  users: adminUserDTO[] = [];
+  bannedUsers: adminUserDTO[] = [];
 
   pageUsers = 0;
   userReportsPage = 0;
   pagePosts = 0;
   postReportsPage = 0;
+  bannedUsersPage = 0;
 
   hasMoreUsers = true;
   hasMoreUserReports = true;
   hasMorePosts = true;
   hasMorePostReports = true;
+  hasMoreBannedUsers = true;
 
   pageSize = 10;
 
   totalUsers = 0;
   totalUserReports = 0;
   totalPosts = 0;
+  totalBan = 0;
+  totalPostReport = 0;
 
   ngOnInit() {
     this.loadUsers();
@@ -51,16 +57,31 @@ export class AdminDashboard implements OnInit {
 
   refreshStats() {
     this.adminService.getTotalUsers().subscribe((n) => (this.totalUsers = n));
-    this.adminService.getTotalReports().subscribe((n) => (this.totalUserReports = n));
+    this.adminService.getTotalUserReports().subscribe((n) => (this.totalUserReports = n));
     this.adminService.getTotalPosts().subscribe((n) => (this.totalPosts = n));
+    this.adminService.getTotalBan().subscribe((n) => (this.totalBan = n));
+    this.adminService.getTotalPostReports().subscribe((n) => (this.totalPostReport = n));
   }
 
-  setTab(tab: 'users' | 'userReports' | 'posts' | 'postReports') {
+  setTab(tab: 'users' | 'userReports' | 'posts' | 'postReports' | 'bannedUsers') {
     this.activeTab = tab;
     if (tab === 'users' && this.users.length === 0) this.loadUsers();
     if (tab === 'userReports' && this.userReports.length === 0) this.loadUserReports();
     if (tab === 'posts' && this.posts.length === 0) this.loadPosts();
     if (tab === 'postReports' && this.postReports.length === 0) this.loadPostReports();
+    if (tab === 'bannedUsers' && this.bannedUsers.length === 0) this.loadBannedUsers();
+  }
+
+  loadBannedUsers() {
+    this.isLoading = true;
+    this.adminService.getBannedUsers(this.bannedUsersPage).subscribe({
+      next: (res) => {
+        this.bannedUsers = res;
+        this.hasMoreBannedUsers = res.length === this.pageSize;
+        this.isLoading = false;
+      },
+      error: () => (this.isLoading = false),
+    });
   }
 
   loadUsers() {
@@ -121,7 +142,22 @@ export class AdminDashboard implements OnInit {
 
   toggleBan(user: adminUserDTO) {
     this.adminService.toggleBanUser(user.id).subscribe({
-      next: () => (user.isBanned = !user.isBanned),
+      next: () => {
+        if (this.activeTab == 'users') {
+          user.isBanned = !user.isBanned;
+        } else {
+          this.bannedUsers = this.bannedUsers.filter((u) => u.id !== user.id);
+          let findUser = this.users.find((u) => u.id == user.id);
+          if (findUser) {
+            findUser.isBanned = !findUser.isBanned;
+          }
+        }
+
+        this.refreshStats();
+      },
+      error: (err) => {
+        console.error('Error toggling ban:', err);
+      },
     });
   }
 
@@ -214,6 +250,20 @@ export class AdminDashboard implements OnInit {
     if (this.pagePosts > 0) {
       this.pagePosts--;
       this.loadPosts();
+    }
+  }
+
+  nextBannedUsersPage() {
+    if (this.hasMoreBannedUsers) {
+      this.bannedUsersPage++;
+      this.loadBannedUsers();
+    }
+  }
+
+  prevBannedUsersPage() {
+    if (this.bannedUsersPage > 0) {
+      this.bannedUsersPage--;
+      this.loadBannedUsers();
     }
   }
 

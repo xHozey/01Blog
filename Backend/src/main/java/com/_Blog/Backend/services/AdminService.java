@@ -96,8 +96,16 @@ public class AdminService {
         return this.postRepository.count();
     }
 
-    public Long countReports() {
+    public Long countUserReports() {
         return this.reportUserRepository.count();
+    }
+
+    public Long countPostReports() {
+        return this.reportPostRepository.count();
+    }
+
+    public Long countBannedUsers() {
+        return this.userRepository.countByIsBanned(true);
     }
 
     public List<PostReportDTO> getPostReports(Integer page) {

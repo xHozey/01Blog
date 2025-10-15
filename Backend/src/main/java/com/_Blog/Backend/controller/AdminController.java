@@ -88,9 +88,18 @@ public class AdminController {
         return ResponseEntity.ok(this.adminService.countUsers());
     }
 
-    @GetMapping("/stats/report")
-    public ResponseEntity<Long> getReportStats() {
-        return ResponseEntity.ok(this.adminService.countReports());
+    @GetMapping("/stats/report/user")
+    public ResponseEntity<Long> getUserReportStats() {
+        return ResponseEntity.ok(this.adminService.countUserReports());
     }
 
+    @GetMapping("/stats/report/post")
+    public ResponseEntity<Long> getPostReportStats() {
+        return ResponseEntity.ok(this.adminService.countPostReports());
+    }
+
+    @GetMapping("/stats/ban")
+    public ResponseEntity<Long> getBanStats() {
+        return ResponseEntity.ok(this.adminService.countBannedUsers());
+    }
 }
