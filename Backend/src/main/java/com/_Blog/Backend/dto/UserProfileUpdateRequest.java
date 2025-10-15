@@ -14,6 +14,6 @@ public class UserProfileUpdateRequest {
     private String username;
     @Size(max = 1500)
     private String iconProfile;
-    @Size(max = 3000)
+    @Size(max = 500)
     private String bio;
 }
