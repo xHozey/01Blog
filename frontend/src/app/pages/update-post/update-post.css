@@ -1,0 +1,5 @@
+::ng-deep .custom-quill .ql-editor.ql-blank::before {
+  color: var(--text-color) !important;
+  opacity: 1 !important;
+  font-style: italic;
+}

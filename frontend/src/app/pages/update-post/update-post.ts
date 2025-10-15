@@ -114,16 +114,18 @@ export class UpdatePost implements OnInit {
 
   onEditorCreated(quill: Quill) {
     this.quill = quill;
-    this.quill.root.style.height = '400px';
+    this.quill.root.style.minHeight = '200px';
 
     if (this.post) {
-      this.quill.root.innerHTML = this.post.content;
+      this.quill.setContents(this.quill.clipboard.convert({ html: this.post.content }));
       this.content = this.post.content;
     }
 
     this.quill.on('text-change', () => {
       this.content = this.quill.root.innerHTML;
     });
+
+    console.log(this.post.content);
   }
 
   onSubmit() {

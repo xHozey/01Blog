@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, inject, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import DOMPurify from 'dompurify';
@@ -26,7 +26,7 @@ import { ReportModalComponent } from '../../components/report-modal-component/re
   templateUrl: './post.html',
   styleUrls: ['./post.css'],
 })
-export class Post implements OnInit {
+export class Post implements OnInit, AfterViewChecked {
   readonly HeartIcon = Heart;
   readonly EllipsisIcon = Ellipsis;
   private route = inject(ActivatedRoute);
@@ -44,7 +44,8 @@ export class Post implements OnInit {
   safeContent!: SafeHtml;
   isLiked: boolean = false;
   showComments: boolean = false;
-
+  @ViewChild('postContent', { read: ElementRef }) postContentRef!: ElementRef;
+  contentFixed: any;
   ngOnInit(): void {
     const idParam = this.route.snapshot.paramMap.get('id');
     this.postId = idParam ? +idParam : 0;
@@ -58,6 +59,26 @@ export class Post implements OnInit {
       error: (err) => {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
+    });
+  }
+
+  ngAfterViewChecked() {
+    if (this.post && !this.contentFixed && this.postContentRef) {
+      this.fixMediaElements();
+      this.contentFixed = true;
+    }
+  }
+
+  fixMediaElements() {
+    const contentElement = this.postContentRef.nativeElement;
+
+    const mediaElements = contentElement.querySelectorAll('img, video');
+    mediaElements.forEach((el: HTMLElement) => {
+      el.style.setProperty('max-width', '100%', 'important');
+      el.style.setProperty('height', 'auto', 'important');
+      el.style.setProperty('display', 'block', 'important');
+      el.removeAttribute('width');
+      el.removeAttribute('height');
     });
   }
 
@@ -114,6 +135,6 @@ export class Post implements OnInit {
   }
 
   goToProfile() {
-    this.router.navigate(["/profile", this.post.authorId])
+    this.router.navigate(['/profile', this.post.authorId]);
   }
 }

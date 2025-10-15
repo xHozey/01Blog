@@ -94,7 +94,7 @@ export class CreatePost {
 
   onEditorCreated(quill: Quill) {
     this.quill = quill;
-    this.quill.root.style.height = '200px';
+    this.quill.root.style.minHeight = '200px';
     (this.quill.container as HTMLElement).classList.add('custom-quill');
     this.quill.on('text-change', () => {
       const text = this.quill.getText();

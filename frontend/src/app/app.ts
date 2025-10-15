@@ -15,8 +15,7 @@ export class App implements OnInit {
   private themeService = inject(ThemeService);
   ngOnInit(): void {
     this.userSerivce.fetchCurrentUser();
-    // ThemeService constructor sets the initial theme and applies data-theme
-    // Injected above to ensure it initializes as the app boots
+
   }
 
   protected readonly title = signal('01Blog');

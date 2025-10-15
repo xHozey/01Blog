@@ -66,13 +66,13 @@
   box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
 }
 
-.icon-wrapper i {
+.icon-wrapper {
   font-size: 1.125rem;
   color: var(--comment-active-color);
   transition: color 0.3s ease;
 }
 
-.sidebar-link:hover .icon-wrapper i {
+.sidebar-link:hover .icon-wrapper {
   color: #ffffff;
 }
 
@@ -85,7 +85,7 @@
   box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
-.logout-icon i {
+.logout-icon {
   color: var(--like-color);
 }
 
@@ -127,13 +127,13 @@
   flex-shrink: 0;
 }
 
-.create-post-avatar i {
+.create-post-avatar {
   font-size: 2.5rem;
   color: var(--post-author-color);
   transition: color 0.3s ease;
 }
 
-.create-post-card:hover .create-post-avatar i {
+.create-post-card:hover .create-post-avatar {
   color: var(--comment-active-color);
 }
 
@@ -168,7 +168,7 @@
   transition: all 0.3s ease;
 }
 
-.create-post-icon i {
+.create-post-icon {
   font-size: 1.125rem;
   color: #ffffff;
 }
@@ -181,15 +181,14 @@
 app-user-section {
   display: block;
   max-height: calc(100vh - 2rem);
-  overflow-y: auto;
   overflow-x: hidden;
   background: var(--surface-bg);
   border-radius: var(--card-border-radius);
   padding: 1.5rem;
   box-shadow: 4px 0 12px rgba(0, 0, 0, 0.06);
   border: 1px solid var(--post-border-color);
-  position: sticky;
   top: 1rem;
+  position: relative;
 }
 
 app-user-section::-webkit-scrollbar {
@@ -211,10 +210,10 @@ app-user-section::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
 
-app-user-section {
+/* app-user-section {
   scrollbar-width: thin;
   scrollbar-color: var(--scrollbar-thumb) transparent;
-}
+} */
 
 app-post-section {
   display: block;
@@ -251,7 +250,7 @@ app-post-section {
     padding: 0.875rem 1rem;
   }
 
-  .create-post-avatar i {
+  .create-post-avatar {
     font-size: 2rem;
   }
 
