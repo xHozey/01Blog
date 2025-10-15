@@ -5,7 +5,7 @@
     <div class="author-info">
       <img [src]="post.authorAvatar" alt="User Avatar" class="post-avatar" />
       <span class="author-name ms-2" (click)="goToProfile()">{{ post.author }}</span>
-      <span class="post-time">· {{ post.createdAt | date: 'medium' }}</span>
+      <span class="post-time">· {{ post.createdAt | date: 'MMM d' }}</span>
     </div>
 
     <!-- Dropdown -->
