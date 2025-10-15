@@ -1,0 +1,46 @@
+.icon-container svg {
+  stroke-width: 2.5;
+  width: 36px;
+  height: 36px;
+}
+
+.clickable {
+  cursor: pointer;
+  color: #0d6efd;
+  transition: color 0.2s ease-in-out;
+}
+
+.clickable:hover {
+  color: #0a58ca;
+  text-decoration: underline;
+}
+
+.fixed-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.fixed-table th,
+.fixed-table td {
+  vertical-align: top;
+}
+
+.fixed-table .desc-col {
+  width: 30%;
+  white-space: normal;
+  word-wrap: break-word;
+}
+
+.fixed-table .action-col {
+  width: 160px;
+  text-align: right;
+}
+
+@media (max-width: 767.98px) {
+  .fixed-table .desc-col {
+    width: 50%;
+  }
+  .fixed-table .action-col {
+    width: 100px;
+  }
+}

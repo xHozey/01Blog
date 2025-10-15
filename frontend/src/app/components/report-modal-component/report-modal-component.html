@@ -14,7 +14,7 @@
           Describe why you're reporting this user:
         </label>
         <textarea id="reportDescription" class="form-control" placeholder="Enter details..." rows="4"
-          [(ngModel)]="description"></textarea>
+          [(ngModel)]="description" [maxlength]="250"></textarea>
       </div>
 
       <div class="modal-footer">

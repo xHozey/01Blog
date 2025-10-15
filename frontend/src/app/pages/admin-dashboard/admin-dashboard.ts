@@ -3,11 +3,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { AdminService } from '../../service/admin-service';
 import { Router } from '@angular/router';
+import { File, FileText, Flag, LucideAngularModule, User } from 'lucide-angular';
 
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, NavbarComponent],
+  imports: [CommonModule, NavbarComponent, LucideAngularModule],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
 })
@@ -17,6 +18,10 @@ export class AdminDashboard implements OnInit {
 
   activeTab: 'users' | 'userReports' | 'posts' | 'postReports' = 'users';
   isLoading = false;
+  
+  readonly UserIcon = User;
+  readonly FlagIcon = Flag;
+  readonly FileTextIcon = FileText;
 
   users: adminUserDTO[] = [];
   userReports: reportUser[] = [];
@@ -213,6 +218,10 @@ export class AdminDashboard implements OnInit {
   }
 
   goToPost(id: number) {
-    this.router.navigate(["/post", id])
+    this.router.navigate(['/post', id]);
+  }
+
+  goToUser(id: number) {
+    this.router.navigate(['/profile', id]);
   }
 }
