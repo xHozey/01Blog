@@ -5,6 +5,7 @@ import { ToastService } from '../../service/toast-service';
 import { parseApiError } from '../../utils/errorHelper';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { FollowService } from '../../service/follow-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-section',
@@ -19,6 +20,8 @@ export class UserSection implements OnInit {
   private userService = inject(UserService);
   private toastService = inject(ToastService);
   private followService = inject(FollowService);
+  private router = inject(Router);
+
   page: number = 0;
   isLoading = false;
   allLoaded = false;
@@ -61,5 +64,9 @@ export class UserSection implements OnInit {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
+  }
+
+  goToProfile(id: number) {
+    this.router.navigate(['/profile', id]);
   }
 }
