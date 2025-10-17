@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { API_URL, API_VERSION } from '../../config';
 
@@ -7,8 +7,8 @@ import { API_URL, API_VERSION } from '../../config';
   providedIn: 'root',
 })
 export class EngagementService {
-  constructor(private http: HttpClient) {}
   apiUrl = `${API_URL}${API_VERSION}/engagement`;
+  private http = inject(HttpClient);
 
   likePost(postId: number): Observable<string> {
     return this.http.post(`${this.apiUrl}/${postId}/post/like`, null, {

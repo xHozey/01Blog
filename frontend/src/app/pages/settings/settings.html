@@ -21,7 +21,6 @@
 
         <div class="card-body">
 
-          <!-- Profile Tab -->
           @if (activeTab == 'profile') {
           <div class="text-center mb-4">
             <img [src]="profilePayload.iconProfile" alt="Avatar" class="rounded-circle border" width="120" height="120">
@@ -39,36 +38,35 @@
 
             <div class="mb-3">
               <label class="form-label fw-semibold">Bio</label>
-              <textarea class="form-control" rows="3" [(ngModel)]="profilePayload.bio" name="bio" maxlength="500"></textarea>
+              <textarea class="form-control" rows="3" [(ngModel)]="profilePayload.bio" name="bio"
+                maxlength="500"></textarea>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Save Changes</button>
           </form>
           }
+          @if (activeTab === 'account') {
+          <form (ngSubmit)="onSaveAccount()" #accountForm="ngForm">
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Email</label>
+              <input type="email" class="form-control" [(ngModel)]="accountPayload.email" name="email" required>
+            </div>
 
-          <!-- Account Tab -->
-          <div *ngIf="activeTab === 'account'">
-            <form (ngSubmit)="onSaveAccount()" #accountForm="ngForm">
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Email</label>
-                <input type="email" class="form-control" [(ngModel)]="accountPayload.email" name="email" required>
-              </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Current Password</label>
+              <input type="password" class="form-control" [(ngModel)]="accountPayload.oldPassword"
+                name="currentPassword" required>
+            </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-semibold">Current Password</label>
-                <input type="password" class="form-control" [(ngModel)]="accountPayload.oldPassword"
-                  name="currentPassword" required>
-              </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">New Password</label>
+              <input type="password" class="form-control" [(ngModel)]="accountPayload.newPassword" name="newPassword"
+                required>
+            </div>
 
-              <div class="mb-3">
-                <label class="form-label fw-semibold">New Password</label>
-                <input type="password" class="form-control" [(ngModel)]="accountPayload.newPassword" name="newPassword"
-                  required>
-              </div>
-
-              <button type="submit" class="btn btn-primary w-100">Update Password</button>
-            </form>
-          </div>
+            <button type="submit" class="btn btn-primary w-100">Update Password</button>
+          </form>
+          }
 
         </div>
       </div>

@@ -19,12 +19,10 @@ img {
   border-radius: 999px;
 }
 
-/* Modern playful header spacing */
 .card .position-relative {
   margin-top: -48px;
 }
 
-/* Subtle playful accent under username */
 .card h3 {
   position: relative;
 }
@@ -41,7 +39,6 @@ img {
   opacity: 0.3;
 }
 
-/* Counters */
 .card .d-flex.gap-4 h5 {
   color: var(--post-title-color);
 }
@@ -50,7 +47,6 @@ img {
   color: var(--comment-time-color);
 }
 
-/* Buttons hover polish */
 .btn-primary:hover,
 .btn-outline-primary:hover,
 .btn-outline-danger:hover {
@@ -58,12 +54,10 @@ img {
   box-shadow: 0 8px 20px rgba(13,110,253,0.18);
 }
 
-/* Dark mode specific subtle rings */
 [data-theme='dark'] .card {
   box-shadow: 0 8px 28px rgba(0,0,0,0.35);
 }
 
-/* Loading state */
 .spinner-border.text-primary {
   filter: drop-shadow(0 2px 8px rgba(13,110,253,0.25));
 }

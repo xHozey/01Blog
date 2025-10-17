@@ -171,18 +171,25 @@ export class AdminDashboard implements OnInit {
     });
   }
 
-  deleteReport(report: reportUser) {
-    // if (!confirm(`Delete report?`)) return;
-    // this.adminService.deleteReport(report.id).subscribe({
-    //   next: () => {
-    //     this.userReports = this.userReports.filter((r) => r.id !== report.id);
-    //     this.totalUserReports--;
-    //   },
-    // });
+  deleteUserReport(report: reportUser) {
+    this.adminService.deleteUserReport(report.id).subscribe({
+      next: () => {
+        this.userReports = this.userReports.filter((r) => r.id !== report.id);
+        this.totalUserReports--;
+      },
+    });
+  }
+
+  deletePostReport(report: postReportDTO) {
+    this.adminService.deletePostReport(report.id).subscribe({
+      next: () => {
+        this.postReports = this.postReports.filter((r) => r.id !== report.id);
+        this.totalPostReport--;
+      },
+    });
   }
 
   deletePost(post: adminPostDTO) {
-    if (!confirm(`Delete post "${post.title}" permanently?`)) return;
     this.adminService.deletePost(post.id).subscribe({
       next: () => {
         this.posts = this.posts.filter((p) => p.id !== post.id);

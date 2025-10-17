@@ -1,30 +1,26 @@
 <article class="comment-card">
-  <!-- Header -->
   <header class="comment-header">
     <div class="author-section">
       <img [src]="comment.authorAvatar" alt="User Avatar" class="comment-avatar ms-2" />
       <span class="comment-author" (click)="goToProfile()">{{ comment.author }}</span>
       <span class="comment-time">{{ comment.createdAt | date: 'short' }}</span>
     </div>
-    
-    <!-- Dropdown Menu -->
+
     <div class="dropdown">
-      <button 
-        class="comment-menu-btn" 
-        type="button" 
-        id="commentOptionsBtn" 
-        data-bs-toggle="dropdown"
+      <button class="comment-menu-btn" type="button" id="commentOptionsBtn" data-bs-toggle="dropdown"
         aria-expanded="false">
         <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
       </button>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOptionsBtn">
         @if (user?.id === comment.authorId) {
-          <li>
-            <button class="dropdown-item text-danger" (click)="delete.emit(comment.id)">
-              <i class="fa fa-trash me-2"></i>Delete
-            </button>
-          </li>
-          <li><hr class="dropdown-divider"></li>
+        <li>
+          <button class="dropdown-item text-danger" (click)="delete.emit(comment.id)">
+            <i class="fa fa-trash me-2"></i>Delete
+          </button>
+        </li>
+        <li>
+          <hr class="dropdown-divider">
+        </li>
         }
         <li>
           <button class="dropdown-item" (click)="report.emit(comment.authorId)">
@@ -35,15 +31,10 @@
     </div>
   </header>
 
-  <!-- Content -->
   <p class="comment-content">{{ comment.content }}</p>
 
-  <!-- Like Button -->
   <div class="like-action">
-    <button 
-      (click)="toggleLike()" 
-      class="like-btn"
-      [ngClass]="comment.isLiked ? 'liked' : ''">
+    <button (click)="toggleLike()" class="like-btn" [ngClass]="comment.isLiked ? 'liked' : ''">
       <lucide-icon [img]="HeartIcon" size="15"></lucide-icon>
       <span class="like-count">{{ comment.likes }}</span>
     </button>

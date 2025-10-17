@@ -9,6 +9,7 @@ import { API_URL, API_VERSION } from '../../config';
 export class PostService {
   private apiUrl = `${API_URL}${API_VERSION}/posts`;
   http = inject(HttpClient);
+  
   getPosts(page: number): Observable<postResponse[]> {
     return this.http.get<postResponse[]>(`${this.apiUrl}?page=${page}`, {
       withCredentials: true,

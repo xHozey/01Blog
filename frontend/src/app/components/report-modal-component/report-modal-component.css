@@ -16,7 +16,6 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
 }
 
-/* Remove the white lines from header and footer */
 .modal-header {
   border-bottom: none;
   background-color: var(--modal-content-bg);

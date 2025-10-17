@@ -1,6 +1,5 @@
 <article class="post-container">
 
-  <!-- Header -->
   <header class="post-header">
     <div class="author-info">
       <img [src]="post.authorAvatar" alt="User Avatar" class="post-avatar" />
@@ -8,7 +7,6 @@
       <span class="post-time">· {{ post.createdAt | date: 'MMM d' }}</span>
     </div>
 
-    <!-- Dropdown -->
     <div class="dropdown">
       <button class="btn btn-link p-0" id="postMenuBtn" data-bs-toggle="dropdown" aria-expanded="false"
         style="color: var(--nav-link-color);">
@@ -46,10 +44,8 @@
     </div>
   </header>
 
-  <!-- Title -->
   <h2 class="post-title" (click)="goToPost()">{{ post.title }}</h2>
 
-  <!-- Actions -->
   <div class="post-actions">
     <button (click)="toggleLike()" [ngClass]="liked ? 'liked' : ''" class="action-btn like-btn">
       <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
@@ -62,7 +58,6 @@
     </button>
   </div>
 
-  <!-- Comments -->
   @if (showComments) {
   <div class="comments-section">
     <app-comment-section [postId]="post.id"></app-comment-section>

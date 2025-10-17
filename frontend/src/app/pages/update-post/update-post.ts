@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LucideAngularModule } from 'lucide-angular';
 import { MediaService } from '../../service/media-service';
 import { PostService } from '../../service/post-service';
-import { QuillModule } from 'ngx-quill';
+import { ContentChange, QuillModule } from 'ngx-quill';
 import Quill from 'quill';
 import { NavbarComponent } from '../../components/navbar-component/navbar-component';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -17,6 +17,7 @@ import { parseApiError } from '../../utils/errorHelper';
   imports: [CommonModule, FormsModule, LucideAngularModule, QuillModule, NavbarComponent],
   templateUrl: './update-post.html',
   styleUrls: ['./update-post.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UpdatePost implements OnInit {
   private route = inject(ActivatedRoute);
@@ -145,5 +146,9 @@ export class UpdatePost implements OnInit {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
+  }
+
+  onContentChanged(event: any) {
+    this.content = event.html || '';
   }
 }

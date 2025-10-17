@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { API_URL, API_VERSION } from '../../config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -10,8 +10,8 @@ import { commentRequest } from '../models/commentRequest';
 })
 export class CommentService {
   apiUrl = `${API_URL}${API_VERSION}/comments`;
-  constructor(private http: HttpClient) {}
-
+  private http = inject(HttpClient);
+  
   fetchComments(postId: number, page: number): Observable<commentResponse[]> {
     return this.http.get<commentResponse[]>(`${this.apiUrl}/${postId}?page=${page}`, {
       withCredentials: true,

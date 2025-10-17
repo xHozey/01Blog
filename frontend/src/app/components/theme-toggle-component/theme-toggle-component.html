@@ -1,1 +1,7 @@
-<p>theme-toggle-component works!</p>
+<div class="clickable" (click)="toggleTheme()">
+    @if (darkMode) {
+    <lucide-icon [img]="DarkIcon"></lucide-icon>
+    } @else {
+    <lucide-icon [img]="LightIcon"></lucide-icon>
+    }
+</div>

@@ -27,7 +27,6 @@ export class UserPosts implements OnInit {
   posts: postResponse[] = [];
   page: number = 0;
 
-  //Post report form
   selectedReportId?: number;
   showReportModal = false;
   private toastService = inject(ToastService);

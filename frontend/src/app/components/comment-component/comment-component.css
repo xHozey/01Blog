@@ -13,7 +13,6 @@
   box-shadow: 0 4px 16px var(--comment-card-shadow);
 }
 
-/* Header */
 .comment-header {
   display: flex;
   justify-content: space-between;
@@ -45,7 +44,6 @@
   color: var(--comment-time-separator);
 }
 
-/* Menu button */
 .comment-menu-btn {
   border: none;
   background: none;
@@ -61,8 +59,6 @@
   color: var(--comment-menu-hover-color);
 }
 
-/* Dropdown */
-/* Prevent hover background from overflowing right side by reducing inner margins and enabling clipping */
 .dropdown-menu {
   font-size: 0.9rem;
   border-radius: 8px;
@@ -70,19 +66,15 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   min-width: 160px;
   padding: 6px;
-  /* compact padding around items */
   overflow: hidden;
-  /* clip item hover backgrounds */
   background-color: var(--surface-bg);
   color: var(--text-color);
 }
 
 .dropdown-item {
   padding: 0.5rem 0.75rem;
-  /* reduced so hover bg stays within menu */
   border-radius: 6px;
   margin: 2px 0;
-  /* remove lateral margins that could overflow */
   transition: background-color 0.2s, color 0.2s;
   color: var(--text-color);
 }
@@ -100,7 +92,6 @@
   border-color: var(--dropdown-divider-color);
 }
 
-/* Content */
 .comment-content {
   color: var(--comment-text);
   line-height: 1.6;
@@ -109,7 +100,6 @@
   white-space: pre-line;
 }
 
-/* Media */
 .comment-media {
   margin-bottom: 0.75rem;
 }
@@ -129,7 +119,6 @@
   width: 100%;
 }
 
-/* Like actions */
 .like-action {
   display: flex;
   align-items: center;
@@ -163,13 +152,11 @@
   background-color: var(--like-btn-liked-hover-bg);
 }
 
-/* Like count */
 .like-count {
   font-size: 0.85rem;
   font-weight: 500;
 }
 
-/* Animation */
 @keyframes slideIn {
   from {
     opacity: 0;

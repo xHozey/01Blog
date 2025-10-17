@@ -5,22 +5,8 @@ import { LucideAngularModule, Moon, Sun } from 'lucide-angular';
 @Component({
   imports: [LucideAngularModule],
   selector: 'app-theme-toggle',
-  template: `
-    <div class="clickable" (click)="toggleTheme()">
-      @if (darkMode) {
-      <lucide-icon [img]="DarkIcon"></lucide-icon>
-      } @else {
-      <lucide-icon [img]="LightIcon"></lucide-icon>
-      }
-    </div>
-  `,
-  styles: [
-    `
-      .clickable {
-        cursor: pointer;
-      }
-    `,
-  ],
+  templateUrl: 'theme-toggle-component.html',
+  styleUrls: ['theme-toggle-component.css'],
 })
 export class ThemeToggleComponent {
   darkMode = false;

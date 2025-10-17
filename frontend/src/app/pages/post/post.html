@@ -5,7 +5,6 @@
 
     <article class="post-container">
 
-        <!-- Header -->
         <header class="post-header">
             <div class="author-info">
                 <img [src]="post.authorAvatar" alt="User Avatar" class="post-avatar" />
@@ -49,11 +48,9 @@
             </div>
         </header>
 
-        <!-- Title -->
         <h1 class="post-title">{{ post.title }}</h1>
         <div #postContent class="post-body" [innerHTML]="safeContent"></div>
 
-        <!-- Actions -->
         <div class="post-actions">
             <button (click)="toggleLike()" [ngClass]="isLiked ? 'liked' : ''" class="action-btn like-btn">
                 <lucide-icon [img]="HeartIcon" size="16"></lucide-icon>
@@ -65,7 +62,6 @@
                 <span>{{ showComments ? 'Hide' : 'Comments' }}</span>
             </button>
         </div>
-        <!-- Comments -->
         @if (showComments) {
         <div class="comments-section">
             <app-comment-section [postId]="post.id"></app-comment-section>

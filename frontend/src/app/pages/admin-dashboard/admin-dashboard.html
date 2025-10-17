@@ -2,7 +2,6 @@
 
 <div class="container my-4">
 
-  <!-- Dashboard Summary -->
   <div class="row g-3 mb-4">
     @for (card of [
     { title: 'Total Users', value: totalUsers, icon: UserIcon, color: 'success' },
@@ -27,7 +26,6 @@
     }
   </div>
 
-  <!-- Tabs -->
   <ul class="nav nav-tabs mb-3 flex-wrap">
     <li class="nav-item">
       <button class="nav-link" [ngClass]="{ active: activeTab === 'users' }" (click)="setTab('users')">Users</button>
@@ -49,7 +47,6 @@
     </li>
   </ul>
 
-  <!-- Loading -->
   @if (isLoading) {
   <div class="text-center my-4">
     <div class="spinner-border text-primary" role="status"></div>
@@ -96,7 +93,6 @@
   </div>
   }
 
-  <!-- USERS TAB -->
   @if (!isLoading && activeTab === 'users') {
   <div class="card shadow-sm border-light">
     <div class="card-body">
@@ -146,7 +142,6 @@
   </div>
   }
 
-  <!-- REPORTS TAB -->
   @if (!isLoading && activeTab === 'userReports') {
   <div class="card shadow-sm border-light">
     <div class="card-body">
@@ -170,7 +165,7 @@
               <td class="desc-col">{{ report.description }}</td>
               <td>{{ report.createAt | date }}</td>
               <td>
-                <button class="btn btn-sm btn-outline-danger" (click)="deleteReport(report)">Delete Report</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteUserReport(report)">Delete Report</button>
               </td>
             </tr>
             }
@@ -189,7 +184,6 @@
   </div>
   }
 
-  <!-- POSTS TAB -->
   @if (!isLoading && activeTab === 'posts') {
   <div class="card shadow-sm border-light">
     <div class="card-body">
@@ -240,7 +234,6 @@
   </div>
   }
 
-  <!-- POST REPORTS TAB -->
   @if (!isLoading && activeTab === 'postReports') {
   <div class="card shadow-sm border-light">
     <div class="card-body">
@@ -264,7 +257,7 @@
               <td class="desc-col">{{ report.description }}</td>
               <td>{{ report.createAt | date }}</td>
               <td class="action-col">
-                <button class="btn btn-sm btn-outline-danger me-2" (click)="deleteReport(report)">Delete Report</button>
+                <button class="btn btn-sm btn-outline-danger me-2" (click)="deletePostReport(report)">Delete Report</button>
                 <button class="btn btn-sm btn-outline-primary" (click)="goToPost(report.postId)">Visit Post</button>
               </td>
             </tr>

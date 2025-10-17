@@ -4,13 +4,11 @@
   <div class="card shadow-lg w-100" style="max-width: 63rem;">
     <div class="card-body d-flex flex-column">
 
-      <!-- Title Section -->
       <h3 class="text-center mb-3">Title</h3>
       <div class="mb-4">
         <input type="text" class="form-control" maxlength="1000" placeholder="Enter your title" [(ngModel)]="title" />
       </div>
 
-      <!-- Editor Section -->
       <h3 class="text-center mb-3">Content</h3>
       <div class="mb-4 flex-grow-1">
         <quill-editor class="w-100" theme="snow" (onContentChanged)="onContentChanged($event)"
@@ -18,7 +16,6 @@
           (onEditorCreated)="onEditorCreated($event)"></quill-editor>
       </div>
 
-      <!-- Button Section -->
       <div class="mt-auto d-flex justify-content-end">
         <button class="btn btn-primary" (click)="onSubmit()">Publish</button>
       </div>

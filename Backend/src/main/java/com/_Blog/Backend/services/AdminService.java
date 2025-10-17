@@ -113,4 +113,12 @@ public class AdminService {
         return this.reportPostRepository.findAll(pageable).getContent().stream().map(r -> new PostReportDTO(r))
                 .toList();
     }
+
+    public void deletePostReport(Long id) {
+        this.reportPostRepository.deleteById(id);
+    }
+
+    public void deleteUserReport(Long id) {
+        this.reportUserRepository.deleteById(id);
+    }
 }

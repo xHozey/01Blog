@@ -102,4 +102,16 @@ public class AdminController {
     public ResponseEntity<Long> getBanStats() {
         return ResponseEntity.ok(this.adminService.countBannedUsers());
     }
+
+    @DeleteMapping("/report/post/{id}")
+    public ResponseEntity<String> deletePostReport(@PathVariable Long id) {
+        this.adminService.deletePostReport(id);
+        return ResponseEntity.ok("post report deleted");
+    }
+
+    @DeleteMapping("/report/user/{id}")
+    public ResponseEntity<String> deleteUserReport(@PathVariable Long id) {
+        this.adminService.deleteUserReport(id);
+        return ResponseEntity.ok("user report deleted");
+    }
 }

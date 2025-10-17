@@ -1,6 +1,5 @@
 <section class="comment-section-container">
 
-  <!-- Add Comment -->
   <form (ngSubmit)="submitComment()" #commentForm="ngForm" class="comment-form">
     <div class="comment-input-wrapper">
       <img [src]="user?.iconPath" alt="User Avatar" class="comment-avatar" />
@@ -24,7 +23,6 @@
     </div>
   </form>
 
-  <!-- Comments List -->
   <div class="comments-list" [scrollWindow]="false" infiniteScroll [infiniteScrollDistance]="1"
     [infiniteScrollThrottle]="300" (scrolled)="loadComments()">
     @for (comment of comments; track comment.id) {

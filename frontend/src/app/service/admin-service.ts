@@ -102,4 +102,18 @@ export class AdminService {
       withCredentials: true,
     });
   }
+
+  deleteUserReport(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/report/user/${id}`, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
+
+  deletePostReport(id: number): Observable<string> {
+    return this.http.delete(`${this.apiUrl}/report/post/${id}`, {
+      withCredentials: true,
+      responseType: 'text',
+    });
+  }
 }
