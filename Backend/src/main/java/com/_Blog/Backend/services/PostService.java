@@ -78,14 +78,9 @@ public class PostService {
 
                 Page<Post> postsPage;
 
-                if (!followedUserIds.isEmpty()) {
-                        followedUserIds = new ArrayList<>(followedUserIds);
-                        followedUserIds.add(jwtUser.getId());
+                followedUserIds = new ArrayList<>(followedUserIds);
 
-                        postsPage = postRepository.findAllByUserIdInAndIsHideFalse(followedUserIds, pageable);
-                } else {
-                        postsPage = postRepository.findAllByIsHideFalse(pageable);
-                }
+                postsPage = postRepository.findAllByUserIdInAndIsHideFalse(followedUserIds, pageable);
 
                 return postsPage.getContent().stream()
                                 .map(p -> new PostResponse(p, postEngagementRepository.countByPostId(p.getId()),
