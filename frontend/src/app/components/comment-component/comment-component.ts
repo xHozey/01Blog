@@ -18,7 +18,7 @@ export class CommentComponent implements OnInit {
 
   @Output() delete = new EventEmitter<number>();
   @Output() report = new EventEmitter<number>();
-  
+
   private toastService = inject(ToastService);
   private userService = inject(UserService);
   private engagementService = inject(EngagementService);
@@ -37,7 +37,6 @@ export class CommentComponent implements OnInit {
       },
       error: (err) => {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
-                parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
   }

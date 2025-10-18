@@ -7,7 +7,8 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_engagement")
+@Table(name = "post_engagement", uniqueConstraints = {
+        @UniqueConstraint(columnNames = { "post_id", "user_id" }) })
 @AllArgsConstructor
 @NoArgsConstructor
 @Data

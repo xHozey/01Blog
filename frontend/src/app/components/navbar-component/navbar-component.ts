@@ -121,7 +121,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         if (unreadIds.length > 0)
           this.notificationsService.readNotification(unreadIds).subscribe({
             next: (res) => {
-              console.log(res);
             },
             error: (err) => {
               parseApiError(err).forEach((msg) => this.toastService.error(msg));

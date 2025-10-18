@@ -12,12 +12,16 @@
         <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
       </button>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="commentOptionsBtn">
+
         @if (user?.id === comment.authorId) {
         <li>
           <button class="dropdown-item text-danger" (click)="delete.emit(comment.id)">
             <i class="fa fa-trash me-2"></i>Delete
           </button>
         </li>
+        }
+        @if (user?.id !== comment.authorId) {
+        @if (user?.id === comment.authorId) {
         <li>
           <hr class="dropdown-divider">
         </li>
@@ -27,7 +31,10 @@
             <i class="fa fa-flag me-2"></i>Report
           </button>
         </li>
+        }
+
       </ul>
+
     </div>
   </header>
 

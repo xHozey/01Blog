@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com._Blog.Backend.dto.PostRequest;
 import com._Blog.Backend.dto.PostResponse;
 import com._Blog.Backend.dto.ReportRequest;
+import com._Blog.Backend.exception.ConflictException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.exception.UnauthorizedException;
 import com._Blog.Backend.model.JwtUser;
@@ -138,6 +139,8 @@ public class PostService {
                                 .orElseThrow(() -> new ResourceNotFoundException("reporter not found"));
                 User reported = this.userRepository.findById(reportRequest.getId())
                                 .orElseThrow(() -> new ResourceNotFoundException("reported user not found"));
+                if (reported.getId().equals(jwtUser.getId()))
+                        throw new ConflictException("you can't report yourself");
                 Post post = this.postRepository.findById(id)
                                 .orElseThrow(() -> new ResourceNotFoundException("post not found"));
                 this.reportPostRepository

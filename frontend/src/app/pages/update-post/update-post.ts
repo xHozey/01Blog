@@ -130,7 +130,6 @@ export class UpdatePost implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.content);
     if (!this.title.trim() || !this.content.trim()) return;
     const payload: postRequest = {
       title: this.title.trim(),
@@ -139,7 +138,6 @@ export class UpdatePost implements OnInit {
 
     this.postService.updatePost(payload, this.post.id).subscribe({
       next: (res) => {
-        console.log(res);
         this.router.navigate(['/']);
       },
       error: (err) => {

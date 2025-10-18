@@ -5,13 +5,17 @@ import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com._Blog.Backend.dto.AdminPostDTO;
 import com._Blog.Backend.dto.AdminUserDTO;
 import com._Blog.Backend.dto.PostReportDTO;
 import com._Blog.Backend.dto.UserReportDTO;
+import com._Blog.Backend.exception.ConflictException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
+import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.Post;
 import com._Blog.Backend.model.User;
 import com._Blog.Backend.repository.CommentRepository;
@@ -60,6 +64,9 @@ public class AdminService {
     }
 
     public void banUser(Long id) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (jwtUser.getId().equals(id))
+            throw new ConflictException("you can't ban yourself");
         User user = this.userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
         if (user.getIsBanned()) {
             user.setIsBanned(false);
@@ -85,6 +92,9 @@ public class AdminService {
     }
 
     public void deleteUser(Long userId) {
+        JwtUser jwtUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (jwtUser.getId().equals(userId))
+            throw new ConflictException("you can't delete yourself");
         this.userRepository.deleteById(userId);
     }
 

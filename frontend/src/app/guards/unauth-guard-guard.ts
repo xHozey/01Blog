@@ -13,11 +13,10 @@ export const unauthGuardGuard: CanActivateFn = (route, state) => {
       if (!canAccess) {
         return router.createUrlTree(['/']);
       }
-      return true; 
+      return true;
     }),
-    catchError((err) => {
-      console.error('Error in unauthGuard', err);
-      return of(true); 
+    catchError(() => {
+      return of(true);
     })
   );
 };

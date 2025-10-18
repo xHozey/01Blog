@@ -42,7 +42,7 @@ export class PostComponent implements OnInit {
 
   toggleLike() {
     this.engagementService.likePost(this.post.id).subscribe({
-      next: (res) => {
+      next: () => {
         this.liked = !this.liked;
         if (this.liked) {
           this.post.likes++;

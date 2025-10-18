@@ -113,7 +113,6 @@ export class CreatePost {
       this.toastService.error('max title length is 1000');
       return;
     }
-    console.log(this.content.length)
     if (this.content.length > this.maxContentLength) {
       this.toastService.error('content is large');
       return;

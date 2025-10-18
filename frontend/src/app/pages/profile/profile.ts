@@ -39,6 +39,8 @@ export class Profile implements OnInit {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
+    this.userService.user$.subscribe((user) => (this.currentUser = user));
+
     this.followService.getFollowersCount(this.userId).subscribe({
       next: (res) => {
         this.followersCount = res;
@@ -53,20 +55,21 @@ export class Profile implements OnInit {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });
-    this.followService.checkAlreadyFollowed(this.userId).subscribe({
-      next: (res) => {
-        this.isFollowing = res;
-      },
-      error: (err) => {
-        parseApiError(err).forEach((msg) => this.toastService.error(msg));
-      },
-    });
-    this.userService.user$.subscribe((user) => (this.currentUser = user));
+    if (this.userId != this.currentUser?.id) {
+      this.followService.checkAlreadyFollowed(this.userId).subscribe({
+        next: (res) => {
+          this.isFollowing = res;
+        },
+        error: (err) => {
+          parseApiError(err).forEach((msg) => this.toastService.error(msg));
+        },
+      });
+    }
   }
 
   toggleFollow() {
     this.followService.followUser(this.userId).subscribe({
-      next: (res) => {
+      next: () => {
         this.isFollowing = !this.isFollowing;
         if (!this.isFollowing) this.followersCount--;
         else this.followersCount++;
@@ -76,6 +79,7 @@ export class Profile implements OnInit {
       },
     });
   }
+  
   showReportModal = false;
   targetId = 0;
   onReport() {

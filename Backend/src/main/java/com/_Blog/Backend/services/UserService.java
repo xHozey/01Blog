@@ -14,6 +14,7 @@ import com._Blog.Backend.dto.UserProfileUpdateRequest;
 import com._Blog.Backend.dto.UserResponse;
 import com._Blog.Backend.dto.UserSuggetion;
 import com._Blog.Backend.exception.BadRequestException;
+import com._Blog.Backend.exception.ConflictException;
 import com._Blog.Backend.exception.ResourceNotFoundException;
 import com._Blog.Backend.model.JwtUser;
 import com._Blog.Backend.model.ReportUser;
@@ -51,6 +52,8 @@ public class UserService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         User reported = this.userRepository.findById(reportRequest.getId())
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        if (reported.getId().equals(jwtUser.getId()))
+            throw new ConflictException("you can't report yourself");
         ReportUser reportUser = new ReportUser(reporter, reported, reportRequest.getDescription());
         this.reportUserRepository.save(reportUser);
     }

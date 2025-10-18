@@ -59,8 +59,6 @@ export class Settings implements OnInit {
         this.router.navigate(['/']);
       },
       error: (err) => {
-        console.error(err);
-
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
       },
     });

@@ -77,8 +77,6 @@ export class PostSectionComponent implements OnInit {
       next: (data) => {
         if (data) {
           this.posts = [...this.posts, ...data];
-        } else {
-          console.log('no more!');
         }
       },
       error: (err) => {

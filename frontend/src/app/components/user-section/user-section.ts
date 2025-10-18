@@ -45,8 +45,8 @@ export class UserSection implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.allLoaded = true;
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
+        this.allLoaded = true;
         this.isLoading = false;
       },
     });

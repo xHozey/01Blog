@@ -91,6 +91,10 @@ Pull and run PostgreSQL using Docker:
 ```bash
 docker pull postgres
 docker run --name blog-postgres -e POSTGRES_PASSWORD=supersecret -p 5432:5432 -d postgres
+docker exec -it some-postgres bash
+su - postgres
+psql
+CREATE DATABASE test2;
 ```
 
 This will start a PostgreSQL instance on port 5432 with password `supersecret`.

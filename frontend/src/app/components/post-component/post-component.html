@@ -13,34 +13,56 @@
         <lucide-icon [img]="EllipsisIcon" size="18"></lucide-icon>
       </button>
       <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
         @if (user?.id === post.authorId) {
-        <li><button class="dropdown-item" (click)="update.emit(post.id)">
+        <li>
+          <button class="dropdown-item" (click)="update.emit(post.id)">
             <i class="fa fa-edit me-2"></i>Edit Post
-          </button></li>
-        <li>
-          <hr class="dropdown-divider">
+          </button>
         </li>
         }
+
         @if (user?.id === post.authorId || user?.roles?.includes('ADMIN')) {
-        <li><button class="dropdown-item text-danger" (click)="delete.emit(post.id)">
-            <i class="fa fa-trash me-2"></i>Delete
-          </button></li>
-        }
-        @if (user?.roles?.includes('ADMIN')) {
-        @if (!(user?.id === post.authorId)) { <li>
-          <hr class="dropdown-divider">
-        </li> }
-        <li><button class="dropdown-item" (click)="hide.emit(post.id)">
-            <i class="fa fa-eye-slash me-2"></i>Hide
-          </button></li>
-        }
+        @if (user?.id === post.authorId) {
         <li>
           <hr class="dropdown-divider">
         </li>
-        <li><button class="dropdown-item" (click)="report.emit(post.authorId)">
+        }
+        <li>
+          <button class="dropdown-item text-danger" (click)="delete.emit(post.id)">
+            <i class="fa fa-trash me-2"></i>Delete
+          </button>
+        </li>
+        }
+
+        @if (user?.roles?.includes('ADMIN')) {
+        @if (user?.id === post.authorId || (user?.id !== post.authorId && user?.roles?.includes('ADMIN'))) {
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        }
+        <li>
+          <button class="dropdown-item" (click)="hide.emit(post.id)">
+            <i class="fa fa-eye-slash me-2"></i>Hide
+          </button>
+        </li>
+        }
+
+        @if (user?.id !== post.authorId) {
+        @if (user?.id === post.authorId || user?.roles?.includes('ADMIN')) {
+        <li>
+          <hr class="dropdown-divider">
+        </li>
+        }
+        <li>
+          <button class="dropdown-item" (click)="report.emit(post.id)">
             <i class="fa fa-flag me-2"></i>Report
-          </button></li>
+          </button>
+        </li>
+        }
+
       </ul>
+
     </div>
   </header>
 

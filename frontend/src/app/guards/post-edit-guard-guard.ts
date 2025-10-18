@@ -12,30 +12,26 @@ export const postEditGuard: CanActivateFn = (route, state) => {
   const postId = route.params['id'];
 
   return postService.getPost(postId).pipe(
-    switchMap(post => {
+    switchMap((post) => {
       const currentUser = userService.getUser();
 
       if (currentUser) {
         if (currentUser.id === post.authorId) return of(true);
-        router.navigate(['/']);
-        return of(false);
+        return of(router.createUrlTree(['/']));
       }
 
       return userService.user$.pipe(
-        map(user => {
+        map((user) => {
           if (user && user.id === post.authorId) return true;
-          router.navigate(['/']);
-          return false;
+          return router.createUrlTree(['/']);
         }),
         catchError(() => {
-          router.navigate(['/']);
-          return of(false);
+          return of(router.createUrlTree(['/']));
         })
       );
     }),
     catchError(() => {
-      router.navigate(['/']);
-      return of(false);
+      return of(router.createUrlTree(['/']));
     })
   );
 };

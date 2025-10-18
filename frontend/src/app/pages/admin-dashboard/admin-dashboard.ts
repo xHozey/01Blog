@@ -4,6 +4,8 @@ import { NavbarComponent } from '../../components/navbar-component/navbar-compon
 import { AdminService } from '../../service/admin-service';
 import { Router } from '@angular/router';
 import { File, FileText, Flag, LucideAngularModule, User, UserX } from 'lucide-angular';
+import { parseApiError } from '../../utils/errorHelper';
+import { ToastService } from '../../service/toast-service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,6 +17,7 @@ import { File, FileText, Flag, LucideAngularModule, User, UserX } from 'lucide-a
 export class AdminDashboard implements OnInit {
   private adminService = inject(AdminService);
   private router = inject(Router);
+  private toastService = inject(ToastService);
 
   activeTab: 'users' | 'userReports' | 'posts' | 'postReports' | 'bannedUsers' = 'users';
   isLoading = false;
@@ -49,6 +52,26 @@ export class AdminDashboard implements OnInit {
   totalPosts = 0;
   totalBan = 0;
   totalPostReport = 0;
+
+  showConfirmModal = false;
+  pendingAction: (() => void) | null = null;
+
+  openConfirmModal(action: () => void) {
+    this.pendingAction = action;
+    this.showConfirmModal = true;
+  }
+
+  closeModal() {
+    this.showConfirmModal = false;
+    this.pendingAction = null;
+  }
+
+  confirmAction() {
+    if (this.pendingAction) {
+      this.pendingAction();
+    }
+    this.closeModal();
+  }
 
   ngOnInit() {
     this.loadUsers();
@@ -141,66 +164,76 @@ export class AdminDashboard implements OnInit {
   }
 
   toggleBan(user: adminUserDTO) {
-    this.adminService.toggleBanUser(user.id).subscribe({
-      next: () => {
-        if (this.activeTab == 'users') {
-          user.isBanned = !user.isBanned;
-        } else {
-          this.bannedUsers = this.bannedUsers.filter((u) => u.id !== user.id);
-          let findUser = this.users.find((u) => u.id == user.id);
-          if (findUser) {
-            findUser.isBanned = !findUser.isBanned;
+    this.openConfirmModal(() => {
+      this.adminService.toggleBanUser(user.id).subscribe({
+        next: () => {
+          if (this.activeTab == 'users') {
+            user.isBanned = !user.isBanned;
+          } else {
+            this.bannedUsers = this.bannedUsers.filter((u) => u.id !== user.id);
+            let findUser = this.users.find((u) => u.id == user.id);
+            if (findUser) {
+              findUser.isBanned = !findUser.isBanned;
+            }
           }
-        }
-
-        this.refreshStats();
-      },
-      error: (err) => {
-        console.error('Error toggling ban:', err);
-      },
+          this.refreshStats();
+        },
+        error: (err) => {
+          parseApiError(err).forEach((msg) => this.toastService.error(msg));
+        },
+      });
     });
   }
 
   deleteUser(user: adminUserDTO) {
-    if (!confirm(`Delete user "${user.username}" permanently?`)) return;
-    this.adminService.deleteUser(user.id).subscribe({
-      next: () => {
-        this.users = this.users.filter((u) => u.id !== user.id);
-        this.totalUsers--;
-      },
-    });
-  }
-
-  deleteUserReport(report: reportUser) {
-    this.adminService.deleteUserReport(report.id).subscribe({
-      next: () => {
-        this.userReports = this.userReports.filter((r) => r.id !== report.id);
-        this.totalUserReports--;
-      },
-    });
-  }
-
-  deletePostReport(report: postReportDTO) {
-    this.adminService.deletePostReport(report.id).subscribe({
-      next: () => {
-        this.postReports = this.postReports.filter((r) => r.id !== report.id);
-        this.totalPostReport--;
-      },
+    this.openConfirmModal(() => {
+      this.adminService.deleteUser(user.id).subscribe({
+        next: () => {
+          this.users = this.users.filter((u) => u.id !== user.id);
+          this.totalUsers--;
+        },
+      });
     });
   }
 
   deletePost(post: adminPostDTO) {
-    this.adminService.deletePost(post.id).subscribe({
-      next: () => {
-        this.posts = this.posts.filter((p) => p.id !== post.id);
-        this.totalPosts--;
-      },
+    this.openConfirmModal(() => {
+      this.adminService.deletePost(post.id).subscribe({
+        next: () => {
+          this.posts = this.posts.filter((p) => p.id !== post.id);
+          this.totalPosts--;
+        },
+      });
     });
   }
 
   hidePost(post: adminPostDTO) {
-    this.adminService.toggleHidePost(post.id).subscribe({
-      next: () => (post.isHide = !post.isHide),
+    this.openConfirmModal(() => {
+      this.adminService.toggleHidePost(post.id).subscribe({
+        next: () => (post.isHide = !post.isHide),
+      });
+    });
+  }
+
+  deleteUserReport(report: reportUser) {
+    this.openConfirmModal(() => {
+      this.adminService.deleteUserReport(report.id).subscribe({
+        next: () => {
+          this.userReports = this.userReports.filter((r) => r.id !== report.id);
+          this.totalUserReports--;
+        },
+      });
+    });
+  }
+
+  deletePostReport(report: postReportDTO) {
+    this.openConfirmModal(() => {
+      this.adminService.deletePostReport(report.id).subscribe({
+        next: () => {
+          this.postReports = this.postReports.filter((r) => r.id !== report.id);
+          this.totalPostReport--;
+        },
+      });
     });
   }
 
