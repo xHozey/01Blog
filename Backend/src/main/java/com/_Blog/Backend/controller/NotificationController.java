@@ -2,7 +2,6 @@ package com._Blog.Backend.controller;
 
 import com._Blog.Backend.dto.NotificationResponse;
 import com._Blog.Backend.services.NotificationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

@@ -26,7 +26,6 @@ export class CommentSection implements OnInit {
   user: userResponse | null = null;
 
   newCommentContent: string = '';
-  selectedFile: File | null = null;
 
   ngOnInit(): void {
     this.loadComments();
@@ -35,13 +34,11 @@ export class CommentSection implements OnInit {
 
   loadComments() {
     if (!this.postId || this.loading || !this.hasMore) {
-      console.log('show ends !');
       return;
     }
     this.loading = true;
     this.commentService.fetchComments(this.postId, this.page).subscribe({
       next: (data) => {
-        console.log(data);
         if (data.length === 0) {
           this.hasMore = false;
         } else {
@@ -57,13 +54,6 @@ export class CommentSection implements OnInit {
     });
   }
 
-  onFileSelected(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-    }
-  }
-
   submitComment() {
     if (!this.postId || !this.newCommentContent) return;
 
@@ -76,7 +66,6 @@ export class CommentSection implements OnInit {
       next: (comment) => {
         this.comments.unshift(comment);
         this.newCommentContent = '';
-        this.selectedFile = null;
       },
       error: (err) => {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));

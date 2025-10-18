@@ -9,13 +9,9 @@
           [(ngModel)]="newCommentContent" name="content" required />
 
         <div class="input-actions">
-          <label class="file-upload">
-            <i class="fa fa-paperclip"></i>
-            <input type="file" (change)="onFileSelected($event)" accept="image/*,video/*" hidden />
-          </label>
 
           <button type="submit" class="btn btn-dark rounded-pill px-3 py-1"
-            [disabled]="!newCommentContent && !selectedFile">
+            [disabled]="!newCommentContent">
             Send
           </button>
         </div>

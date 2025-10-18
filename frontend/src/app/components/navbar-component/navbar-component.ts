@@ -117,12 +117,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notifications = [...this.notifications, ...res];
         this.notificationsPage++;
         this.isLoading = false;
-        setTimeout(() => {
-          if (this.notificationsEnd?.nativeElement) {
-            this.observer?.observe(this.notificationsEnd.nativeElement);
-          }
-        });
-        console.log(res, res[0]?.isRead);
         const unreadIds = res.filter((n) => !n.isRead).map((n) => n.id);
         if (unreadIds.length > 0)
           this.notificationsService.readNotification(unreadIds).subscribe({
@@ -136,7 +130,6 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       error: (err) => {
         parseApiError(err).forEach((msg) => this.toastService.error(msg));
-
         this.isLoading = false;
       },
     });
