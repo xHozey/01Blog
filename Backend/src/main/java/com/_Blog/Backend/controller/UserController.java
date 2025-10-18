@@ -29,7 +29,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -46,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/report")
-    public ResponseEntity<String> reportUser(@RequestBody ReportRequest reportRequest) {
+    public ResponseEntity<String> reportUser(@Valid @RequestBody ReportRequest reportRequest) {
         this.userService.reportUser(reportRequest);
         return ResponseEntity.ok("report submitted");
     }

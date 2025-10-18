@@ -14,22 +14,14 @@ public class NotificationController {
 
     private final NotificationService notificationService;
 
-    @Autowired
     public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
     @GetMapping
     public ResponseEntity<List<NotificationResponse>> getAllNotifications(@RequestParam(defaultValue = "0") Integer page) {
-        try {
-
             List<NotificationResponse> notifications = this.notificationService.getNotifications(page);
             return ResponseEntity.ok(notifications);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-            return ResponseEntity.ok(null);
-
     }
 
     @PostMapping("/read")

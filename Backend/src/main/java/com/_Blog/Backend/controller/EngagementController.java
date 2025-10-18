@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 public class EngagementController {
     private final EngagementService engagementService;
 
-    @Autowired
     public EngagementController(EngagementService engagementService) {
         this.engagementService = engagementService;
     }

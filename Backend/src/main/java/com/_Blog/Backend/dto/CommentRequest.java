@@ -13,7 +13,6 @@ public class CommentRequest {
     @NotBlank
     @Size(min = 1, max = 1000)
     private String content;
-    private String filePath;
     private Long postId;
-    
+
 }

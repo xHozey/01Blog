@@ -2,8 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { API_URL, API_VERSION } from '../../config';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { commentResponse } from '../models/commentResponse';
-import { commentRequest } from '../models/commentRequest';
 
 @Injectable({
   providedIn: 'root',

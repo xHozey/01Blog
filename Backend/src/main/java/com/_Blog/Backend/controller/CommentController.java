@@ -18,6 +18,8 @@ import com._Blog.Backend.dto.CommentRequest;
 import com._Blog.Backend.dto.CommentResponse;
 import com._Blog.Backend.services.CommentService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/v1/comments")
@@ -25,13 +27,12 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @Autowired
     public CommentController(CommentService commentService) {
         this.commentService = commentService;
     }
 
     @PostMapping
-    public ResponseEntity<CommentResponse> createComment(@RequestBody CommentRequest commentRequest) {
+    public ResponseEntity<CommentResponse> createComment(@RequestBody @Valid CommentRequest commentRequest) {
         CommentResponse savedPost = this.commentService.addComment(commentRequest);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }

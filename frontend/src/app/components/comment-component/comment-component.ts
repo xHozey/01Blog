@@ -1,5 +1,4 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
-import { commentResponse } from '../../models/commentResponse';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../service/user-service';
 import { EngagementService } from '../../service/engagement-service';

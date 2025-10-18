@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class RefreshController {
     private final RefreshService refreshService;
 
-    @Autowired
     public RefreshController(RefreshService refreshService) {
         this.refreshService = refreshService;
     }

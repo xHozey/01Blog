@@ -1,4 +1,4 @@
-export interface commentResponse {
+interface commentResponse {
   id: number;
   content: string;
   author: string;

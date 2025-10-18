@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 
 let isRefreshing = false;
 const refreshSubject = new Subject<void>();
-const requestQueue: Array<{ req: HttpRequest<unknown>; next: HttpHandlerFn }> = [];
 
 export const authInterceptor: HttpInterceptorFn = (
   req: HttpRequest<unknown>,
@@ -32,7 +31,6 @@ export const authInterceptor: HttpInterceptorFn = (
           req.url.includes('/login') ||
           req.url.includes('/register') ||
           req.url.includes('/check-unauth');
-        console.error(err);
         if (err.status === 401 && !isLoginOrRefresh) {
           if (!isRefreshing) {
             isRefreshing = true;
@@ -45,7 +43,6 @@ export const authInterceptor: HttpInterceptorFn = (
               }),
               catchError((refreshErr) => {
                 isRefreshing = false;
-                requestQueue.length = 0;
 
                 if (refreshErr.status === 401 || refreshErr.status === 403) {
                   authService.logout().subscribe({
@@ -59,7 +56,6 @@ export const authInterceptor: HttpInterceptorFn = (
             );
           } else {
             return new Observable<HttpEvent<unknown>>((observer) => {
-              requestQueue.push({ req: clonedReq, next });
               const subscription = refreshSubject.subscribe({
                 next: () => {
                   next(clonedReq).subscribe({

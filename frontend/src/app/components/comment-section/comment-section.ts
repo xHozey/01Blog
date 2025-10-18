@@ -1,10 +1,8 @@
 import { Component, inject, Input, OnInit } from '@angular/core';
 import { CommentService } from '../../service/comment-service';
-import { commentResponse } from '../../models/commentResponse';
 import { CommentComponent } from '../comment-component/comment-component';
 import { FormsModule } from '@angular/forms';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { commentRequest } from '../../models/commentRequest';
 import { UserService } from '../../service/user-service';
 import { ReportModalComponent } from '../report-modal-component/report-modal-component';
 import { parseApiError } from '../../utils/errorHelper';

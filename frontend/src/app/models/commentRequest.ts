@@ -1,4 +1,4 @@
-export interface commentRequest {
+interface commentRequest {
   content: string;
   postId: number;
 }

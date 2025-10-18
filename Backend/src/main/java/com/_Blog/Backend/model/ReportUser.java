@@ -12,6 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,7 @@ public class ReportUser {
     @JoinColumn(name = "reported_user_id")
     private User reportedUser;
 
+    @Size(max = 250)
     private String description;
     @CreationTimestamp
     private Timestamp createAt;

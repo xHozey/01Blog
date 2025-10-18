@@ -16,7 +16,6 @@ public class FollowController {
 
     private final FollowService followService;
 
-    @Autowired
     public FollowController(FollowService followService) {
         this.followService = followService;
     }

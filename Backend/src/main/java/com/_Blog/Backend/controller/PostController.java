@@ -60,7 +60,7 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostResponse> updatePost(@RequestBody PostRequest postRequest, @PathVariable Long id) {
+    public ResponseEntity<PostResponse> updatePost(@RequestBody @Valid PostRequest postRequest, @PathVariable Long id) {
         PostResponse savedPost = postService.updatePost(postRequest, id);
         return ResponseEntity.status(HttpStatus.OK).body(savedPost);
     }

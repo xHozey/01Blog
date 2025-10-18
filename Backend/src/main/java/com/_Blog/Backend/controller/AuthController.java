@@ -24,7 +24,6 @@ public class AuthController {
     private final AuthService authService;
     private final RefreshService refreshService;
 
-    @Autowired
     public AuthController(AuthService authService, RefreshService refreshService) {
         this.authService = authService;
         this.refreshService = refreshService;
