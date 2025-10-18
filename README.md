@@ -1,125 +1,165 @@
-## 01Blog
+# 01Blog - Social Blogging Platform
 
-### Overview
+A fullstack social blogging platform where students can share their learning experiences, follow other learners, and engage in meaningful discussions about their educational journey.
 
-In this project, you will build a **social blogging platform** called **01Blog**, where students can share their learning experiences, discoveries, and progress throughout their journey. Users can interact with each other’s content, follow one another, and engage in meaningful discussions.
+## 📋 Table of Contents
 
-This project will guide you through creating a fullstack application using **Java Spring Boot** for the backend and **Angular** for the frontend — from setting up REST APIs to building an interactive and responsive interface.
+- [Overview](#overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation & Setup](#installation--setup)
+- [Running the Application](#running-the-application)
 
-### Role Play
+## 🎯 Overview
 
-You are a **fullstack developer** working for a platform dedicated to helping students document their learning journey. Your mission is to create a user-friendly and secure blogging system where students can post content, subscribe to others, and report inappropriate behavior. Administrators must have tools to moderate the content and manage users.
+01Blog is a comprehensive social blogging platform designed specifically for students to document and share their learning journey. The platform enables users to create rich content with media, interact through likes and comments, follow other learners, and maintain a safe community through reporting and moderation features.
 
-### Learning Objectives
+## ✨ Features
 
-- Master **Java Spring Boot** (REST API, authentication, services, security)
-- Build **Angular** applications (components, routing, services, UI/UX)
-- Understand **fullstack architecture** and RESTful API integration
-- Handle **user-generated content** (media upload, content management)
-- Design and use **relational databases** for social interactions (likes, comments, subscriptions)
-- Implement **secure authentication** and **role-based access**
-- Create tools for **moderation and administration**
-- Collaborate using **Git**, GitHub, and agile practices (issues, branches, commits)
+### User Features
 
-### Instructions
+- **Authentication & Authorization**: Secure user registration and login with role-based access control
+- **Personal Block Page**: Each user has a public profile displaying all their posts
+- **Post Management**: Create, edit, and delete posts with text and media (images/videos)
+- **Social Interactions**: Like and comment on posts from other users
+- **Subscriptions**: Follow other users and receive notifications for new posts
+- **Notifications**: Stay updated with activity from subscribed profiles
+- **Reporting System**: Report inappropriate content or user behavior
 
-#### Backend
+### Admin Features
 
-- **Authentication**
+- **User Management**: View and manage all registered users
+- **Content Moderation**: Review and remove inappropriate posts
+- **Report Handling**: Process user reports and take appropriate actions (ban users, delete content)
+- **Dashboard**: Comprehensive overview of platform activity
 
-  - User registration, login, and secure password handling
-  - Role-based access control (user vs admin)
+## 🛠️ Technologies Used
 
-- **User Block Page**
+### Backend
 
-  - Each user has a public profile (their "block") listing all their posts
-  - Users can subscribe to other profiles
-  - Subscribed users receive notifications when new posts are published
+- **Java 17+** - Programming language
+- **Spring Boot** - Application framework
+- **Spring Security** - Authentication and authorization
+- **Spring Data JPA** - Database access and ORM
+- **JWT** - Stateless authentication
+- **PostgreSQL** - Relational database
+- **Maven** - Dependency management and build tool
+- **Hibernate** - ORM implementation
+- **Lombok** - Reduce boilerplate code
 
-- **Posts**
+### Frontend
 
-  - Users can create/edit/delete posts with media (image or video) and text
-  - Each post includes a timestamp, description, and media preview
-  - Other users can like and comment on posts
+- **Angular** - Frontend framework
+- **TypeScript** - Programming language
+- **Bootstrap** - UI component library
+- **RxJS** - Reactive programming
+- **Angular Router** - Navigation and routing
+- **HttpClient** - API communication
+- **Angular Forms** - Form handling and validation
 
-- **Reports**
+### Development Tools
 
-  - Users can report profiles for inappropriate or offensive content
-  - Reports must include a reason and timestamp
-  - Reports are stored and visible only to admins
+- **Git** - Version control
+- **Postman** - API testing
+- **VS Code** - IDE
 
-- **Admin Panel**
-  - Admin can view and manage all users
-  - Admin can manage posts and remove inappropriate content
-  - Admin can handle user reports (ban/delete user or post)
-  - All admin routes must be protected by access control
+## 📦 Prerequisites
 
-#### Frontend
+Before running the application, ensure you have the following installed:
 
-- **User Experience**
+- **Java JDK 17 or higher**
+- **Node.js 18+ and npm**
+- **Docker** (for PostgreSQL)
+- **Maven 3.8+**
+- **Angular CLI** - Install via: `npm install -g @angular/cli`
+- **Git**
 
-  - Homepage with a feed of posts from subscribed users
-  - Personal block page with full post management (CRUD)
-  - View other users’ blocks and subscribe/unsubscribe
+## 🚀 Installation & Setup
 
-- **Post Interaction**
+### 1. Clone the Repository
 
-  - Like and comment on posts (comments update in real time or via refresh)
-  - Upload media (images/videos) with previews
-  - Display timestamps, likes, and comments on each post
+```bash
+git clone https://github.com/xHozey/01Blog
+cd 01Blog
+```
 
-- **Notifications**
+### 2. Database Setup
 
-  - Notification icon showing updates from subscribed profiles
-  - Mark notifications as read/unread
+Pull and run PostgreSQL using Docker:
 
-- **Reporting**
+```bash
+docker pull postgres
+docker run --name blog-postgres -e POSTGRES_PASSWORD=supersecret -p 5432:5432 -d postgres
+```
 
-  - Report a user with a text reason (UI component/modal)
-  - Confirmation before submitting the report
+This will start a PostgreSQL instance on port 5432 with password `supersecret`.
 
-- **Admin Dashboard**
+## 🏃 Running the Application
 
-  - View all users, posts, and submitted reports
-  - Delete or ban users, remove or hide posts
-  - Clean UI for moderation tasks
+### Backend (Spring Boot)
 
-- Use a responsive UI framework: **Angular Material** or **Bootstrap**
+Navigate to the backend directory and run:
 
-### Constraints
+```bash
+cd backend
+mvn clean install
+mvn spring-boot:run
+```
 
-- Use **Spring Security** or **JWT** for authentication and role management
-- Store media securely (in file system or using cloud storage like AWS S3)
-- Use a relational SQL database (e.g., PostgreSQL or MySQL)
-- All routes must be protected according to user roles
-- Code generation tools (like JHipster) are **not allowed**
-- The project must include a detailed **README** with:
-  - How to run the backend and frontend
-  - Technologies used
+The backend API will be available at **http://localhost:8080**
 
-### Evaluation
+**Alternative - Run from IDE:**
 
-This project is evaluated through **peer-to-peer code review** and **functional demo**. Evaluation criteria include:
+- Open the project in IntelliJ IDEA or Eclipse
+- Locate the main application class (e.g., `BlogApplication.java`)
+- Run the application
 
-- 💡 **Functionality**: All features implemented and working as expected
-- 🔐 **Security**: Proper role-based access and secure user data handling
-- 🎨 **UI/UX**: Responsive, intuitive, and clean interface
+### Frontend (Angular)
 
-### Bonus Features (Optional but Recommended)
+Navigate to the frontend directory and run:
 
-- Real-time updates using WebSockets (for comments or notifications)
-- infinite scroll on feeds
-- Dark mode toggle
-- Basic analytics for admins (number of posts, most reported users)
-- Markdown support for posts
+```bash
+cd frontend
 
-### Resources
+# Install dependencies
+npm install
 
-- [Spring Boot Documentation](https://spring.io/projects/spring-boot)
-- [Angular Official Documentation](https://angular.io/docs)
-- [Angular Material Documentation](https://material.angular.io/components/categories)
-- [Spring Boot File Upload](https://www.bezkoder.com/spring-boot-upload-file-database/)
-- [JWT Introduction – Auth0](https://auth0.com/learn/json-web-tokens/)
-- [Spring Security Basics – Java Guides](https://www.javaguides.net/2022/01/spring-security-tutorial.html)
-- [PostgreSQL Basics](https://www.postgresqltutorial.com/)
-- [JPA (Java Persistence API) Guide](https://www.baeldung.com/the-persistence-layer-with-spring-data-jpa)
+# Start the development server
+ng serve
+```
+
+The frontend will be available at **http://localhost:4200**
+
+**Production Build:**
+
+```bash
+ng build --configuration production
+```
+
+Build artifacts will be stored in the `dist/` directory.
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+**Backend won't start:**
+
+- Check if PostgreSQL Docker container is running: `docker ps`
+- Verify database credentials match your configuration
+- Ensure port 8080 is not in use
+
+**Frontend won't compile:**
+
+- Delete `node_modules` and run `npm install` again
+- Clear npm cache: `npm cache clean --force`
+- Verify Node.js version compatibility
+
+**CORS errors:**
+
+- Verify CORS configuration in backend security config
+- Check that frontend is making requests to correct API URL
+
+**File upload fails:**
+
+- Check file size limits in backend configuration
