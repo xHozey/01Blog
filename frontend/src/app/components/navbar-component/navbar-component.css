@@ -40,7 +40,7 @@
   background-color: var(--surface-bg);
   color: var(--text-color);
   border: 1px solid var(--dropdown-border);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
   border-radius: 10px;
 }
 
@@ -81,6 +81,7 @@
   transition: all 0.2s ease;
   border-radius: 10px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  z-index: 1050;
 }
 
 .notif-header {
@@ -144,6 +145,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--post-border-color);
+  cursor: pointer;
 }
 
 .notif-content p {
@@ -151,8 +153,165 @@
   color: var(--text-color);
   margin: 0;
   line-height: 1.3;
+  cursor: pointer;
 }
 
 .notif-content small {
   color: var(--comment-time-color);
+}
+
+
+@media (max-width: 991px) {
+  .custom-navbar .container-fluid {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .custom-navbar .navbar-collapse {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--post-border-color);
+  }
+
+  .custom-navbar .navbar-nav {
+    gap: 0.75rem !important;
+  }
+
+  .custom-navbar .nav-item {
+    width: 100%;
+  }
+
+  .custom-navbar .btn-dark {
+    width: 100%;
+    display: block;
+    text-align: center;
+  }
+
+  .custom-navbar .nav-item.position-relative > .btn-link {
+    text-align: left;
+    padding: 0.5rem 0;
+  }
+
+  .notifications-dropdown {
+    position: fixed !important;
+    top: 70px !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: calc(100vw - 2rem) !important;
+    max-width: 400px !important;
+  }
+
+  .custom-navbar .dropdown-menu {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-navbar .navbar-brand {
+    font-size: 1.25rem !important;
+  }
+
+  .notifications-dropdown {
+    width: calc(100vw - 1rem) !important;
+    max-width: none !important;
+    left: 0.5rem !important;
+    transform: none;
+    right: 0.5rem !important;
+  }
+
+  .notif-header h6 {
+    font-size: 0.875rem;
+  }
+
+  .notif-tab {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  .notif-avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  .notif-content p {
+    font-size: 0.85rem;
+  }
+
+  .notif-content small {
+    font-size: 0.75rem;
+  }
+
+  .custom-navbar .btn-dark {
+    padding: 0.5rem 1rem !important;
+    font-size: 0.9rem;
+  }
+
+  .custom-navbar .dropdown-item {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .custom-navbar .navbar-brand {
+    font-size: 1.1rem !important;
+  }
+
+  .notifications-dropdown {
+    max-height: 380px !important;
+  }
+
+  .notif-body {
+    max-height: 320px;
+  }
+
+  .notification-item {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 991px) and (orientation: landscape) {
+  .notifications-dropdown {
+    max-height: 300px !important;
+  }
+
+  .notif-body {
+    max-height: 240px;
+  }
+}
+
+.custom-navbar .nav-item.dropdown {
+  position: static;
+}
+
+.custom-navbar .dropdown-menu {
+  position: absolute;
+}
+
+@media (max-width: 991px) {
+  .custom-navbar .nav-item.dropdown {
+    position: relative;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .custom-navbar .nav-link,
+  .custom-navbar .btn-link,
+  .custom-navbar .dropdown-item {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .notification-item {
+    min-height: 60px;
+  }
+
+  .notif-tab {
+    min-height: 36px;
+    padding: 0.4rem 0.6rem;
+  }
 }

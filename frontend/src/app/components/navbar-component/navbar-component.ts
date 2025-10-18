@@ -6,6 +6,7 @@ import {
   OnInit,
   AfterViewInit,
   OnDestroy,
+  HostListener,
 } from '@angular/core';
 import { Router, NavigationEnd, RouterLink } from '@angular/router';
 import { Bell, LucideAngularModule } from 'lucide-angular';
@@ -36,6 +37,20 @@ export class NavbarComponent implements OnInit, AfterViewInit, OnDestroy {
   activeTab: 'all' | 'unread' = 'all';
 
   @ViewChild('notificationsEnd') notificationsEnd?: ElementRef<HTMLDivElement>;
+  @ViewChild('notificationContainer') notificationContainer?: ElementRef<HTMLLIElement>;
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    if (!this.showNotificationsModal) return;
+
+    const target = event.target as HTMLElement;
+    const notificationElement = this.notificationContainer?.nativeElement;
+
+    if (notificationElement && !notificationElement.contains(target)) {
+      this.showNotificationsModal = false;
+    }
+  }
+
   private observer?: IntersectionObserver;
 
   private router = inject(Router);

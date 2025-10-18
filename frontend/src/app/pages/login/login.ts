@@ -40,7 +40,6 @@ export class LoginComponent {
 
     this.auth.login(payload).subscribe({
       next: (msg) => {
-        this.toastService.success(msg);
         this.router.navigate(['/']);
       },
       error: (err) => {

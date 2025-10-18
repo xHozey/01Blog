@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: libre-postgres
+    environment:
+      POSTGRES_DB: test1
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecret
+    ports:
+      - "5432:5432"
+    volumes:
+      - libre_pgdata:/var/lib/postgresql/data
+
+volumes:
+  libre_pgdata:
+    name: test1

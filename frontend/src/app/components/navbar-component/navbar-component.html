@@ -19,7 +19,7 @@
         </li>
         }
 
-        <li class="nav-item position-relative">
+        <li #notificationContainer class="nav-item position-relative">
           <button class="btn btn-link position-relative p-0" (click)="toggleNotifications()"
             style="line-height: 1; color: var(--nav-link-color);">
             <div class="position-relative d-inline-block">
@@ -74,8 +74,8 @@
 
 
         </li>
-        <li>
-          <app-theme-toggle></app-theme-toggle>
+        <li class="nav-item">
+          <app-theme-toggle class="btn-link"></app-theme-toggle>
         </li>
 
         <li class="nav-item dropdown">
