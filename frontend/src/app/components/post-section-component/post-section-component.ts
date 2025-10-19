@@ -40,10 +40,12 @@ export class PostSectionComponent implements OnInit {
   }
 
   showReportModal = false;
-  targetId = 0;
-
+  postId = 0;
+  userID = 0;
   onReport(id: number) {
-    this.targetId = id;
+    this.postId = id;
+    const reportedPost = this.posts.find(p => p.id == this.postId)
+    if (reportedPost) this.userID = reportedPost.authorId
     this.showReportModal = true;
   }
 

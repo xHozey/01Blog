@@ -18,8 +18,8 @@
   </div>
 
   @if (showReportModal) {
-  <app-report-modal-component [show]="showReportModal" [targetId]="targetId" (closed)="showReportModal = false"
-    [type]="'post'" [postId]="targetId"></app-report-modal-component>
+  <app-report-modal-component [show]="showReportModal" [targetId]="userID" (closed)="showReportModal = false"
+    [type]="'post'" [postId]="postId"></app-report-modal-component>
   }
 
 
