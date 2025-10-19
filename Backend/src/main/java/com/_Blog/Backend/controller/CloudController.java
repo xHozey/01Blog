@@ -22,13 +22,14 @@ public class CloudController {
         this.cloudinaryService = cloudinaryService;
     }
 
-    private final List<String> ALLOWED_TYPES_IMAGES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp", "svg");
+    private final List<String> ALLOWED_TYPES_IMAGES = List.of("jpg", "jpeg", "png", "gif", "bmp", "tiff", "webp",
+            "svg");
     private final List<String> ALLOWED_TYPES_VIDEOS = List.of("mp4", "avi", "mov", "wmv", "flv", "webm", "mkv", "m4v");
 
     @PostMapping("/post/image")
     public ResponseEntity<String> savePostImage(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".") +1))) {
+        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".") + 1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/post/image");
@@ -38,7 +39,7 @@ public class CloudController {
     @PostMapping("/post/video")
     public ResponseEntity<String> savePostVideo(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_VIDEOS.contains(fileName.substring(fileName.indexOf(".")+1))) {
+        if (fileName != null && !ALLOWED_TYPES_VIDEOS.contains(fileName.substring(fileName.indexOf(".") + 1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/post/video");
@@ -48,7 +49,7 @@ public class CloudController {
     @PostMapping("/user/icon")
     public ResponseEntity<String> saveIconImage(@RequestPart(value = "file") MultipartFile file) {
         String fileName = file.getOriginalFilename();
-        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".")+1))) {
+        if (fileName != null && !ALLOWED_TYPES_IMAGES.contains(fileName.substring(fileName.indexOf(".") + 1))) {
             throw new BadRequestException("Invalid file type");
         }
         String url = this.cloudinaryService.uploadFile(file, "/user");

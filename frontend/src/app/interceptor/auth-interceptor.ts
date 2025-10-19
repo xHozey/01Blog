@@ -47,9 +47,6 @@ export const authInterceptor: HttpInterceptorFn = (
                 if (refreshErr.status === 401 || refreshErr.status === 403) {
                   authService.logout().subscribe({
                     next: () => router.navigate(['/login']),
-                    error: (err) => {
-                      
-                    },
                   });
                 }
 

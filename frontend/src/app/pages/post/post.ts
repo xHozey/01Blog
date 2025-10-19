@@ -83,7 +83,32 @@ export class Post implements OnInit, AfterViewChecked {
   }
 
   sanitizeContent(content: string): SafeHtml {
-    const cleanHtml = DOMPurify.sanitize(content);
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(content, 'text/html');
+    const iframes = doc.querySelectorAll('iframe');
+
+    iframes.forEach((iframe) => {
+      const src = iframe.getAttribute('src');
+      if (src && src.includes('res.cloudinary.com')) {
+        const video = doc.createElement('video');
+        video.setAttribute('controls', 'true');
+        video.setAttribute('src', src);
+        video.className = iframe.className || 'ql-video';
+        video.style.maxWidth = '100%';
+
+        iframe.replaceWith(video);
+      } else {
+        iframe.remove();
+      }
+    });
+
+    const processedHtml = doc.body.innerHTML;
+
+    const cleanHtml = DOMPurify.sanitize(processedHtml, {
+      ADD_TAGS: ['video', 'source'],
+      ADD_ATTR: ['controls', 'src', 'class', 'style'],
+    });
+
     return this.sanitizer.bypassSecurityTrustHtml(cleanHtml);
   }
 

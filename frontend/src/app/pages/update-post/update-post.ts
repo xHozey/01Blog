@@ -100,10 +100,7 @@ export class UpdatePost implements OnInit {
       this.mediaService.addPostVideo(form).subscribe({
         next: (url: string) => {
           const range = this.quill.getSelection(true);
-          this.quill.clipboard.dangerouslyPasteHTML(
-            range.index,
-            `<video controls src="${url}" style="max-width:100%"></video>`
-          );
+          this.quill.insertEmbed(range.index, 'video', url);
           this.quill.insertText(range.index + 1, '\n\n');
           this.quill.setSelection(range.index + 3, 0);
         },
