@@ -48,7 +48,7 @@ public class Comment {
     private User user;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<CommentEngagement> engagements = new HashSet<>();
+    private Set<CommentEngagement> commentEngagements = new HashSet<>();
 
     public Comment(Long id, String content, Timestamp createTime, Post post, User user) {
         this.id = id;

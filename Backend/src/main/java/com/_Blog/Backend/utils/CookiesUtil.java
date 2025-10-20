@@ -22,9 +22,9 @@ public class CookiesUtil {
     public static void SetAuthToken(HttpServletResponse response, String authToken) {
         ResponseCookie cookie = ResponseCookie.from("auth_token", authToken)
                 .httpOnly(true)
-                .secure(true) 
+                .secure(true)
                 .path("/")
-                .sameSite("None") 
+                .sameSite("None")
                 .maxAge(10)
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

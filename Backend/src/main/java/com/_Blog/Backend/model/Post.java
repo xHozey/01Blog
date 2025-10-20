@@ -57,6 +57,9 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Notification> notifications = new HashSet<>();
 
+    @OneToMany(mappedBy = "reportedPost", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReportPost> reportPost = new HashSet<>();
+
     public Post(Long id, String title, String content, User user, Boolean isHide, Timestamp createdAt) {
         this.id = id;
         this.title = title;

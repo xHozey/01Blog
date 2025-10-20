@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,10 +31,10 @@ public class ReportUser {
     @EqualsAndHashCode.Include
     private Long id;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reporter_id")
+    @JoinColumn(name = "reporter_id", foreignKey = @ForeignKey(name = "fk_report_user_reporter_id", foreignKeyDefinition = "FOREIGN KEY (reporter_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User reporter;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reported_user_id")
+    @JoinColumn(name = "reported_user_id", foreignKey = @ForeignKey(name = "fk_report_user_reported_id", foreignKeyDefinition = "FOREIGN KEY (reported_user_id) REFERENCES users(id) ON DELETE CASCADE"))
     private User reportedUser;
 
     @Size(max = 250)

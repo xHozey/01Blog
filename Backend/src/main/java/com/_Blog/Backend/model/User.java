@@ -93,6 +93,12 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ReportUser> reportedUsers = new HashSet<>();
 
+    @OneToMany(mappedBy = "reportedUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReportPost> reportedPosts = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CommentEngagement> commentEngagements = new HashSet<>();
+
     public User(Long id, String username, String email, String password, String iconPath, Boolean isBanned,
             Timestamp createAt, String bio) {
         this.id = id;
