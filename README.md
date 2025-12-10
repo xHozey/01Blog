@@ -94,7 +94,7 @@ docker run --name blog-postgres -e POSTGRES_PASSWORD=supersecret -p 5432:5432 -d
 docker exec -it some-postgres bash
 su - postgres
 psql
-CREATE DATABASE test2;
+CREATE DATABASE test6;
 ```
 
 This will start a PostgreSQL instance on port 5432 with password `supersecret`.
